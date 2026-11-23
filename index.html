@@ -392,11 +392,14 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
 <!-- ==================== TAB 2: 获客与报价 ==================== -->
 <div class="tab-panel" id="panel-outreach">
   <div class="sub-nav">
-    <a href="#world-clock">⏰ 实时商旅时钟</a>
-    <a href="#lead-finder">🔍 6 大渠道免费搜客</a>
-    <a href="#quote-calc">🧮 FOB/CIF 报价试算</a>
-    <a href="#email-gen">✉️ 多语种开发信生成器</a>
-    <a href="#actions">📋 10 国获客行动卡</a>
+    <a href="#world-clock">⏰ 实时时钟</a>
+    <a href="#lead-finder">🔍 6 大搜客</a>
+    <a href="#email-tools">📧 猜邮箱 &amp; 防进垃圾箱</a>
+    <a href="#quote-calc">🧮 报价 &amp; 正式 RFQ</a>
+    <a href="#container-calc">📦 拼柜装柜计算</a>
+    <a href="#email-gen">✉️ 21 天 5 步开发信</a>
+    <a href="#objections">🛡️ 6 大异议话术</a>
+    <a href="#actions">📋 10 国行动卡</a>
   </div>
 
   <!-- Live World Business Clock -->
@@ -448,28 +451,57 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
     </div>
   </section>
 
-  <!-- FOB / CIF & Landed Cost Quote Calculator -->
+  <!-- NEW: Email Pattern Guesser + SPF/DMARC Deliverability Health Check -->
+  <section class="block" id="email-tools">
+    <h2>📧 采购人邮箱猜想器 &amp; 发信防进垃圾箱体检（SPF / DMARC）</h2>
+    <p class="sub">左边解决「在 LinkedIn 找到了采购经理名字，怎么猜他企业邮箱」；右边解决「开发信发出去怎么避免 60% 进垃圾箱」。</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>🎯 采购经理企业邮箱猜想</h3>
+        <div class="form-grid" style="grid-template-columns:1fr 1fr">
+          <div><label for="egFirst">名（First Name）</label><input id="egFirst" type="text" value="Carlos" placeholder="如：Carlos"></div>
+          <div><label for="egLast">姓（Last Name）</label><input id="egLast" type="text" value="Mendez" placeholder="如：Mendez"></div>
+          <div style="grid-column:1/-1"><label for="egDom">对方公司官网域名</label><input id="egDom" type="text" value="abc-industrial.mx" placeholder="如：company.com"></div>
+        </div>
+        <div id="egList" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px"></div>
+        <div class="pills" style="margin-top:10px">
+          <button class="pill primary" id="btnCopyEmails" type="button">📋 一键复制全部候选邮箱</button>
+          <a class="pill" id="egGoogleVerify" target="_blank" rel="noopener" href="#">🔍 Google 反查验证</a>
+          <a class="pill" target="_blank" rel="noopener" href="https://hunter.io/email-verifier">✅ Hunter 免费验邮</a>
+          <a class="pill" target="_blank" rel="noopener" href="https://www.apollo.io/">🚀 Apollo 找决策人</a>
+        </div>
+        <p class="flag-note">提示：发群发前务必过一遍免费验邮工具，硬退信率（Hard Bounce）控制在 2% 以下才不会烧坏邮箱信誉。</p>
+      </div>
+
+      <div class="card">
+        <h3>🛡️ 发信域名防进垃圾箱体检（SPF / DMARC 实时检测）</h3>
+        <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
+          <div style="flex:1;min-width:180px">
+            <label for="spfDom" style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px">输入你发开发信用的域名</label>
+            <input id="spfDom" type="text" placeholder="如：friesgoglobal.com" style="width:100%;border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:var(--surface);color:var(--ink)">
+          </div>
+          <button class="pill primary" id="btnCheckSpf" type="button">⚡ 实时检测 SPF &amp; DMARC</button>
+        </div>
+        <div id="spfResult" class="email-box" style="margin-top:10px;min-height:84px;color:var(--muted)">输入你司发信域名点「实时检测」，系统将查验 DNS 的 SPF 与 DMARC 解析状态。</div>
+        <div class="pills" style="margin-top:8px">
+          <a class="pill" id="btnMxTool" target="_blank" rel="noopener" href="https://mxtoolbox.com/SuperTool.aspx">🔧 MXToolbox 深度体检</a>
+          <a class="pill" target="_blank" rel="noopener" href="https://www.mail-tester.com/">🧪 Mail-Tester 测垃圾箱评分</a>
+        </div>
+        <p class="flag-note"><b>2026 防进垃圾箱铁律：</b>① 千万别用公司主域名群发，买 1–2 个副域名（如 tryxxx.com）养号预热 4 周；② 必须配齐 SPF + DKIM + DMARC；③ 开发信尽量用纯文本，少放图片和外链。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOB / CIF & Landed Cost Quote Calculator + Formal RFQ Email Generator -->
   <section class="block" id="quote-calc">
-    <h2>🧮 外贸快速报价 &amp; 目的国落地成本试算器</h2>
-    <p class="sub">输入工厂含税价与运费，秒算 <b>FOB / CIF 美元报价、单票人民币毛利、客户目的国预估含税落地价</b>，选国家自动带出参考关税与对华 FTA 免税提示。</p>
+    <h2>🧮 外贸快速报价、落地成本试算 &amp; 正式 RFQ 邮件生成器</h2>
+    <p class="sub">输入工厂含税价与运费，秒算 <b>FOB / CIF 美元报价、单票毛利、客户估算落地价</b>，并可一键生成<b>专业正式英文 RFQ 报价邮件</b>（自动关联下方拼柜 CBM 数据）。</p>
     <div class="card">
       <div class="form-grid-4">
-        <div>
-          <label for="qcCountry">目的国（自动带入参考关税）</label>
-          <select id="qcCountry"></select>
-        </div>
-        <div>
-          <label for="qcProdName">报价品名（用于英文摘要）</label>
-          <input id="qcProdName" type="text" value="Industrial Valves & Pumps">
-        </div>
-        <div>
-          <label for="qcFactoryRmb">工厂含税采购总价（RMB）</label>
-          <input id="qcFactoryRmb" type="number" value="100000" min="0" step="1000">
-        </div>
-        <div>
-          <label for="qcQty">数量（件 / 套，用于算单价）</label>
-          <input id="qcQty" type="number" value="100" min="1" step="1">
-        </div>
+        <div><label for="qcCountry">目的国（自动带入参考关税）</label><select id="qcCountry"></select></div>
+        <div><label for="qcProdName">报价品名（英文，用于 RFQ）</label><input id="qcProdName" type="text" value="Industrial Valves & Water Pumps"></div>
+        <div><label for="qcFactoryRmb">工厂含税采购总价（RMB）</label><input id="qcFactoryRmb" type="number" value="100000" min="0" step="1000"></div>
+        <div><label for="qcQty">数量（件 / 套，用于算单价）</label><input id="qcQty" type="number" value="100" min="1" step="1"></div>
         <div>
           <label for="qcRebate">出口退税率（%）</label>
           <select id="qcRebate">
@@ -478,30 +510,15 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
             <option value="0">0%（不退税 / 买单出口）</option>
           </select>
         </div>
-        <div>
-          <label for="qcFx">美元汇率（RMB / USD）</label>
-          <input id="qcFx" type="number" value="7.20" min="1" step="0.05">
-        </div>
-        <div>
-          <label for="qcMargin">目标毛利率（%）</label>
-          <input id="qcMargin" type="number" value="18" min="0" max="80" step="1">
-        </div>
-        <div>
-          <label for="qcLocalRmb">国内港杂/报关/拖车费（RMB）</label>
-          <input id="qcLocalRmb" type="number" value="3500" min="0" step="500">
-        </div>
-        <div>
-          <label for="qcFreightUsd">国际海/空运费 + 保险（USD）</label>
-          <input id="qcFreightUsd" type="number" value="1800" min="0" step="100">
-        </div>
-        <div>
-          <label for="qcDutyPct">目的国参考进口关税（%，可改）</label>
-          <input id="qcDutyPct" type="number" value="0" min="0" max="100" step="0.5">
-        </div>
-        <div style="grid-column:span 2;display:flex;align-items:flex-end">
-          <div id="qcFtaNote" style="font-size:12.5px;padding:8px 10px;border-radius:10px;background:var(--surface2);border:1px solid var(--line);width:100%"></div>
-        </div>
+        <div><label for="qcFx">美元汇率（RMB / USD）</label><input id="qcFx" type="number" value="7.20" min="1" step="0.05"></div>
+        <div><label for="qcMargin">目标毛利率（%）</label><input id="qcMargin" type="number" value="18" min="0" max="80" step="1"></div>
+        <div><label for="qcLocalRmb">国内港杂/报关/拖车费（RMB）</label><input id="qcLocalRmb" type="number" value="3500" min="0" step="500"></div>
+        <div><label for="qcFreightUsd">国际海/空运费 + 保险（USD）</label><input id="qcFreightUsd" type="number" value="1800" min="0" step="100"></div>
+        <div><label for="qcDutyPct">目的国参考进口关税（%，可改）</label><input id="qcDutyPct" type="number" value="0" min="0" max="100" step="0.5"></div>
+        <div><label for="qcLeadDays">生产交期（天）</label><input id="qcLeadDays" type="number" value="20" min="1" step="1"></div>
+        <div><label for="qcPort">中国装运港</label><input id="qcPort" type="text" value="Ningbo / Shanghai"></div>
       </div>
+      <div id="qcFtaNote" style="margin-top:10px;font-size:12.5px;padding:8px 10px;border-radius:10px;background:var(--surface2);border:1px solid var(--line)"></div>
 
       <div class="calc-out">
         <div class="calc-kpi"><div class="k">FOB 美元总价 / 单价</div><div class="v hi" id="qcFobOut">—</div><div class="d" id="qcFobUnit">—</div></div>
@@ -511,16 +528,48 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
       </div>
 
       <div class="pills" style="margin-top:12px">
-        <button class="pill primary" id="btnCopyQuote" type="button">📋 一键复制英文报价摘要（发邮件 / WhatsApp）</button>
-        <span class="flag-note" style="margin:0">公式：实际成本 = 含税价 − 含税价÷1.13×退税率；FOB = (实际成本+港杂)÷汇率÷(1−毛利率)</span>
+        <button class="pill primary" id="btnCopyQuote" type="button">📋 复制简版报价（发 WhatsApp）</button>
+        <button class="pill good-btn" id="btnShowRfq" type="button">📄 展开/复制专业正式英文 RFQ 报价邮件</button>
+        <span class="flag-note" style="margin:0">公式：实际成本 = 含税价 − 含税价÷1.13×退税率</span>
+      </div>
+      <div id="rfqPreviewWrap" hidden style="margin-top:10px">
+        <div class="email-box" id="rfqEmailOut"></div>
+        <div class="pills" style="margin-top:8px">
+          <button class="pill primary" id="btnCopyRfqFull" type="button">📋 复制正式 RFQ 报价邮件</button>
+          <a class="pill" id="btnRfqMailto" href="#">📧 用邮件客户端打开此报价单</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Interactive Multilingual Email Generator with Industrial Trust Signals -->
+  <!-- NEW: Multi-SKU Container Load (CBM / Weight) Optimizer -->
+  <section class="block" id="container-calc">
+    <h2>📦 集装箱装柜（CBM / 限重）&amp; 全品类拼柜试算器</h2>
+    <p class="sub">全品类工业品常混装重货（泵阀/钢材易超 26–28 吨限重）与泡货（开关柜/农机易满体积）。输入箱规自动算总体积、总毛重、推荐柜型，并自动同步进上方正式 RFQ 报价单！</p>
+    <div class="card">
+      <div class="mini-scroll">
+        <table>
+          <thead><tr><th>品名</th><th>长 (cm)</th><th>宽 (cm)</th><th>高 (cm)</th><th>单箱毛重 (kg)</th><th>箱数</th><th>小计 CBM / 吨</th><th>操作</th></tr></thead>
+          <tbody id="ctnTbody"></tbody>
+        </table>
+      </div>
+      <div class="pills" style="margin-top:10px">
+        <button class="pill primary" id="btnAddCtnRow" type="button">➕ 增加一个拼柜品名</button>
+        <button class="pill" id="btnResetCtn" type="button">↺ 恢复示例</button>
+      </div>
+      <div class="calc-out">
+        <div class="calc-kpi"><div class="k">总装箱体积（CBM）</div><div class="v hi" id="ctnCbmOut">—</div><div class="d">20'GP ≈ 28 CBM · 40'HQ ≈ 68 CBM</div></div>
+        <div class="calc-kpi"><div class="k">总毛重（公吨）</div><div class="v" id="ctnWtOut">—</div><div class="d">常规海运限重约 26–28 吨/柜</div></div>
+        <div class="calc-kpi"><div class="k">智能推荐装柜方案</div><div class="v ok" id="ctnRecOut">—</div><div class="d" id="ctnDensityOut">—</div></div>
+        <div class="calc-kpi"><div class="k">重货 / 泡货配载提示</div><div class="v" id="ctnTypeOut" style="font-size:15px">—</div><div class="d" id="ctnWarnOut">—</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Multilingual Email Generator: Upgraded to 21-Day 5-Touch Cadence -->
   <section class="block" id="email-gen">
-    <h2>✉️ 交互式多语种开发信生成器（内置工业品信任钩子）</h2>
-    <p class="sub">填好客户信息并勾选你们能提供的「工程信任钩子」（CAD 图纸、第三方验货、原产地免税证、拼柜），自动拼出 9 种语言的破冰信 / 跟进信 / WhatsApp 话术。</p>
+    <h2>✉️ 21 天 5 步多语种开发信生成器（工业大客户高回复节奏）</h2>
+    <p class="sub">工业品 80% 的有效回复来自第 3–5 封跟进！按 <b>Day 1 破冰 → Day 4 技术降税 → Day 8 同行案例 → Day 12 拼柜方案 → Day 18 礼貌唤醒</b> 的完整节奏生成，支持 10 种语言 + 5 大工业信任钩子。</p>
     <div class="card">
       <div class="form-grid">
         <div><label for="emCountry">目标国家</label><select id="emCountry"></select></div>
@@ -540,11 +589,14 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
           </select>
         </div>
         <div>
-          <label for="emType">模板类型</label>
+          <label for="emType">21 天跟进节奏模板</label>
           <select id="emType">
-            <option value="first">第 1 封：精准破冰开发信（邮件）</option>
-            <option value="followup">第 2 封：5 天后礼貌跟进信（邮件）</option>
-            <option value="wa">WhatsApp / Zalo / LINE 简短破冰</option>
+            <option value="first">Day 1 · 第 1 封：精准破冰开发信（痛点+信任钩子）</option>
+            <option value="followup">Day 4 · 第 2 封：技术规格与原产地降税跟进</option>
+            <option value="case">Day 8 · 第 3 封：同区域交付案例与品控背书</option>
+            <option value="logistics">Day 12 · 第 4 封：全品类拼柜降海运成本方案</option>
+            <option value="breakup">Day 18 · 第 5 封：礼貌“断舍离”唤醒信（高回复）</option>
+            <option value="wa">WhatsApp / Zalo / LINE 简短破冰话术</option>
           </select>
         </div>
         <div><label for="emCompany">客户公司名称</label><input id="emCompany" type="text" value="ABC Industrial Co."></div>
@@ -556,7 +608,7 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
       </div>
 
       <div style="margin-top:10px">
-        <span style="font-size:12px;font-weight:800;color:var(--brown)">✅ 勾选工业信任钩子（自动写入正文，提升大客户回复率）：</span>
+        <span style="font-size:12px;font-weight:800;color:var(--brown)">✅ 勾选工业信任钩子（自动写入 Day 1 正文，提升大客户回复率）：</span>
         <div class="check-grid" id="trustHooks">
           <label class="check-pill"><input type="checkbox" value="cad" checked> 📐 提供 CAD/3D 图纸与规格书</label>
           <label class="check-pill"><input type="checkbox" value="sgs" checked> 🔍 支持 SGS / BV / TUV 装船前验货</label>
@@ -579,6 +631,13 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- NEW: 6 High-Frequency Industrial Objection Handling & Closing Scripts -->
+  <section class="block" id="objections">
+    <h2>🛡️ 外贸 6 大高频异议回复 &amp; 逼单话术库（LAER 实战脚本）</h2>
+    <p class="sub">客户回信嫌贵、问是不是贸易商、嫌 MOQ 高、要赊账、或报完价消失？点对应场景直接复制专业英文回复，改两个词就能发。</p>
+    <div class="grid2" id="objGrid"></div>
   </section>
 
   <!-- 10 Pilot Country Action Cards -->
@@ -740,6 +799,16 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
         <p>3. <b>主动提原产地证：</b>对 RCEP / 东盟 / 智利 / 秘鲁客户，邮件第一段就写可出 Form E / Form F 免关税。</p>
       </div>
     </div>
+  </section>
+
+  <!-- NEW: High-Frequency Industrial HS6 Quick Reference -->
+  <section class="block" id="hs-ref">
+    <h2>📑 高频工业品 6 位国际 HS 编码 &amp; 关税/退税速查卡</h2>
+    <p class="sub">报价前核对国际通用前 6 位 HS 编码，一键直达 ITC MacMap 查任意目的国实际进口关税（中国出口退税率请以最新国税编码库为准）。</p>
+    <div class="table-card"><div class="mini-scroll"><table>
+      <thead><tr><th>工业品类</th><th>国际通用 HS6 示例</th><th>英文报关常用名</th><th>中国参考退税率</th><th>一键查全球关税 / 进口国</th></tr></thead>
+      <tbody id="hsRefTbody"></tbody>
+    </table></div></div>
   </section>
 
   <section class="block" id="matrix">
@@ -1887,9 +1956,50 @@ document.getElementById("mainScopeFull").addEventListener("click", function(){ s
     document.getElementById("qcProfitOut").textContent = "¥" + profitRmb.toLocaleString("zh-CN", {maximumFractionDigits:0});
     document.getElementById("qcCostOut").textContent = "退税后总成本 ¥" + totalCostRmb.toLocaleString("zh-CN", {maximumFractionDigits:0});
     document.getElementById("qcLandedOut").textContent = "$" + landedUsd.toLocaleString("en-US", {maximumFractionDigits:0});
+    if(typeof updateFormalRfq === "function") updateFormalRfq();
   }
+  function buildFormalRfq(){
+    var c = qcSel.value, prod = document.getElementById("qcProdName").value.trim() || "Industrial Equipment";
+    var qty = document.getElementById("qcQty").value || 1;
+    var fob = document.getElementById("qcFobOut").textContent, fobU = document.getElementById("qcFobUnit").textContent.replace("单价约 ","");
+    var cif = document.getElementById("qcCifOut").textContent;
+    var lead = document.getElementById("qcLeadDays").value || 20;
+    var port = document.getElementById("qcPort").value.trim() || "Ningbo / Shanghai";
+    var packLine = window._ctnSummary || "Standard export wooden cases / pallets (exact CBM & container fit confirmed upon final BOQ)";
+    var coLine = hasChinaFta(c) ? "\n- Origin Certificate: Preferential C/O (Form E / RCEP / FTA) provided to minimize import duty in " + c : "";
+    var refNo = "RFQ-" + new Date().toISOString().slice(0,10).replace(/-/g,"");
+    return {
+      sub: "Formal Quotation for " + prod + " — FriesGo Global | Ref: " + refNo,
+      body: "Dear Procurement Team,\n\nThank you for your inquiry regarding " + prod + ". We are pleased to submit our formal quotation below:\n\n"
+        + "1. PRODUCT & PRICING\n"
+        + "- Item Description: " + prod + "\n"
+        + "- Quoted Quantity: " + qty + " units/sets\n"
+        + "- FOB " + port + " (China): " + fob + " (" + fobU + ")\n"
+        + "- Estimated CIF " + c + ": " + cif + "\n\n"
+        + "2. PRODUCTION & PACKING\n"
+        + "- Production Lead Time: " + lead + " days after receipt of deposit\n"
+        + "- Packing & Container Fit: " + packLine + "\n\n"
+        + "3. COMMERCIAL TERMS\n"
+        + "- Incoterms: FOB " + port + " / CIF " + c + "\n"
+        + "- Payment Terms: 30% T/T deposit in advance, 70% balance against copy of B/L (or Irrevocable L/C at sight)\n"
+        + "- Quotation Validity: 30 days" + coLine + "\n\n"
+        + "4. QUALITY ASSURANCE\n"
+        + "- Inspection Standard: AQL 2.5 pre-shipment inspection; third-party SGS / BV / TUV inspection fully supported\n"
+        + "- Technical Docs: CAD drawings, test certificates & compliance docs supplied with shipment\n\n"
+        + "Please share your destination port and any special technical requirements so we can issue the formal Proforma Invoice (PI).\n\n"
+        + "Best regards,\nFriesGo Global Export Team"
+    };
+  }
+  function updateFormalRfq(){
+    var r = buildFormalRfq();
+    var out = document.getElementById("rfqEmailOut");
+    if(out) out.textContent = "Subject: " + r.sub + "\n\n" + r.body;
+    var ml = document.getElementById("btnRfqMailto");
+    if(ml) ml.href = "mailto:?subject="+encodeURIComponent(r.sub)+"&body="+encodeURIComponent(r.body);
+  }
+  window.refreshFormalRfq = updateFormalRfq;
   qcSel.addEventListener("change", syncCountryDuty);
-  ["qcProdName","qcFactoryRmb","qcQty","qcRebate","qcFx","qcMargin","qcLocalRmb","qcFreightUsd","qcDutyPct"].forEach(function(id){
+  ["qcProdName","qcFactoryRmb","qcQty","qcRebate","qcFx","qcMargin","qcLocalRmb","qcFreightUsd","qcDutyPct","qcLeadDays","qcPort"].forEach(function(id){
     var el = document.getElementById(id);
     if(el){ el.addEventListener("input", updateCalc); el.addEventListener("change", updateCalc); }
   });
@@ -1907,6 +2017,15 @@ document.getElementById("mainScopeFull").addEventListener("click", function(){ s
       + "• Validity: 15 days | Inspection: SGS/BV supported\n"
       + "Please share your destination port & detailed specs for a formal Proforma Invoice (PI).";
     copyTxt(txt, "英文报价摘要");
+  });
+  document.getElementById("btnShowRfq").addEventListener("click", function(){
+    var w = document.getElementById("rfqPreviewWrap");
+    w.hidden = !w.hidden;
+    updateFormalRfq();
+  });
+  document.getElementById("btnCopyRfqFull").addEventListener("click", function(){
+    var r = buildFormalRfq();
+    copyTxt("Subject: "+r.sub+"\n\n"+r.body, "正式 RFQ 报价邮件");
   });
   syncCountryDuty();
 
@@ -2144,9 +2263,58 @@ document.getElementById("mainScopeFull").addEventListener("click", function(){ s
     }
   }
 
+  var EXTRA_CADENCE = {
+    case: {
+      en: {
+        sub: "How buyers in {country} cut sourcing lead time on {prod}",
+        body: "Dear {contact},\n\nHope your week is going well.\n\nIndustrial buyers in {country} often tell us their biggest headache isn't unit price—it's inconsistent quality across multiple small factories and delayed deliveries.\n\nWe recently helped an engineering distributor consolidate {prod} under one AQL 2.5 QC protocol ({edge}), cutting inspection hassle and trimming total delivery time.\n\nWould it help if I sent over a sample inspection checklist and our 1-page reference sheet for {prod}?\n\nBest regards,\n{sender}\n{phone}"
+      },
+      es: {
+        sub: "Cómo compradores en {country} agilizan sus compras de {prod}",
+        body: "Estimado/a {contact},\n\nMuchos compradores industriales en {country} nos comentan que su mayor reto es coordinar calidad y plazos entre varias fábricas.\n\nEn FriesGo Global consolidamos {prod} bajo un solo control de calidad AQL 2.5 ({edge}), reduciendo riesgos y demoras.\n\n¿Le gustaría recibir nuestra ficha técnica de 1 página y lista de precios referencial?\n\nSaludos,\n{sender}\n{phone}"
+      },
+      vi: {
+        sub: "Giải pháp tối ưu tiến độ & kiểm soát chất lượng cho {prod}",
+        body: "Kính gửi {contact},\n\nNhiều doanh nghiệp tại Việt Nam gặp khó khi phải làm việc với quá nhiều xưởng nhỏ lẻ. FriesGo Global gom đồng bộ {prod} theo tiêu chuẩn kiểm định AQL 2.5 ({edge}), giúp kiểm soát chất lượng và rút ngắn thời gian giao hàng.\n\nEm gửi Anh/Chị bảng thông số & báo giá tham khảo nhé?\n\nTrân trọng,\n{sender}\n{phone}"
+      },
+      id: {
+        sub: "Cara distributor di Indonesia menghemat waktu pengadaan {prod}",
+        body: "Yth. Bapak/Ibu {contact},\n\nBanyak pembeli industri menghadapi kendala kualitas tidak stabil saat membeli dari banyak pabrik terpisah. Kami mengonsolidasikan {prod} dengan inspeksi AQL 2.5 ({edge}) agar pengiriman lebih cepat dan aman.\n\nBolehkah saya kirimkan ringkasan spesifikasi dan estimasi harga?\n\nHormat kami,\n{sender}\n{phone}"
+      },
+      pt: {
+        sub: "Como compradores no Brasil reduzem riscos na compra de {prod}",
+        body: "Prezado(a) {contact},\n\nMuitos importadores industriais enfrentam atrasos ao lidar com várias fábricas separadas. Na FriesGo Global consolidamos {prod} sob inspeção AQL 2.5 ({edge}).\n\nPosso enviar nossa ficha técnica de 1 página e preços referenciais?\n\nAtenciosamente,\n{sender}\n{phone}"
+      }
+    },
+    logistics: {
+      en: {
+        sub: "Mixed-container option for {comp}: cut sea freight on {prod}",
+        body: "Dear {contact},\n\nQuick note from a logistics angle: if {comp} imports multiple industrial SKUs (such as valves, pumps, cables, pipes or fasteners) in smaller batches, shipping LCL from separate factories usually adds 25–35% in freight and port fees.\n\nBecause FriesGo Global supplies full-category industrial goods, we can consolidate your {prod} with related hardware into a single 20'GP or 40'HQ container—with one B/L, one customs clearance, and preferential C/O where applicable.\n\nHappy to calculate a quick FOB/CIF mixed-container estimate if you share a rough item list.\n\nBest regards,\n{sender}\n{phone}"
+      },
+      es: {
+        sub: "Opción de contenedor consolidado para {comp}: ahorre flete en {prod}",
+        body: "Estimado/a {contact},\n\nSi {comp} importa varios artículos industriales en lotes pequeños, el flete LCL suele encarecer mucho la operación. En FriesGo Global consolidamos {prod} junto con válvulas, bombas, cables o ferretería en un solo contenedor (20'GP/40'HQ) con un único B/L.\n\nSi me comparte una lista tentativa, le preparo un estimado FOB/CIF hoy mismo.\n\nSaludos,\n{sender}\n{phone}"
+      }
+    },
+    breakup: {
+      en: {
+        sub: "Should I close your file for {prod}?",
+        body: "Dear {contact},\n\nI haven't heard back, so I assume {prod} sourcing isn't an active priority for {comp} right now—which is completely fine.\n\nShould I close your file for this quarter, or would you like me to keep our catalog on hand and check back later in the year?\n\nEither way, wishing {comp} continued success in {country}.\n\nBest regards,\n{sender}\n{phone}"
+      },
+      es: {
+        sub: "¿Cierro por ahora su solicitud sobre {prod}?",
+        body: "Estimado/a {contact},\n\nAl no recibir respuesta, entiendo que por ahora {prod} no es prioridad para {comp}. ¿Prefiere que cierre este seguimiento por este trimestre o le escribo más adelante?\n\nLe deseo mucho éxito a {comp}.\n\nSaludos,\n{sender}\n{phone}"
+      },
+      vi: {
+        sub: "Em xin phép đóng hồ sơ báo giá {prod} nhé ạ?",
+        body: "Kính gửi {contact},\n\nVì chưa thấy Anh/Chị phản hồi nên em hiểu hiện tại {comp} chưa có kế hoạch nhập {prod}. Anh/Chị có muốn em tạm đóng hồ sơ quý này, hay lưu lại để trao đổi khi có dự án mới không ạ?\n\nChúc {comp} ngày càng phát triển.\n\nTrân trọng,\n{sender}\n{phone}"
+      }
+    }
+  };
+
   function updateEmail(){
     var c = emSel.value, lang = document.getElementById("emLang").value, type = document.getElementById("emType").value;
-    var tpl = (TEMPLATES[lang] || TEMPLATES.en)[type];
+    var tpl = (EXTRA_CADENCE[type] ? (EXTRA_CADENCE[type][lang] || EXTRA_CADENCE[type].en) : null) || (TEMPLATES[lang] || TEMPLATES.en)[type] || TEMPLATES.en.first;
     var hMap = HOOK_TEXT[lang] || HOOK_TEXT.en;
     var checkedHooks = [];
     document.querySelectorAll("#trustHooks input:checked").forEach(function(cb){
@@ -2201,6 +2369,217 @@ document.getElementById("mainScopeFull").addEventListener("click", function(){ s
     var b = e.target.closest("button[data-bundle-em]");
     if(b) loadIntoEmailGen(b.getAttribute("data-bundle-em"), b.getAttribute("data-bundle-lang"), b.getAttribute("data-bundle-prod"));
   });
+})();
+
+/* ===== Email Guesser + Live SPF/DMARC Check + Container Calculator + Objection Playbook + HS6 Ref ===== */
+(function(){
+  function quickCopy(txt, lbl){
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function(){ showToast("已复制"+lbl); });
+    else { var ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); showToast("已复制"+lbl); }
+  }
+
+  /* 1. Email Pattern Guesser */
+  var curEmails = [];
+  function updateEmailGuess(){
+    var f = (document.getElementById("egFirst").value||"").trim().toLowerCase().replace(/[^a-z0-9]/g,"");
+    var l = (document.getElementById("egLast").value||"").trim().toLowerCase().replace(/[^a-z0-9]/g,"");
+    var d = (document.getElementById("egDom").value||"").trim().toLowerCase().replace(/^https?:\/\//,"").replace(/^www\./,"").split("/")[0];
+    if(!d){ document.getElementById("egList").innerHTML = '<span class="src-ok">请输入公司域名</span>'; curEmails=[]; return; }
+    var list = [];
+    if(f && l){
+      list.push(f+"."+l+"@"+d, f[0]+l+"@"+d, f+"@"+d, f[0]+"."+l+"@"+d, f+l+"@"+d, l+"@"+d);
+    } else if(f){
+      list.push(f+"@"+d);
+    }
+    list.push("procurement@"+d, "purchasing@"+d);
+    curEmails = list.filter(function(v,i,a){ return a.indexOf(v)===i; });
+    document.getElementById("egList").innerHTML = curEmails.map(function(em){
+      return '<button type="button" class="pill" data-cp-em="'+esc(em)+'" style="min-height:30px;padding:3px 10px;font-size:12px">'+esc(em)+'</button>';
+    }).join("");
+    var qG = curEmails.slice(0,3).map(function(x){ return '"'+x+'"'; }).join(" OR ");
+    document.getElementById("egGoogleVerify").href = "https://www.google.com/search?q="+encodeURIComponent(qG);
+  }
+  ["egFirst","egLast","egDom"].forEach(function(id){ document.getElementById(id).addEventListener("input", updateEmailGuess); });
+  document.getElementById("egList").addEventListener("click", function(e){
+    var b = e.target.closest("[data-cp-em]"); if(b) quickCopy(b.getAttribute("data-cp-em"), "邮箱 "+b.getAttribute("data-cp-em"));
+  });
+  document.getElementById("btnCopyEmails").addEventListener("click", function(){ quickCopy(curEmails.join("\n"), "全部候选邮箱"); });
+  updateEmailGuess();
+
+  /* 2. Live SPF & DMARC Deliverability Checker */
+  function fetchT(url, ms){
+    if(typeof AbortController !== "undefined"){
+      var c=new AbortController(), t=setTimeout(function(){c.abort();}, ms||5500);
+      return fetch(url,{signal:c.signal}).finally(function(){clearTimeout(t);});
+    }
+    return fetch(url);
+  }
+  document.getElementById("btnCheckSpf").addEventListener("click", function(){
+    var dom = (document.getElementById("spfDom").value||"").trim().toLowerCase().replace(/^https?:\/\//,"").replace(/^www\./,"").split("/")[0];
+    if(!dom){ showToast("请先输入你发开发信的域名"); return; }
+    document.getElementById("btnMxTool").href = "https://mxtoolbox.com/SuperTool.aspx?action=dmarc%3a"+encodeURIComponent(dom);
+    var box = document.getElementById("spfResult");
+    box.style.color = "var(--ink)";
+    var st = ["⏳ 正在检测 "+dom+" 的 SPF 记录…", "⏳ 正在检测 _dmarc."+dom+" 的 DMARC 策略…"];
+    function show(){ box.innerHTML = st.join("\n"); }
+    show();
+    if(typeof fetch !== "function"){ st = ["⚪ 当前环境不支持在线查询，请点下方 MXToolbox 手动查看。"]; show(); return; }
+    fetchT("https://dns.google/resolve?name="+encodeURIComponent(dom)+"&type=TXT", 5500)
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        var recs = (j.Answer||[]).map(function(a){ return a.data||""; }).filter(function(s){ return s.toLowerCase().indexOf("v=spf1")>=0; });
+        st[0] = recs.length ? ("🟢 SPF 已配置：" + esc(recs[0])) : "🔴 未检测到 SPF 记录（v=spf1）— 发往 Gmail/Outlook 极易进垃圾箱！请在域名 DNS 添加 TXT 记录。";
+        show();
+      }).catch(function(){ st[0] = "⚪ SPF 在线检测超时/受限，请直接点下方 MXToolbox 查验。"; show(); });
+    fetchT("https://dns.google/resolve?name=_dmarc."+encodeURIComponent(dom)+"&type=TXT", 5500)
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        var recs = (j.Answer||[]).map(function(a){ return a.data||""; }).filter(function(s){ return s.toLowerCase().indexOf("v=dmarc1")>=0; });
+        if(recs.length){
+          var isStrict = recs[0].indexOf("p=quarantine")>=0 || recs[0].indexOf("p=reject")>=0;
+          st[1] = (isStrict ? "🟢 DMARC 严格模式已开启：" : "🟡 DMARC 已配置但仍为监控模式（p=none，建议稳定后改为 p=quarantine）：") + esc(recs[0]);
+        } else {
+          st[1] = "🔴 未检测到 DMARC 记录（_dmarc."+esc(dom)+"）— 2026 年主流企业邮箱会大幅降权或直接拒收！";
+        }
+        show();
+      }).catch(function(){ st[1] = "⚪ DMARC 在线检测超时/受限，请直接点下方 MXToolbox 查验。"; show(); });
+  });
+
+  /* 3. Multi-SKU Container Load Calculator (CBM & Weight) */
+  var ctnRows = [
+    {name:"工业阀门（木箱）", l:110, w:90, h:85, kg:420, qty:24},
+    {name:"离心水泵（托盘）", l:120, w:100, h:95, kg:310, qty:18}
+  ];
+  function drawCtn(){
+    var tb = document.getElementById("ctnTbody");
+    tb.innerHTML = ctnRows.map(function(r, i){
+      var cbm = (r.l*r.w*r.h/1000000)*r.qty;
+      var ton = (r.kg*r.qty)/1000;
+      return '<tr>'
+        + '<td><input type="text" data-ci="'+i+'" data-ck="name" value="'+esc(r.name)+'" style="width:130px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
+        + '<td><input type="number" data-ci="'+i+'" data-ck="l" value="'+r.l+'" min="1" style="width:66px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
+        + '<td><input type="number" data-ci="'+i+'" data-ck="w" value="'+r.w+'" min="1" style="width:66px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
+        + '<td><input type="number" data-ci="'+i+'" data-ck="h" value="'+r.h+'" min="1" style="width:66px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
+        + '<td><input type="number" data-ci="'+i+'" data-ck="kg" value="'+r.kg+'" min="1" style="width:74px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
+        + '<td><input type="number" data-ci="'+i+'" data-ck="qty" value="'+r.qty+'" min="1" style="width:64px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
+        + '<td class="num">'+cbm.toFixed(2)+' CBM / '+ton.toFixed(2)+' t</td>'
+        + '<td><button type="button" class="pill" data-cdel="'+i+'" style="min-height:30px;padding:2px 8px;font-size:12px">删</button></td></tr>';
+    }).join("");
+    calcCtnTotals();
+  }
+  function calcCtnTotals(){
+    var totCbm = 0, totKg = 0, totQty = 0;
+    ctnRows.forEach(function(r){ totCbm += (r.l*r.w*r.h/1000000)*r.qty; totKg += r.kg*r.qty; totQty += r.qty; });
+    var totTon = totKg / 1000;
+    var dens = totCbm > 0 ? (totKg / totCbm) : 0;
+    var rec = "—";
+    if(totCbm <= 0){ rec = "请添加货物"; }
+    else if(totCbm <= 14 && totTon <= 14){ rec = "LCL 拼箱（或凑单拼 20'GP）"; }
+    else if(totCbm <= 28 && totTon <= 26){ rec = "1 × 20'GP 小柜"; }
+    else if(totCbm <= 58 && totTon <= 26){ rec = "1 × 40'GP 平柜"; }
+    else if(totCbm <= 67 && totTon <= 26){ rec = "1 × 40'HQ 高柜"; }
+    else {
+      var byVol40 = Math.ceil(totCbm / 66), byWt20 = Math.ceil(totTon / 26);
+      rec = (byWt20 > byVol40) ? (byWt20 + " × 20'GP（按限重核算）") : (byVol40 + " × 40'HQ（按体积核算）");
+    }
+    var tp = "🟢 黄金配重（体积重量均衡）", warn = "配载比例合理，海运性价比最优";
+    if(dens > 950){ tp = "🟠 重货预警（先达限重）"; warn = "密度 "+Math.round(dens)+" kg/CBM，装 40HQ 会严重超重，建议用 20'GP 或混装轻泡品！"; }
+    else if(dens > 0 && dens < 300){ tp = "🔵 泡货提示（先满体积）"; warn = "密度 "+Math.round(dens)+" kg/CBM，优先选 40'HQ 高柜（68 CBM）摊薄海运费"; }
+    document.getElementById("ctnCbmOut").textContent = totCbm.toFixed(2) + " CBM";
+    document.getElementById("ctnWtOut").textContent = totTon.toFixed(2) + " 吨";
+    document.getElementById("ctnRecOut").textContent = rec;
+    document.getElementById("ctnDensityOut").textContent = "共 "+totQty+" 箱 · 平均密度 "+Math.round(dens)+" kg/CBM";
+    document.getElementById("ctnTypeOut").textContent = tp;
+    document.getElementById("ctnWarnOut").textContent = warn;
+    window._ctnSummary = totQty + " cases, approx. " + totCbm.toFixed(2) + " CBM / " + totTon.toFixed(2) + " MT (Recommended: " + rec + ")";
+    if(typeof window.refreshFormalRfq === "function") window.refreshFormalRfq();
+  }
+  document.getElementById("ctnTbody").addEventListener("input", function(e){
+    var i = e.target.getAttribute("data-ci"), k = e.target.getAttribute("data-ck");
+    if(i==null || !k) return;
+    ctnRows[+i][k] = k==="name" ? e.target.value : (parseFloat(e.target.value)||0);
+    var r = ctnRows[+i], cbm=(r.l*r.w*r.h/1000000)*r.qty, ton=(r.kg*r.qty)/1000;
+    var tr = e.target.closest("tr");
+    if(tr && tr.children[6]) tr.children[6].textContent = cbm.toFixed(2)+" CBM / "+ton.toFixed(2)+" t";
+    calcCtnTotals();
+  });
+  document.getElementById("ctnTbody").addEventListener("click", function(e){
+    var d = e.target.closest("[data-cdel]"); if(!d) return;
+    ctnRows.splice(+d.getAttribute("data-cdel"), 1); drawCtn();
+  });
+  document.getElementById("btnAddCtnRow").addEventListener("click", function(){
+    ctnRows.push({name:"配套管件/电缆", l:100, w:80, h:80, kg:180, qty:10}); drawCtn();
+  });
+  document.getElementById("btnResetCtn").addEventListener("click", function(){
+    ctnRows = [{name:"工业阀门（木箱）", l:110, w:90, h:85, kg:420, qty:24},{name:"离心水泵（托盘）", l:120, w:100, h:95, kg:310, qty:18}]; drawCtn();
+  });
+  drawCtn();
+
+  /* 4. 6 High-Frequency Industrial Objection Handling Scripts */
+  var OBJECTIONS = [
+    {
+      title:"🏭 1. 质疑：「你们是贸易公司还是工厂？」（全品类最高频！）",
+      tip:"策略：坦诚不遮掩，把“单一工厂只能卖单件、跨厂沟通累”反打成“一站式工程配套 + 跨厂统一品控 + 拼柜省运费”的优势。",
+      script:"Great question—we operate as an integrated industrial supply partner with long-term audited partner factories across valves, pumps, cables, and hardware. While a single factory only supplies one item and forces you to manage 5 separate shipments and LCL fees, we consolidate your full BOQ under one AQL 2.5 QC standard, one B/L, and one warranty contact—with factory-direct pricing. We're happy to arrange a live video factory audit anytime."
+    },
+    {
+      title:"💰 2. 砍价：「你们报价比另一家中国供应商贵 10–15%」",
+      tip:"策略：绝不直接降价！拆解材质壁厚、密封件/电机铜线等级和售后风险，再反问对方目标价与能否调规格。",
+      script:"I completely understand budget is a top priority. To be transparent, lower quotes in this category almost always come from thinner casting walls, recycled materials, or aluminum-wound motors that risk early failure on-site. Our quote uses full-spec certified materials with 100% pressure/load testing before dispatch. If you have a strict target price, could you share your budget and exact operating pressure/duty cycle so our engineers can see if an alternative spec fits without compromising safety?"
+    },
+    {
+      title:"📦 3. 嫌起订量高：「MOQ 太高了，我们想先小批量试单」",
+      tip:"策略：守住产线开机成本底线，同时抛出「顺搭排产 / 现货 / 全品类混批凑单」三个台阶。",
+      script:"We fully respect wanting to test quality before scaling up. While custom casting/production requires a minimum batch setup, we can support your trial order in two ways: (1) piggyback your smaller quantity onto our scheduled production run next week, or (2) let you mix multiple industrial SKUs (e.g., valves + pumps + fittings) to meet the order value together. Which trial quantity did you have in mind?"
+    },
+    {
+      title:"⏱️ 4. 嫌交期长：「你们 25 天太久了，别的厂说 10 天就能交」",
+      tip:"策略：用严谨质检/试压工序建立专业感，并用「先打定金锁排期」把急单变成逼单抓手。",
+      script:"We never cut corners on testing—our standard lead time includes mandatory pressure/aging tests and AQL 2.5 pre-shipment inspection so nothing fails at your client's site. That said, if your project timeline is urgent and we can confirm the PI and deposit by this Friday, I can request our production manager to prioritize your batch and pull delivery forward by 5–7 days."
+    },
+    {
+      title:"💳 5. 新客要赊账：「我们只做 OA 60 天（账期）」",
+      tip:"策略：礼貌坚定拒绝新客赊账，用公司风控政策做挡箭牌，给出「首单 30% 定金 + 见提单/L/C，合作 3 单后申请中信保赊销」的阶梯方案。",
+      script:"We truly appreciate your interest in a long-term partnership. Under our export credit-insurance policy (Sinosure), open-account (OA) terms can only be activated after 2–3 smooth orders build a credit history. For our first order, we offer 30% T/T deposit + 70% against copy of B/L (or an Irrevocable L/C at sight), with full SGS/BV pre-shipment inspection to protect your side completely. Once we establish a track record, we'll be happy to apply for credit terms for you."
+    },
+    {
+      title:"👻 6. 报完价已读不回（Ghosted）：3 招温和唤醒",
+      tip:"策略：别问“Did you receive my email?”（太廉价），用「项目进度 / 原材料或海运波动 / 换方案」自然切入。",
+      script:"Hi [Name], hope all is well. Just checking in on the quotation we sent for [Product]—did the specs or pricing align with your project budget, or did your client adjust the technical requirements? Also, ocean freight / raw material rates are shifting next month, so let me know if you'd like us to lock the current price or prepare a lighter alternative option."
+    }
+  ];
+  document.getElementById("objGrid").innerHTML = OBJECTIONS.map(function(o, i){
+    return '<div class="card"><h3>'+o.title+'</h3><p style="font-size:12.5px"><b>💡 '+o.tip+'</b></p>'
+      + '<div class="email-box" style="font-size:12.5px">'+esc(o.script)+'</div>'
+      + '<div class="pills" style="margin-top:8px"><button type="button" class="pill primary" data-cp-obj="'+i+'">📋 复制这段英文回复</button></div></div>';
+  }).join("");
+  document.getElementById("objGrid").addEventListener("click", function(e){
+    var b = e.target.closest("[data-cp-obj]"); if(!b) return;
+    quickCopy(OBJECTIONS[+b.getAttribute("data-cp-obj")].script, "异议回复话术");
+  });
+
+  /* 5. High-Frequency Industrial HS6 Quick Reference Table (Tab 3) */
+  var HS_REF = [
+    ["工业阀门（闸/球/蝶阀等）","848180","Industrial valves (gate/ball/butterfly)","13%（参考）"],
+    ["离心水泵 / 液体泵","841370","Centrifugal pumps for liquids","13%（参考）"],
+    ["空气压缩机 / 风机","841480","Air compressors & industrial fans","13%（参考）"],
+    ["电力与控制电缆（≤1000V）","854449","Electric conductors / power cables","13%（参考）"],
+    ["多相交流工业电机","850152","AC multi-phase electric motors","13%（参考）"],
+    ["配电变压器","850421","Liquid dielectric transformers","13%（参考）"],
+    ["低压断路器 / 开关控制柜","853620 / 853710","Circuit breakers / electrical panels","13%（参考）"],
+    ["柴油发电机组","850211","Diesel generating sets","13%（参考）"],
+    ["螺栓/螺母/紧固件","731815","Threaded bolts, screws & fasteners","13%（参考）"],
+    ["无缝 / 焊接工业钢管","730419 / 730630","Seamless / welded steel pipes","核实最新退税"],
+    ["农用拖拉机","870193","Agricultural tractors","13%（参考）"],
+    ["收割机 / 整地农机","843351 / 843210","Harvesting / soil-prep machinery","13%（参考）"]
+  ];
+  document.getElementById("hsRefTbody").innerHTML = HS_REF.map(function(r){
+    var hsFirst = r[1].split(" ")[0];
+    return '<tr><td><b>'+r[0]+'</b></td><td class="num">'+r[1]+'</td><td style="font-size:12.5px;color:var(--muted)">'+r[2]+'</td>'
+      + '<td><span class="src-ok">'+r[3]+'</span></td>'
+      + '<td><a class="pill" style="min-height:28px;padding:3px 9px;font-size:11.5px" target="_blank" rel="noopener" href="https://www.macmap.org/">查 MacMap 关税</a> '
+      + '<a class="pill" style="min-height:28px;padding:3px 9px;font-size:11.5px" target="_blank" rel="noopener" href="https://wits.worldbank.org/trade/comtrade/en/country/ALL/year/2024/tradeflow/Imports/partner/WLD/product/'+hsFirst+'">查 WITS 进口国</a></td></tr>';
+  }).join("");
 })();
 
 /* ===== Products Tab: Sortable Heatmap Matrix + Growth/High Lists ===== */
