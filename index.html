@@ -279,7 +279,7 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
       <button class="tab-btn" role="tab" data-tab="outreach" aria-selected="false">🎯 获客与报价</button>
       <button class="tab-btn" role="tab" data-tab="products" aria-selected="false">📦 产品与配套</button>
       <button class="tab-btn" role="tab" data-tab="deep" aria-selected="false">📊 深度数据</button>
-      <button class="tab-btn" role="tab" data-tab="compliance" aria-selected="false">⚠️ 合规与清单 <span class="tab-badge" id="followBadge" hidden>0</span></button>
+      <button class="tab-btn" role="tab" data-tab="compliance" aria-selected="false">🕵️ 背调与合规 <span class="tab-badge" id="followBadge" hidden>0</span></button>
       <button class="icon-btn" id="themeBtn" type="button" title="切换深色/浅色主题">🌙</button>
     </nav>
   </div>
@@ -953,9 +953,79 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
   </section>
 </div>
 
-<!-- ==================== TAB 5: 合规与清单 ==================== -->
+<!-- ==================== TAB 5: 背调与合规 ==================== -->
 <div class="tab-panel" id="panel-compliance">
-  <!-- NEW: Interactive 6-Step China Export + CBAM Pre-Shipment Checklist -->
+  <div class="sub-nav">
+    <a href="#duediligence">🕵️ 海外客户背调工作台</a>
+    <a href="#precheck">✅ 发货前 6 步自查</a>
+    <a href="#tools">📊 对比与跟进清单</a>
+    <a href="#compliance">🛡️ 制裁与转口红黄牌</a>
+    <a href="#sources">📚 口径与来源</a>
+  </div>
+
+  <!-- NEW: Overseas Company Background Check / Due Diligence Workbench -->
+  <section class="block" id="duediligence">
+    <h2>🕵️ 海外客户快速背调工作台（免费 · 实时自动体检 + 12 大权威核查入口）</h2>
+    <p class="sub">收到新询盘或准备签大单前，填一次客户公司名、官网与邮箱：系统自动做<b>邮箱/域名防钓鱼体检、实时查域名建站年限、查全球法人编码（GLEIF）</b>，并一键拼好 <b>12 个全球免费工商/提单/实景/黑名单核查链接</b>。</p>
+    <div class="card">
+      <div class="form-grid-4">
+        <div>
+          <label for="ddCompany">客户公司英文全称（必填）</label>
+          <input id="ddCompany" type="text" placeholder="如：Siemens Energy / ABC Trading LLC">
+        </div>
+        <div>
+          <label for="ddDomain">客户官网域名（选填，查建站年限）</label>
+          <input id="ddDomain" type="text" placeholder="如：abc-industrial.com">
+        </div>
+        <div>
+          <label for="ddEmail">对方联系邮箱（选填，防钓鱼核验）</label>
+          <input id="ddEmail" type="email" placeholder="如：buyer@abc-industrial.com">
+        </div>
+        <div>
+          <label for="ddCountry">客户所在国家（联动制裁/外汇预警）</label>
+          <select id="ddCountry"></select>
+        </div>
+      </div>
+
+      <div class="pills" style="margin-top:12px">
+        <button class="pill primary" id="btnRunDd" type="button">⚡ 一键实时自动体检（域名年限 / MX / GLEIF / 防钓鱼）</button>
+        <button class="pill" id="btnDdDemo" type="button">🧪 填入示例试试</button>
+        <button class="pill" id="btnDdClear" type="button">清空重填</button>
+      </div>
+
+      <!-- Live Auto-Diagnostics Output -->
+      <div id="ddAutoBox" class="detail-box" style="margin-top:12px;border-left:4px solid var(--brown)">
+        <div class="detail-box-title">📡 自动体检结果（本地防钓鱼规则 + 官方公开接口实时核验）</div>
+        <div id="ddAutoResult" style="font-size:13px;color:var(--muted)">填好上方公司名 / 域名 / 邮箱后，点「⚡ 一键实时自动体检」立即开始核验。</div>
+      </div>
+
+      <!-- 12 Categorized One-Click Due Diligence Portals -->
+      <div class="detail-box" style="margin-top:12px">
+        <div class="detail-box-title">🌐 12 大免费权威背调入口（已自动带入上方公司名与域名，点开即查）</div>
+        <div class="detail-grid" id="ddPortals"></div>
+      </div>
+
+      <!-- 6-Point Due Diligence Risk Verdict & Save to Follow-up -->
+      <div class="detail-box" style="margin-top:12px">
+        <div class="detail-box-title">📋 背调核验打勾 &amp; 自动风险定级（勾选你查完确认无问题的项）</div>
+        <div class="check-grid" id="ddVerdictChecks">
+          <label class="check-pill"><input type="checkbox" value="reg"> 🏛️ 工商注册存续（Active）</label>
+          <label class="check-pill"><input type="checkbox" value="age"> 📅 官网域名已注册 &gt;1 年且内容真实</label>
+          <label class="check-pill"><input type="checkbox" value="map"> 📍 街景确认为真实工厂/仓库/写字楼</label>
+          <label class="check-pill"><input type="checkbox" value="trade"> 🚢 有真实进口记录 / 社媒活人团队</label>
+          <label class="check-pill"><input type="checkbox" value="sanc"> 🛡️ 无 OFAC / OpenSanctions 黑名单记录</label>
+          <label class="check-pill"><input type="checkbox" value="neg"> ⚖️ 无欠款跑路 / 诈骗负面投诉</label>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px">
+          <span id="ddScoreBadge" style="font-size:13.5px;font-weight:900"></span>
+          <button class="pill good-btn" id="btnDdSaveCrm" type="button" style="margin-left:auto">💾 把背调结论写入该国跟进备注</button>
+          <button class="pill" id="btnDdCopyReport" type="button">📋 复制背调摘要发微信群</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive 6-Step China Export + CBAM Pre-Shipment Checklist -->
   <section class="block" id="precheck">
     <h2>✅ 2026 接单 / 发货前 6 步合规自查清单（国内报关 + CBAM + 制裁）</h2>
     <p class="sub">接大单或发新市场前，业务员逐条打勾核对，避免国内港口被扣、目的国清关被退或银行冻结货款。</p>
@@ -1442,6 +1512,7 @@ function detailExtra(d){
     + (ACTION_COUNTRIES[c] ? '<button class="pill primary" data-open-action="'+esc(c)+'">🎯 查看该国获客行动卡</button>' : '')
     + '<button class="pill primary" data-load-em="'+esc(c)+'" data-lang="'+(ACTION_COUNTRIES[c]||guessLang(c))+'">✉️ 生成开发信</button>'
     + '<button class="pill good-btn" data-load-calc="'+esc(c)+'">🧮 算该国报价</button>'
+    + '<button class="pill" data-load-dd="'+esc(c)+'">🕵️ 背调该国客户</button>'
     + '<button class="pill" data-act="cmp" data-c="'+esc(c)+'">⚖️ 加入对比（最多 4 国）</button>'
     + '</div>'
     + '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">'
@@ -1563,6 +1634,8 @@ document.getElementById("tbody").addEventListener("click", function(e){
   if(bEm){ loadIntoEmailGen(bEm.getAttribute("data-load-em"), bEm.getAttribute("data-lang"), bEm.getAttribute("data-prod")); return; }
   var bCalc = e.target.closest("button[data-load-calc]");
   if(bCalc){ loadIntoCalc(bCalc.getAttribute("data-load-calc")); return; }
+  var bDd = e.target.closest("button[data-load-dd]");
+  if(bDd){ loadIntoDd(bDd.getAttribute("data-load-dd")); return; }
   var bCmp = e.target.closest("button[data-act='cmp']");
   if(bCmp){
     var cc = bCmp.getAttribute("data-c");
@@ -2350,6 +2423,245 @@ document.getElementById("mainScopeFull").addEventListener("click", function(){ s
   document.getElementById("panel-deep").addEventListener("click", function(e){
     var el = e.target.closest("[data-jump]"); if(el) jumpToCountry(el.getAttribute("data-jump"));
   });
+})();
+
+/* ===== Overseas Company Background Check / Due Diligence Workbench ===== */
+(function(){
+  var ddSel = document.getElementById("ddCountry");
+  var sortedD = DATA.slice().sort(function(a,b){ return (effImpM(b)||0)-(effImpM(a)||0); });
+  sortedD.forEach(function(d){
+    var o = document.createElement("option");
+    o.value = d.country; o.textContent = (CN[d.country]||d.country) + " (" + d.country + ")";
+    ddSel.appendChild(o);
+  });
+  ddSel.value = "Vietnam";
+
+  function cleanDomain(raw){
+    return String(raw||"").trim().toLowerCase().replace(/^https?:\/\//,"").replace(/^www\./,"").split("/")[0].split("?")[0];
+  }
+  var FREE_MAIL = {"gmail.com":1,"yahoo.com":1,"hotmail.com":1,"outlook.com":1,"live.com":1,"icloud.com":1,"aol.com":1,"protonmail.com":1,"proton.me":1,"mail.ru":1,"yandex.ru":1,"qq.com":1,"163.com":1,"126.com":1,"sina.com":1,"gmx.com":1,"zoho.com":1};
+
+  function renderPortals(){
+    var comp = document.getElementById("ddCompany").value.trim() || "Siemens Energy";
+    var dom = cleanDomain(document.getElementById("ddDomain").value);
+    var email = document.getElementById("ddEmail").value.trim().toLowerCase();
+    if(!dom && email.indexOf("@")>0){
+      var ed = email.split("@")[1];
+      if(ed && !FREE_MAIL[ed]) dom = ed;
+    }
+    var country = ddSel.value;
+    var qC = encodeURIComponent(comp);
+    var qCC = encodeURIComponent(comp + " " + country);
+    var qD = encodeURIComponent(dom || comp);
+    var qNeg = encodeURIComponent('"' + comp + '" (scam OR fraud OR lawsuit OR bankruptcy OR unpaid OR complaint OR blacklist)');
+
+    var groups = [
+      {title:"① 工商注册与真实身份", links:[
+        {t:"🏛️ OpenCorporates（全球 100+ 国工商库）", u:"https://opencorporates.com/companies?q="+qC},
+        {t:"🆔 GLEIF（全球法人编码 LEI 查询）", u:"https://search.gleif.org/#/search/fulltextFilterId=LEIREC_FULLTEXT&simpleFilters%5Bentity.names%5D="+qC},
+        {t:"🇪🇺 欧盟 VIES 税号核验（欧洲客户必查）", u:"https://ec.europa.eu/taxation_customs/vies/#/vat-validation"},
+        {t:"🏢 LinkedIn 公司页（查团队人数与活人）", u:"https://www.google.com/search?q="+encodeURIComponent('site:linkedin.com/company "'+comp+'"')}
+      ]},
+      {title:"② 贸易实力与实地核验", links:[
+        {t:"🚢 ImportYeti（免费查欧美海运提单）", u:"https://www.importyeti.com/search?q="+qC},
+        {t:"🗺️ Google Maps 街景核验（看真厂房还是居民楼）", u:"https://www.google.com/maps/search/"+qCC}
+      ]},
+      {title:"③ 域名年龄与建站历史（防皮包/钓鱼）", links:[
+        {t:"📅 ICANN WHOIS 查域名注册日期", u:"https://lookup.icann.org/en/lookup?name="+(dom?encodeURIComponent(dom):"")},
+        {t:"⏳ Wayback 时光机（查官网历年快照）", u:"https://web.archive.org/web/*/"+(dom?encodeURIComponent(dom):qD)}
+      ]},
+      {title:"④ 制裁黑名单与负面欠款舆情", links:[
+        {t:"🛡️ OpenSanctions（全球制裁与政要黑名单）", u:"https://www.opensanctions.org/search/?q="+qC},
+        {t:"🇺🇸 美国 OFAC 制裁名单（SDN）", u:"https://sanctionssearch.ofac.treas.gov/"},
+        {t:"🇺🇸 美国 CSL 综合筛查名单（含 BIS 实体清单）", u:"https://www.trade.gov/data-visualization/csl-search"},
+        {t:"⚖️ Google 查诈骗/诉讼/欠款负面记录", u:"https://www.google.com/search?q="+qNeg}
+      ]}
+    ];
+
+    document.getElementById("ddPortals").innerHTML = groups.map(function(g){
+      return '<div><h4 style="margin-bottom:6px;color:var(--brown)">'+g.title+'</h4><div style="display:flex;flex-direction:column;gap:6px">'
+        + g.links.map(function(l){ return '<a class="pill" style="justify-content:flex-start;min-height:32px;padding:5px 11px;font-size:12.5px" target="_blank" rel="noopener" href="'+l.u+'">'+l.t+'</a>'; }).join("")
+        + '</div></div>';
+    }).join("");
+  }
+
+  function fetchTimeout(url, ms){
+    if(typeof AbortController !== "undefined"){
+      var ctrl = new AbortController();
+      var timer = setTimeout(function(){ ctrl.abort(); }, ms || 6500);
+      return fetch(url, {signal: ctrl.signal}).finally(function(){ clearTimeout(timer); });
+    }
+    return fetch(url);
+  }
+
+  function runAutoDd(){
+    var comp = document.getElementById("ddCompany").value.trim();
+    var dom = cleanDomain(document.getElementById("ddDomain").value);
+    var email = document.getElementById("ddEmail").value.trim().toLowerCase();
+    var country = ddSel.value;
+    if(!comp && !dom && !email){ showToast("请至少填写公司名、官网域名或邮箱"); return; }
+
+    var emailDom = email.indexOf("@")>0 ? email.split("@")[1] : "";
+    if(!dom && emailDom && !FREE_MAIL[emailDom]) dom = emailDom;
+    renderPortals();
+
+    var lines = [];
+    /* 1. Local anti-phishing & country risk rules */
+    if(email){
+      if(FREE_MAIL[emailDom]){
+        lines.push('🟡 <b>邮箱提醒：</b>对方使用免费公共邮箱（<code>'+esc(emailDom)+'</code>），发正式报价/PI 前建议核实企业邮箱、官网电话或视频验厂。');
+      } else if(dom && emailDom && emailDom !== dom && emailDom.indexOf("."+dom)<0 && dom.indexOf("."+emailDom)<0){
+        lines.push('🔴 <b>高危防钓鱼预警：</b>联系邮箱后缀（<code>'+esc(emailDom)+'</code>）与官网域名（<code>'+esc(dom)+'</code>）<b>不一致</b>！严防仿冒域名诈骗（BEC），务必通过官网独立电话二次核实收款账号。');
+      } else if(emailDom){
+        lines.push('🟢 <b>企业邮箱匹配：</b>邮箱域名与官网域名一致（<code>'+esc(emailDom)+'</code>）。');
+      }
+    }
+    var cp = COMP[country];
+    if(cp){
+      lines.push((cp.cls==="comp-red"?"🔴":"🟠")+' <b>国家合规预警（'+esc(CN[country]||country)+'）：</b>'+cp.label+' — '+esc(cp.why)+'。');
+    } else {
+      var det = DETAILS[country];
+      var payTxt = det ? det.pay : "请查看总表风险提示";
+      var payHigh = payTxt.indexOf("高")>=0;
+      lines.push((payHigh?"🟠":"🟢")+' <b>国家付款环境（'+esc(CN[country]||country)+'）：</b>付款风险「'+esc(payTxt)+'」'+(hasChinaFta(country)?' ｜ 🆓 享对华自贸协定优惠':'')+'。');
+    }
+
+    var resBox = document.getElementById("ddAutoResult");
+    function paint(extra){
+      resBox.innerHTML = lines.concat(extra).map(function(x){ return '<div style="margin:5px 0">'+x+'</div>'; }).join("");
+    }
+    var live = [
+      dom ? '⏳ <b>域名注册年限（RDAP）：</b>正在查询 <code>'+esc(dom)+'</code>…' : '⚪ <b>域名体检：</b>未填企业官网域名，跳过建站年限检测。',
+      dom ? '⏳ <b>企业邮件服务器（DNS MX）：</b>正在验证…' : '',
+      comp ? '⏳ <b>全球法人编码（GLEIF 官方库）：</b>正在检索「'+esc(comp)+'」…' : ''
+    ].filter(Boolean);
+    paint(live);
+
+    /* 2. Live RDAP Domain Age Check */
+    if(dom && typeof fetch === "function"){
+      fetchTimeout("https://rdap.org/domain/"+encodeURIComponent(dom), 6500)
+        .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+        .then(function(j){
+          var regEvt = (j.events||[]).filter(function(ev){ return ev.eventAction==="registration"; })[0];
+          if(regEvt && regEvt.eventDate){
+            var d0 = new Date(regEvt.eventDate);
+            var yrs = (Date.now() - d0.getTime()) / (365.25*24*3600*1000);
+            var flag = yrs < 1 ? '🔴 <b>新注册域名警告！</b>' : (yrs < 3 ? '🟡 <b>域名较新：</b>' : '🟢 <b>老牌域名：</b>');
+            live[0] = flag + '<code>'+esc(dom)+'</code> 注册于 <b>'+regEvt.eventDate.slice(0,10)+'</b>（约 '+yrs.toFixed(1)+' 年）'+(yrs<1?' — 若对方自称多年老牌大厂须高度警惕！':'');
+          } else {
+            live[0] = '⚪ <b>RDAP 域名信息：</b>查到记录但未公开注册日期，建议点下方 ICANN WHOIS 或 Wayback 时光机复核。';
+          }
+          paint(live);
+        }).catch(function(){
+          live[0] = '⚪ <b>RDAP 域名自动查询未连通</b>（部分国家后缀或网络限制），请直接点下方「📅 ICANN WHOIS」和「⏳ Wayback 时光机」手动查看。';
+          paint(live);
+        });
+
+      /* 3. Live DNS MX Record Check */
+      fetchTimeout("https://dns.google/resolve?name="+encodeURIComponent(dom)+"&type=MX", 5500)
+        .then(function(r){ return r.json(); })
+        .then(function(j){
+          if(j.Answer && j.Answer.length){
+            live[1] = '🟢 <b>企业邮局有效（MX 记录正常）：</b>已解析到 '+j.Answer.length+' 条邮件服务器记录（如 <code>'+esc(j.Answer[0].data)+'</code>）。';
+          } else {
+            live[1] = '🟡 <b>未解析到企业邮箱 MX 记录：</b>该域名可能未开通正规企业邮局。';
+          }
+          paint(live);
+        }).catch(function(){
+          live[1] = '⚪ <b>DNS MX 实时查询未连通</b>（本地网络可能无法直连 dns.google，不影响下方背调链接使用）。';
+          paint(live);
+        });
+    }
+
+    /* 4. Live GLEIF Global Legal Entity Identifier API */
+    if(comp && typeof fetch === "function"){
+      var idxG = live.length - 1;
+      fetchTimeout("https://api.gleif.org/api/v1/lei-records?filter[fulltext]="+encodeURIComponent(comp)+"&page[size]=3", 6500)
+        .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+        .then(function(j){
+          var items = j.data || [];
+          if(items.length){
+            var summary = items.map(function(it){
+              var ent = (it.attributes && it.attributes.entity) || {};
+              var nm = (ent.legalName && ent.legalName.name) || "";
+              var st = ent.status || "";
+              var jur = ent.jurisdiction || "";
+              return '<b>'+esc(nm)+'</b>（LEI: '+esc(it.id)+' · '+esc(jur)+' · '+esc(st)+'）';
+            }).join("； ");
+            live[idxG] = '🟢 <b>GLEIF 全球法人库命中 '+items.length+' 条：</b>'+summary;
+          } else {
+            live[idxG] = '⚪ <b>GLEIF 全球法人库未收录</b>（中小企业常无 LEI 属正常现象，请点下方「🏛️ OpenCorporates」查当地工商注册）。';
+          }
+          paint(live);
+        }).catch(function(){
+          live[idxG] = '⚪ <b>GLEIF 自动查询超时或受限</b>，请直接点下方「🆔 GLEIF」或「🏛️ OpenCorporates」按钮查询。';
+          paint(live);
+        });
+    }
+  }
+
+  function updateVerdict(){
+    var n = document.querySelectorAll("#ddVerdictChecks input:checked").length;
+    var badge = document.getElementById("ddScoreBadge");
+    if(n>=5) badge.innerHTML = '<span class="share-best">🟢 背调通过（'+n+'/6 项核实）— 信用较可靠，可正常推进报价/签约</span>';
+    else if(n>=3) badge.innerHTML = '<span class="badge b-Medium">🟡 中等可信（'+n+'/6 项核实）— 建议先收 30%+ 定金或即期信用证</span>';
+    else badge.innerHTML = '<span class="comp-tag comp-red" style="margin:0">🔴 核验不足 / 高风险（'+n+'/6 项）— 务必补齐核查，严禁赊销</span>';
+    return n;
+  }
+
+  ["ddCompany","ddDomain","ddEmail","ddCountry"].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){ el.addEventListener("input", renderPortals); el.addEventListener("change", renderPortals); }
+  });
+  document.getElementById("btnRunDd").addEventListener("click", runAutoDd);
+  document.getElementById("btnDdDemo").addEventListener("click", function(){
+    document.getElementById("ddCompany").value = "Siemens Energy";
+    document.getElementById("ddDomain").value = "siemens-energy.com";
+    document.getElementById("ddEmail").value = "procurement@siemens-energy.com";
+    ddSel.value = "Germany";
+    renderPortals(); runAutoDd();
+  });
+  document.getElementById("btnDdClear").addEventListener("click", function(){
+    document.getElementById("ddCompany").value = "";
+    document.getElementById("ddDomain").value = "";
+    document.getElementById("ddEmail").value = "";
+    document.getElementById("ddAutoResult").textContent = "已清空，请填写新的客户信息后点击「⚡ 一键实时自动体检」。";
+    document.querySelectorAll("#ddVerdictChecks input").forEach(function(cb){ cb.checked = false; });
+    updateVerdict(); renderPortals();
+  });
+  document.getElementById("ddVerdictChecks").addEventListener("change", updateVerdict);
+
+  function buildDdSummary(){
+    var comp = document.getElementById("ddCompany").value.trim() || "未命名客户";
+    var dom = cleanDomain(document.getElementById("ddDomain").value) || "未填官网";
+    var c = ddSel.value;
+    var n = document.querySelectorAll("#ddVerdictChecks input:checked").length;
+    var lv = n>=5 ? "低风险(通过)" : (n>=3 ? "中风险(控付款)" : "高风险(慎做)");
+    return "[背调 "+new Date().toISOString().slice(0,10)+"] "+comp+" ("+dom+")｜"+(CN[c]||c)+"｜核验 "+n+"/6 项 → "+lv;
+  }
+  document.getElementById("btnDdSaveCrm").addEventListener("click", function(){
+    var c = ddSel.value, sum = buildDdSummary();
+    if(!followMap[c]) followMap[c] = {status:"重点跟进", note:sum, owner:defaultOwner, updated:new Date().toISOString().slice(0,10)};
+    else { followMap[c].note = (followMap[c].note ? followMap[c].note+"； " : "") + sum; followMap[c].updated = new Date().toISOString().slice(0,10); }
+    saveLocal(); renderTools(); render();
+    showToast("已将背调结论写入「"+(CN[c]||c)+"」跟进备注！");
+  });
+  document.getElementById("btnDdCopyReport").addEventListener("click", function(){
+    var txt = buildDdSummary();
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function(){ showToast("已复制背调摘要"); });
+    else { var ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); showToast("已复制背调摘要"); }
+  });
+
+  window.loadIntoDd = function(country){
+    switchTab("compliance");
+    ddSel.value = country;
+    renderPortals();
+    setTimeout(function(){ document.getElementById("duediligence").scrollIntoView({behavior:"smooth"}); }, 80);
+    showToast("已切换到「"+(CN[country]||country)+"」客户背调工作台");
+  };
+
+  renderPortals();
+  updateVerdict();
 })();
 
 /* ===== Compliance 6-Step Checklist ===== */
