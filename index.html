@@ -2471,7 +2471,7 @@ function cleanPhoneDigits(p, country){
 }
 
 /* Multi-provider DoH DNS Resolver (AliDNS China-direct -> Cloudflare -> Google, all CORS-enabled) */
-window.queryDoh = function(name, type, timeoutMs){
+window.queryDoh = function(name, type, timeoutMs, matchFn){
   var providers = [
     {label:"阿里云DNS", url:"https://dns.alidns.com/resolve?name="+encodeURIComponent(name)+"&type="+encodeURIComponent(type), headers:{}},
     {label:"Cloudflare", url:"https://cloudflare-dns.com/dns-query?name="+encodeURIComponent(name)+"&type="+encodeURIComponent(type), headers:{"Accept":"application/dns-json"}},
@@ -2500,8 +2500,9 @@ window.queryDoh = function(name, type, timeoutMs){
   function tryIdx(i){
     return fetchOne(providers[i]).then(function(j){
       var suspiciousEmpty = j.TC === true || (String(type).toUpperCase() === "TXT" && j.Status === 0 && (!j.Answer || !j.Answer.length));
-      if(suspiciousEmpty && i + 1 < providers.length){
-        lastValid = j;
+      var failedMatch = (typeof matchFn === "function" && !matchFn(j));
+      if((suspiciousEmpty || failedMatch) && i + 1 < providers.length){
+        if(!lastValid) lastValid = j;
         return tryIdx(i + 1);
       }
       return j;
@@ -3893,13 +3894,17 @@ window.getRepSignature = function(){
     function show(){ box.innerHTML = st.join("\n"); }
     show();
     if(typeof fetch !== "function"){ st = ["⚪ 当前环境不支持在线查询，请点下方 MXToolbox 手动查看。"]; show(); return; }
-    window.queryDoh(dom, "TXT", 5000)
+    window.queryDoh(dom, "TXT", 5000, function(j){
+      return (j.Answer||[]).some(function(a){ return (a.data||"").toLowerCase().indexOf("v=spf1")>=0; });
+    })
       .then(function(j){
         var recs = (j.Answer||[]).map(function(a){ return a.data||""; }).filter(function(s){ return s.toLowerCase().indexOf("v=spf1")>=0; });
         st[0] = recs.length ? ("🟢 SPF 已配置（"+esc(j._provider||"DoH")+"）：" + esc(recs[0])) : "🔴 未检测到 SPF 记录（v=spf1）— 发往 Gmail/Outlook 极易进垃圾箱！请在域名 DNS 添加 TXT 记录。";
         show();
       }).catch(function(){ st[0] = "⚪ SPF 在线检测超时/受限（3 条 DNS 线路均未连通），请直接点下方 MXToolbox 查验。"; show(); });
-    window.queryDoh("_dmarc."+dom, "TXT", 5000)
+    window.queryDoh("_dmarc."+dom, "TXT", 5000, function(j){
+      return (j.Answer||[]).some(function(a){ return (a.data||"").toLowerCase().indexOf("v=dmarc1")>=0; });
+    })
       .then(function(j){
         var recs = (j.Answer||[]).map(function(a){ return a.data||""; }).filter(function(s){ return s.toLowerCase().indexOf("v=dmarc1")>=0; });
         if(recs.length){
