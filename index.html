@@ -6653,57 +6653,153 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
       osmTimeoutId = setTimeout(function(){
         timedOut = true;
         try { ctrl.abort(); } catch(e){}
-      }, 25000);
+      }, 30000);
+    }
+
+    function fetchWithStepTimeout(url, opts, ms){
+      var stepCtrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+      var t = stepCtrl ? setTimeout(function(){ try { stepCtrl.abort(); } catch(e){} }, ms) : null;
+      function onParentAbort(){ if(stepCtrl) try { stepCtrl.abort(); } catch(e){} }
+      if(ctrl && ctrl.signal) ctrl.signal.addEventListener("abort", onParentAbort, {once:true});
+      var fOpts = Object.assign({}, opts || {});
+      if(stepCtrl) fOpts.signal = stepCtrl.signal;
+      return fetch(url, fOpts).finally(function(){
+        if(t) clearTimeout(t);
+        if(ctrl && ctrl.signal) ctrl.signal.removeEventListener("abort", onParentAbort);
+      });
     }
 
     var kwClean = String(kw || "industrial distributor").trim();
     var kwLow = kwClean.toLowerCase();
-    st.textContent = "第 1/2 步：正在定位「" + city + ", " + country + "」坐标（最多等待 25 秒，可点取消）…";
-    var geoUrl = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(city + ", " + country);
-    fetch(geoUrl, {headers:{"Accept":"application/json"}, signal: ctrl ? ctrl.signal : undefined})
-      .then(function(r){ if(!r.ok) throw new Error("地理定位接口返回 HTTP " + r.status); return r.json(); })
-      .then(function(arr){
-        if(!arr || !arr.length) throw new Error("未找到城市「" + city + "」，请改用标准英文城市名（如 Ho Chi Minh City / Monterrey）");
-        var lat = parseFloat(arr[0].lat), lon = parseFloat(arr[0].lon);
-        st.textContent = "第 2/2 步：已定位 (" + lat.toFixed(2) + ", " + lon.toFixed(2) + ")，正在按「" + kwClean + "」抓取周边 " + (radius/1000) + "km B2B 工业企业…";
+    var kwTokens = kwLow.split(/[^a-z0-9]+/).filter(function(w){
+      return w.length >= 3 && !/^(the|and|for|with|supplier|distributor|company|corp|ltd|inc|industrial)$/.test(w);
+    });
+    st.textContent = "第 1/2 步：正在定位「" + city + ", " + country + "」坐标…";
+
+    function geocodeCity(){
+      var qStr = city + ", " + country;
+      var photonGeo = "https://photon.komoot.io/api/?limit=1&q=" + encodeURIComponent(qStr);
+      var nomGeo = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(qStr);
+      return fetchWithStepTimeout(photonGeo, {headers:{"Accept":"application/json"}}, 6500)
+        .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+        .then(function(j){
+          var feat = j && j.features && j.features[0];
+          if(feat && feat.geometry && feat.geometry.coordinates && feat.geometry.coordinates.length >= 2){
+            return { lon: parseFloat(feat.geometry.coordinates[0]), lat: parseFloat(feat.geometry.coordinates[1]) };
+          }
+          throw new Error("photon_empty");
+        })
+        .catch(function(err){
+          if(ctrl && ctrl.signal.aborted) throw err;
+          return fetchWithStepTimeout(nomGeo, {headers:{"Accept":"application/json"}}, 7000)
+            .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+            .then(function(arr){
+              if(!arr || !arr.length) throw new Error("未找到城市「" + city + "」，请改用标准英文城市名（如 Ho Chi Minh City / Monterrey）");
+              return { lat: parseFloat(arr[0].lat), lon: parseFloat(arr[0].lon) };
+            });
+        });
+    }
+
+    function queryPhotonFallback(lat, lon, bbPhoton){
+      var base = "https://photon.komoot.io/api/?limit=25&lat=" + lat.toFixed(4) + "&lon=" + lon.toFixed(4) + "&bbox=" + bbPhoton;
+      var urls = [
+        base + "&q=" + encodeURIComponent(kwTokens[0] || "industrial"),
+        base + "&q=" + encodeURIComponent("company") + "&osm_tag=office:company",
+        base + "&q=" + encodeURIComponent("factory") + "&osm_tag=man_made:works",
+        base + "&q=" + encodeURIComponent("hardware") + "&osm_tag=shop:hardware",
+        base + "&q=" + encodeURIComponent("industrial") + "&osm_tag=landuse:industrial"
+      ];
+      if(kwTokens[1]) urls.push(base + "&q=" + encodeURIComponent(kwTokens[1]));
+      return Promise.all(urls.map(function(u){
+        return fetchWithStepTimeout(u, {headers:{"Accept":"application/json"}}, 6500)
+          .then(function(r){ return r.ok ? r.json() : {features:[]}; })
+          .catch(function(){ return {features:[]}; });
+      })).then(function(results){
+        var els = [];
+        var allowKey = /^(office|industrial|man_made|shop|craft|building)$/;
+        results.forEach(function(j){
+          (j && j.features || []).forEach(function(f){
+            var p = f.properties || {};
+            var nm = (p.name || "").trim();
+            if(!nm || nm.toLowerCase() === city.toLowerCase() || nm.toLowerCase() === country.toLowerCase()) return;
+            var okKey = allowKey.test(p.osm_key || "") || (p.osm_key === "landuse" && p.osm_value === "industrial");
+            if(!okKey) return;
+            var coords = (f.geometry && f.geometry.coordinates) || [];
+            els.push({
+              lat: coords[1], lon: coords[0],
+              tags: {
+                name: nm,
+                industrial: (p.osm_value && p.osm_value !== "yes") ? p.osm_value : (p.osm_key || "industrial"),
+                "addr:street": p.street || p.district || "",
+                "addr:city": p.city || city
+              }
+            });
+          });
+        });
+        return { elements: els, _via: "Photon 开源地图快通道（Overpass 拥堵自动兜底）" };
+      });
+    }
+
+    var geoCoord = null;
+    geocodeCity()
+      .then(function(coord){
+        geoCoord = coord;
+        var lat = coord.lat, lon = coord.lon;
+        st.textContent = "第 2/2 步：已定位 (" + lat.toFixed(2) + ", " + lon.toFixed(2) + ")，正在按「" + kwClean + "」高速检索周边 " + (radius/1000) + "km 工业企业…";
+
+        // Fast indexed BBOX query (10x faster than around+regex full-table scans!)
+        var radEff = Math.min(radius, 45000);
+        var dLat = radEff / 111320;
+        var cosLat = Math.max(0.2, Math.cos(lat * Math.PI / 180));
+        var dLon = radEff / (111320 * cosLat);
+        var sLat = (lat - dLat).toFixed(4), wLon = (lon - dLon).toFixed(4), nLat = (lat + dLat).toFixed(4), eLon = (lon + dLon).toFixed(4);
+        var bb = sLat + "," + wLon + "," + nLat + "," + eLon;
+        var bbPhoton = wLon + "," + sLat + "," + eLon + "," + nLat;
 
         var clauses = [
-          'nwr(around:'+radius+','+lat+','+lon+')["man_made"="works"]["name"];',
-          'nwr(around:'+radius+','+lat+','+lon+')["industrial"]["name"];',
-          'nwr(around:'+radius+','+lat+','+lon+')["office"~"company|industrial|engineering|construction|energy|logistics"]["name"]["website"];'
+          'node["man_made"="works"]["name"];way["man_made"="works"]["name"];',
+          'node["industrial"]["name"];way["industrial"]["name"];',
+          'node["office"~"company|industrial|engineering|construction|energy|logistics"]["name"];way["office"~"company|industrial|engineering|construction|energy|logistics"]["name"];'
         ];
         if(/steel|metal|structure|construction|weld|pipe|hardware|fastener/i.test(kwLow)){
-          clauses.push('nwr(around:'+radius+','+lat+','+lon+')["craft"~"metal_construction|welding|steel|blacksmith"]["name"];');
-          clauses.push('nwr(around:'+radius+','+lat+','+lon+')["shop"~"trade|hardware|wholesale|building_materials"]["name"];');
+          clauses.push('node["craft"~"metal_construction|welding|steel|blacksmith"]["name"];way["craft"~"metal_construction|welding|steel|blacksmith"]["name"];');
+          clauses.push('node["shop"~"trade|hardware|wholesale|building_materials"]["name"];way["shop"~"trade|hardware|wholesale|building_materials"]["name"];');
         } else if(/valve|pump|water|hvac|piping|hydraul|compress/i.test(kwLow)){
-          clauses.push('nwr(around:'+radius+','+lat+','+lon+')["craft"~"hvac|heating_engineer|metal_construction"]["name"];');
-          clauses.push('nwr(around:'+radius+','+lat+','+lon+')["shop"~"trade|wholesale|hardware|machine"]["name"];');
+          clauses.push('node["craft"~"hvac|heating_engineer|metal_construction"]["name"];way["craft"~"hvac|heating_engineer|metal_construction"]["name"];');
+          clauses.push('node["shop"~"trade|wholesale|hardware|machine"]["name"];way["shop"~"trade|wholesale|hardware|machine"]["name"];');
         } else if(/cable|electr|power|solar|energy|generat|transform/i.test(kwLow)){
-          clauses.push('nwr(around:'+radius+','+lat+','+lon+')["shop"~"electrical|energy|trade|wholesale"]["name"];');
-          clauses.push('nwr(around:'+radius+','+lat+','+lon+')["craft"~"electronics_repair|hvac|metal_construction"]["name"];');
+          clauses.push('node["shop"~"electrical|energy|trade|wholesale"]["name"];way["shop"~"electrical|energy|trade|wholesale"]["name"];');
+          clauses.push('node["craft"~"electronics_repair|hvac|metal_construction"]["name"];');
         } else if(/agri|farm|tractor|irrigat/i.test(kwLow)){
-          clauses.push('nwr(around:'+radius+','+lat+','+lon+')["shop"~"agrarian|farm|machine|trade|wholesale"]["name"];');
-          clauses.push('nwr(around:'+radius+','+lat+','+lon+')["craft"~"agricultural_engines|metal_construction"]["name"];');
+          clauses.push('node["shop"~"agrarian|farm|machine|trade|wholesale"]["name"];way["shop"~"agrarian|farm|machine|trade|wholesale"]["name"];');
+          clauses.push('node["craft"~"agricultural_engines|metal_construction"]["name"];');
         } else {
-          clauses.push('nwr(around:'+radius+','+lat+','+lon+')["shop"~"trade|wholesale|machine|electrical|agrarian|hardware"]["name"];');
-          clauses.push('nwr(around:'+radius+','+lat+','+lon+')["craft"~"metal_construction|welding|steel|hvac|agricultural_engines"]["name"];');
+          clauses.push('node["shop"~"trade|wholesale|machine|electrical|agrarian|hardware"]["name"];way["shop"~"trade|wholesale|machine|electrical|agrarian|hardware"]["name"];');
+          clauses.push('node["craft"~"metal_construction|welding|steel|hvac|agricultural_engines"]["name"];');
         }
-        var kwTokens = kwLow.split(/[^a-z0-9]+/).filter(function(w){
-          return w.length >= 3 && !/^(the|and|for|with|supplier|distributor|company|corp|ltd|inc|industrial)$/.test(w);
-        }).slice(0, 4);
-        if(kwTokens.length){
-          var rx = kwTokens.join("|");
-          clauses.push('nwr(around:'+radius+','+lat+','+lon+')["name"~"'+rx+'",i];');
-        }
-        var q = '[out:json][timeout:20];(' + clauses.join("") + ');out center 150;';
-        var mirrors = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"];
+        var q = '[out:json][timeout:10][bbox:' + bb + '];(' + clauses.join("") + ');out center 150;';
+        // Strictly browser-CORS-safe Overpass mirrors with short timeouts so congested mirrors fall back smoothly to Photon
+        var mirrors = [
+          {url:"https://overpass-api.de/api/interpreter", name:"OSM Overpass 主节点", ms:7500},
+          {url:"https://maps.mail.ru/osm/tools/overpass/api/interpreter", name:"OSM Overpass 备用节点", ms:6500}
+        ];
         function tryMirror(idx){
-          return fetch(mirrors[idx], {method:"POST", body:"data="+encodeURIComponent(q), headers:{"Content-Type":"application/x-www-form-urlencoded"}, signal: ctrl ? ctrl.signal : undefined})
+          var m = mirrors[idx];
+          return fetchWithStepTimeout(m.url, {method:"POST", body:"data="+encodeURIComponent(q), headers:{"Content-Type":"application/x-www-form-urlencoded"}}, m.ms)
             .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+            .then(function(j){
+              if(!j || !j.elements || !j.elements.length) throw new Error(j && j.remark ? ("Overpass: " + j.remark) : "empty_overpass");
+              j._via = m.name;
+              return j;
+            })
             .catch(function(err){
               if(ctrl && ctrl.signal.aborted) throw err;
-              if(idx + 1 < mirrors.length) return tryMirror(idx+1);
-              throw err;
+              if(idx + 1 < mirrors.length){
+                st.textContent = "OSM 主节点拥堵，正在切换备用节点检索「" + city + "」…";
+                return tryMirror(idx+1);
+              }
+              st.textContent = "Overpass 公共接口繁忙，正在切换 Photon 开源地图快通道检索「" + city + "」…";
+              return queryPhotonFallback(lat, lon, bbPhoton);
             });
         }
         return tryMirror(0);
@@ -6711,7 +6807,6 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
       .then(function(json){
         endOsmPending();
         var els = (json && json.elements) || [];
-        var kwTokens2 = kwLow.split(/[^a-z0-9]+/).filter(function(w){ return w.length >= 3 && !/^(the|and|for|with|supplier|distributor|industrial)$/.test(w); });
         var seen = {}, res = [];
         els.forEach(function(el){
           var t = el.tags || {};
@@ -6728,7 +6823,7 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
           var cat = t.industrial || t.shop || t.craft || t.office || (t.man_made==="works"?"factory":"industrial");
           var hay = (nm + " " + cat + " " + (t.description || "")).toLowerCase();
           var kwHits = 0;
-          kwTokens2.forEach(function(tok){ if(hay.indexOf(tok) >= 0) kwHits++; });
+          kwTokens.forEach(function(tok){ if(hay.indexOf(tok) >= 0) kwHits++; });
           res.push({
             company: nm, country: country, city: city, category: cat + (kwHits ? " · 关键词匹配" : ""),
             phone: phone, email: em, website: web, address: addr, _kwHits: kwHits,
@@ -6741,18 +6836,20 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
           return sb - sa;
         });
         mapLeads = res;
+        var viaTxt = (json && json._via) ? ("（线路：" + json._via + "）") : "";
         st.textContent = res.length
-          ? ("抓取完成：按「" + kwClean + "」找到 " + res.length + " 家工业企业/贸易商（优先排列关键词匹配及带官网/邮箱商家），可点击「送入导入与洗名单」。")
+          ? ("抓取完成" + viaTxt + "：按「" + kwClean + "」找到 " + res.length + " 家工业企业/贸易商（优先排列关键词匹配及带官网/邮箱商家），可点击「送入导入与洗名单」。")
           : ("该半径内 OSM 标记企业较少，建议将半径调大至 60km 或改用 Google Maps 引擎。");
         renderMapResults();
       })
       .catch(function(err){
-        var wasAborted = err && err.name === "AbortError";
+        var userCancelled = !!(ctrl && ctrl.signal.aborted && !timedOut);
+        var isTimeout = timedOut || (err && err.name === "AbortError");
         endOsmPending();
-        if(wasAborted && !timedOut){
+        if(userCancelled){
           st.textContent = "已取消本次 OSM 抓取。";
-        } else if(timedOut){
-          st.textContent = "OSM 公共接口超过 25 秒未响应（可能遇限流）。请缩小半径至 15km 后点击「开始地图找客」重试，或切换 Google Maps 引擎。";
+        } else if(isTimeout){
+          st.textContent = "OSM 公共接口响应超时（当前网络到开源地图受限）。建议缩小半径至 15km 重试，或配置 Google Maps 引擎。";
         } else {
           st.textContent = "抓取失败：" + (err && err.message ? err.message : "请稍后重试或检查网络") + "。";
         }
