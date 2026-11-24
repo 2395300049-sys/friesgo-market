@@ -2470,6 +2470,50 @@ function cleanPhoneDigits(p, country){
   return d;
 }
 
+/* Multi-provider DoH DNS Resolver (AliDNS China-direct -> Cloudflare -> Google, all CORS-enabled) */
+window.queryDoh = function(name, type, timeoutMs){
+  var providers = [
+    {label:"阿里云DNS", url:"https://dns.alidns.com/resolve?name="+encodeURIComponent(name)+"&type="+encodeURIComponent(type), headers:{}},
+    {label:"Cloudflare", url:"https://cloudflare-dns.com/dns-query?name="+encodeURIComponent(name)+"&type="+encodeURIComponent(type), headers:{"Accept":"application/dns-json"}},
+    {label:"Google DNS", url:"https://dns.google/resolve?name="+encodeURIComponent(name)+"&type="+encodeURIComponent(type), headers:{}}
+  ];
+  var ms = timeoutMs || 4500;
+  function fetchOne(p){
+    var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, ms) : null;
+    var opts = {headers: p.headers};
+    if(ctrl) opts.signal = ctrl.signal;
+    return fetch(p.url, opts)
+      .then(function(r){
+        if(!r.ok) throw new Error("HTTP "+r.status);
+        return r.json();
+      })
+      .then(function(j){
+        // Treat SERVFAIL (Status=2) as transient resolver error so next DoH provider takes over
+        if(!j || typeof j.Status !== "number" || j.Status === 2) throw new Error("SERVFAIL");
+        j._provider = p.label;
+        return j;
+      })
+      .finally(function(){ if(timer) clearTimeout(timer); });
+  }
+  var lastValid = null;
+  function tryIdx(i){
+    return fetchOne(providers[i]).then(function(j){
+      var suspiciousEmpty = j.TC === true || (String(type).toUpperCase() === "TXT" && j.Status === 0 && (!j.Answer || !j.Answer.length));
+      if(suspiciousEmpty && i + 1 < providers.length){
+        lastValid = j;
+        return tryIdx(i + 1);
+      }
+      return j;
+    }).catch(function(err){
+      if(i + 1 < providers.length) return tryIdx(i + 1);
+      if(lastValid) return lastValid;
+      throw err;
+    });
+  }
+  return tryIdx(0);
+};
+
 /* Upgraded 6-Channel Free Lead Finder URLs */
 function buildLeadUrls(countryEn, product){
   var prod = (product || "industrial valve").trim();
@@ -3794,25 +3838,23 @@ window.getRepSignature = function(){
     function show(){ box.innerHTML = st.join("\n"); }
     show();
     if(typeof fetch !== "function"){ st = ["⚪ 当前环境不支持在线查询，请点下方 MXToolbox 手动查看。"]; show(); return; }
-    fetchT("https://dns.google/resolve?name="+encodeURIComponent(dom)+"&type=TXT", 5500)
-      .then(function(r){ return r.json(); })
+    window.queryDoh(dom, "TXT", 5000)
       .then(function(j){
         var recs = (j.Answer||[]).map(function(a){ return a.data||""; }).filter(function(s){ return s.toLowerCase().indexOf("v=spf1")>=0; });
-        st[0] = recs.length ? ("🟢 SPF 已配置：" + esc(recs[0])) : "🔴 未检测到 SPF 记录（v=spf1）— 发往 Gmail/Outlook 极易进垃圾箱！请在域名 DNS 添加 TXT 记录。";
+        st[0] = recs.length ? ("🟢 SPF 已配置（"+esc(j._provider||"DoH")+"）：" + esc(recs[0])) : "🔴 未检测到 SPF 记录（v=spf1）— 发往 Gmail/Outlook 极易进垃圾箱！请在域名 DNS 添加 TXT 记录。";
         show();
-      }).catch(function(){ st[0] = "⚪ SPF 在线检测超时/受限，请直接点下方 MXToolbox 查验。"; show(); });
-    fetchT("https://dns.google/resolve?name=_dmarc."+encodeURIComponent(dom)+"&type=TXT", 5500)
-      .then(function(r){ return r.json(); })
+      }).catch(function(){ st[0] = "⚪ SPF 在线检测超时/受限（3 条 DNS 线路均未连通），请直接点下方 MXToolbox 查验。"; show(); });
+    window.queryDoh("_dmarc."+dom, "TXT", 5000)
       .then(function(j){
         var recs = (j.Answer||[]).map(function(a){ return a.data||""; }).filter(function(s){ return s.toLowerCase().indexOf("v=dmarc1")>=0; });
         if(recs.length){
           var isStrict = recs[0].indexOf("p=quarantine")>=0 || recs[0].indexOf("p=reject")>=0;
-          st[1] = (isStrict ? "🟢 DMARC 严格模式已开启：" : "🟡 DMARC 已配置但仍为监控模式（p=none，建议稳定后改为 p=quarantine）：") + esc(recs[0]);
+          st[1] = (isStrict ? "🟢 DMARC 严格模式已开启（"+esc(j._provider||"DoH")+"）：" : "🟡 DMARC 已配置但仍为监控模式（p=none，建议稳定后改为 p=quarantine）：") + esc(recs[0]);
         } else {
           st[1] = "🔴 未检测到 DMARC 记录（_dmarc."+esc(dom)+"）— 2026 年主流企业邮箱会大幅降权或直接拒收！";
         }
         show();
-      }).catch(function(){ st[1] = "⚪ DMARC 在线检测超时/受限，请直接点下方 MXToolbox 查验。"; show(); });
+      }).catch(function(){ st[1] = "⚪ DMARC 在线检测超时/受限（3 条 DNS 线路均未连通），请直接点下方 MXToolbox 查验。"; show(); });
   });
 
   /* 3. Multi-SKU Container Load Calculator (Usable Crate CBM, Route Weight Limit & OOG Door Check) */
@@ -4423,18 +4465,17 @@ window.getRepSignature = function(){
           paint(live);
         });
 
-      /* 3. Live DNS MX Record Check */
-      fetchTimeout("https://dns.google/resolve?name="+encodeURIComponent(dom)+"&type=MX", 5500)
-        .then(function(r){ return r.json(); })
+      /* 3. Live DNS MX Record Check (AliDNS China-direct -> Cloudflare -> Google) */
+      window.queryDoh(dom, "MX", 5000)
         .then(function(j){
           if(j.Answer && j.Answer.length){
-            live[1] = '🟢 <b>企业邮局有效（MX 记录正常）：</b>已解析到 '+j.Answer.length+' 条邮件服务器记录（如 <code>'+esc(j.Answer[0].data)+'</code>）。';
+            live[1] = '🟢 <b>企业邮局有效（MX 记录正常 · '+esc(j._provider||"DoH")+'）：</b>已解析到 '+j.Answer.length+' 条邮件服务器记录（如 <code>'+esc(j.Answer[0].data)+'</code>）。';
           } else {
-            live[1] = '🟡 <b>未解析到企业邮箱 MX 记录：</b>该域名可能未开通正规企业邮局。';
+            live[1] = '🟡 <b>未解析到企业邮箱 MX 记录（'+esc(j._provider||"DoH")+'）：</b>该域名可能未开通正规企业邮局。';
           }
           paint(live);
         }).catch(function(){
-          live[1] = '⚪ <b>DNS MX 实时查询未连通</b>（本地网络可能无法直连 dns.google，不影响下方背调链接使用）。';
+          live[1] = '⚪ <b>DNS MX 实时查询未连通</b>（阿里云/Cloudflare/Google 3 条线路均超时，不影响下方背调链接使用）。';
           paint(live);
         });
     }
@@ -5834,15 +5875,16 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
   function renderCsvTable(){
     var tb = document.getElementById("csvTbody");
     var tot = csvLeads.length;
-    var nOk = 0, nWa = 0, nFree = 0, nBad = 0;
+    var nOk = 0, nWa = 0, nFree = 0, nBad = 0, nErr = 0;
     csvLeads.forEach(function(r){
       if(r.mxStatus==="ok") nOk++;
       if(r.mxStatus==="bad") nBad++;
+      if(r.mxStatus==="error") nErr++;
       if(r.isFree) nFree++;
       if(cleanPhone(r.phone, r.country).length >= 7) nWa++;
     });
     document.getElementById("csvStats").textContent = tot
-      ? ("共 " + tot + " 家去重客户 ｜ 🟢 MX 有效 " + nOk + " ｜ 💬 可聊 WhatsApp " + nWa + " ｜ 🟡 免费邮箱 " + nFree + (nBad ? (" ｜ 🔴 死域名 " + nBad) : ""))
+      ? ("共 " + tot + " 家去重客户 ｜ 🟢 MX 有效 " + nOk + " ｜ 💬 可聊 WhatsApp " + nWa + " ｜ 🟡 免费邮箱 " + nFree + (nBad ? (" ｜ 🔴 死域名 " + nBad) : "") + (nErr ? (" ｜ ⚪ 网络超时 " + nErr) : ""))
       : "尚未导入名单（点「🧪 加载示例名单体验」或从上方地图采客一键送入）";
 
     var shown = csvLeads.map(function(r, i){ return {r:r, i:i}; }).filter(function(o){
@@ -5859,8 +5901,9 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
     tb.innerHTML = shown.map(function(o){
       var r = o.r, i = o.i;
       var badge = "";
-      if(r.mxStatus === "ok") badge = '<span class="mx-ok">🟢 邮局有效</span>';
+      if(r.mxStatus === "ok") badge = '<span class="mx-ok" title="'+esc(r.mxDetail||"")+'">🟢 邮局有效</span>';
       else if(r.mxStatus === "bad") badge = '<span class="mx-bad">🔴 无效域名</span>';
+      else if(r.mxStatus === "error") badge = '<span class="mx-warn" title="3 条 DNS 线路均超时，绝不误判为死域名，可再次点击批量验邮重试">⚪ 网络超时，请重试</span>';
       else if(r.mxStatus === "free") badge = '<span class="mx-warn">🟡 免费邮箱</span>';
       else if(r.mxStatus === "pending") badge = '<span class="src-ok">⚪ 待验 ('+esc(r.domain)+')</span>';
       else badge = '<span class="src-ok">— 无邮箱/域名</span>';
@@ -5936,20 +5979,25 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
   });
 
   document.getElementById("btnVerifyAllMx").addEventListener("click", function(){
-    var targets = csvLeads.filter(function(r){ return !r.isFree && r.domain && r.mxStatus === "pending"; });
+    var targets = csvLeads.filter(function(r){ return !r.isFree && r.domain && (r.mxStatus === "pending" || r.mxStatus === "error"); });
     if(!targets.length){ showToast("没有待检测的企业域名（已完成或暂无域名）"); return; }
     if(typeof fetch !== "function"){ showToast("当前环境不支持在线 DNS 检测"); return; }
     var done = 0, total = targets.length;
-    showToast("开始并发核验 " + total + " 个企业域名邮局 MX…");
+    showToast("开始通过国内/国际多线路 DoH 并发核验 " + total + " 个企业域名邮局 MX…");
     var cache = {};
     function checkOne(row){
       var dom = row.domain;
-      if(cache[dom]) return cache[dom].then(function(ok){ row.mxStatus = ok ? "ok" : "bad"; row.mxDetail = ok ? "MX有效" : "无MX记录"; });
-      cache[dom] = fetch("https://dns.google/resolve?name=" + encodeURIComponent(dom) + "&type=MX")
-        .then(function(r){ return r.json(); })
-        .then(function(j){ return !!(j && j.Answer && j.Answer.length); })
-        .catch(function(){ return false; });
-      return cache[dom].then(function(ok){ row.mxStatus = ok ? "ok" : "bad"; row.mxDetail = ok ? "MX有效" : "无MX记录"; });
+      if(!cache[dom]){
+        cache[dom] = window.queryDoh(dom, "MX", 4500)
+          .then(function(j){
+            var hasMx = !!(j && j.Answer && j.Answer.length);
+            return {status: hasMx ? "ok" : "bad", detail: (hasMx ? "MX有效" : "无MX记录") + " (" + (j._provider||"DoH") + ")"};
+          })
+          .catch(function(){
+            return {status: "error", detail: "网络超时，待重试"};
+          });
+      }
+      return cache[dom].then(function(res){ row.mxStatus = res.status; row.mxDetail = res.detail; });
     }
     var idx = 0;
     function nextBatch(){
