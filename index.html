@@ -2514,24 +2514,73 @@ window.queryDoh = function(name, type, timeoutMs){
   return tryIdx(0);
 };
 
-/* Upgraded 6-Channel Free Lead Finder URLs */
+var COUNTRY_GL = {
+  "Australia":"au","New Zealand":"nz","Vietnam":"vn","Indonesia":"id","Thailand":"th","Malaysia":"my","Philippines":"ph","Singapore":"sg",
+  "Saudi Arabia":"sa","United Arab Emirates":"ae","Egypt":"eg","Qatar":"qa","Kuwait":"kw","Oman":"om","Bahrain":"bh","Iraq":"iq","Jordan":"jo","Algeria":"dz","Morocco":"ma","Tunisia":"tn","Israel":"il",
+  "Mexico":"mx","Brazil":"br","Chile":"cl","Peru":"pe","Colombia":"co","Argentina":"ar","Ecuador":"ec","Panama":"pa","Costa Rica":"cr","Guatemala":"gt","Dominican Republic":"do","Uruguay":"uy",
+  "Nigeria":"ng","South Africa":"za","Kenya":"ke","Ghana":"gh","Tanzania":"tz","Ethiopia":"et","Angola":"ao","Senegal":"sn",
+  "India":"in","Pakistan":"pk","Bangladesh":"bd","Sri Lanka":"lk",
+  "Turkey (Türkiye)":"tr","Germany":"de","United Kingdom":"gb","France":"fr","Italy":"it","Spain":"es","Netherlands":"nl","Poland":"pl","Belgium":"be","Czechia":"cz","Austria":"at","Switzerland":"ch","Sweden":"se","Romania":"ro","Hungary":"hu","Portugal":"pt","Greece":"gr","Norway":"no","Denmark":"dk","Finland":"fi","Ireland":"ie","Serbia":"rs",
+  "United States":"us","Canada":"ca","Japan":"jp","South Korea":"kr","China":"cn","Hong Kong SAR":"hk","Taiwan (Other Asia nes)":"tw",
+  "Kazakhstan":"kz","Uzbekistan":"uz","Russia":"ru","Cambodia":"kh","Myanmar":"mm"
+};
+
+function formatProdExpr(rawProd){
+  var parts = String(rawProd || "industrial valve").trim().split(/\s+OR\s+/i).map(function(s){
+    s = s.replace(/^"+|"+$/g, "").trim();
+    if(!s) return "";
+    return /\s/.test(s) ? ('"' + s + '"') : s;
+  }).filter(Boolean);
+  if(!parts.length) return '"industrial valve"';
+  return parts.length > 1 ? ("(" + parts.join(" OR ") + ")") : parts[0];
+}
+
+/* Upgraded 6-Channel Free Lead Finder URLs (Country-locked & Boolean-safe) */
 function buildLeadUrls(countryEn, product){
-  var prod = (product || "industrial valve").trim();
-  var meta = COUNTRY_META[countryEn] || {tld:"", localDist:"industrial distributor OR importer", hub:countryEn+" industrial park"};
-  var tldFilter = meta.tld ? ("site:"+meta.tld+" ") : ('"'+countryEn+'" ');
-  var qLocal = encodeURIComponent(tldFilter + '("' + prod + '" OR ' + meta.localDist + ') -job -careers -alibaba -made-in-china');
-  var qMaps = encodeURIComponent(prod + " distributor " + meta.hub);
-  var qYeti = encodeURIComponent(prod.split(" OR ")[0].replace(/"/g,""));
-  var qEpc = encodeURIComponent('"' + prod + '" ("EPC" OR "engineering contractor" OR "tender" OR "RFP") "' + countryEn + '" -job');
-  var qLiIn = encodeURIComponent('site:linkedin.com/in ("procurement" OR "purchasing" OR "sourcing" OR "supply chain") ("' + prod + '" OR industrial) "' + countryEn + '"');
-  var qDist = encodeURIComponent('("our distributors" OR "authorized distributor" OR "global stockists") "' + prod + '" "' + countryEn + '"');
+  var prodRaw = (product || "industrial valve").trim();
+  var prodExpr = formatProdExpr(prodRaw);
+  var prodMain = prodRaw.split(/\s+OR\s+/i)[0].replace(/"/g, "").trim() || "industrial valve";
+  var searchCountry = String(countryEn || "").replace(/\s*\([^)]*\)/g, "").trim();
+  if(searchCountry === "Hong Kong SAR") searchCountry = "Hong Kong";
+
+  var meta = COUNTRY_META[countryEn] || {tld:"", localDist:"distributor OR supplier OR importer", hub:searchCountry+" industrial area"};
+  var cleanTld = (meta.tld || "").replace(/^\.+/, "");
+  var gl = COUNTRY_GL[countryEn] || "";
+  var glParam = gl ? ("&gl=" + gl) : "";
+
+  // 1. Local TLD + Product AND Distributor (strictly AND, never OR! Avoid site:com for US)
+  var geoFilter = (cleanTld && cleanTld !== "com")
+    ? ("site:" + cleanTld + ' "' + searchCountry + '" ')
+    : ('"' + searchCountry + '" ');
+  var distClause = "(" + (meta.localDist ? (meta.localDist + " OR ") : "") + "distributor OR supplier OR wholesaler)";
+  var qLocal = encodeURIComponent(geoFilter + prodExpr + " " + distClause + " -job -careers -alibaba -made-in-china -amazon -ebay");
+
+  // 2. Google Maps: MUST include clean primary product (no OR!) + explicit country name so US VPN IP never hijacks map!
+  var hubWithCountry = meta.hub || (searchCountry + " industrial park");
+  if(searchCountry && hubWithCountry.toLowerCase().indexOf(searchCountry.toLowerCase()) < 0){
+    hubWithCountry = hubWithCountry + ", " + searchCountry;
+  }
+  var qMaps = encodeURIComponent(prodMain + " supplier " + hubWithCountry);
+
+  // 3. ImportYeti (US Customs Bills of Lading database)
+  var qYeti = encodeURIComponent(prodMain);
+
+  // 4. Local EPC / Engineering Contractors / Tenders
+  var qEpc = encodeURIComponent(prodExpr + ' ("EPC" OR "engineering contractor" OR "tender" OR "RFP") "' + searchCountry + '" -job -careers');
+
+  // 5. LinkedIn Procurement Decision Makers (strictly match product + target country)
+  var qLiIn = encodeURIComponent('site:linkedin.com/in ("procurement" OR "purchasing" OR "sourcing" OR "buyer" OR "supply chain") ' + prodExpr + ' "' + searchCountry + '"');
+
+  // 6. Competitor Authorized Distributors / Stockists in Target Country
+  var qDist = encodeURIComponent('("our distributors" OR "authorized distributor" OR "stockist" OR "dealer") ' + prodExpr + ' "' + searchCountry + '" -alibaba -made-in-china');
+
   return [
-    {label:"🌐 本地域名+小语种找经销商" + (meta.tld?" ("+meta.tld+")":""), url:"https://www.google.com/search?q="+qLocal},
-    {label:"🗺️ Google Maps 工业区扫街", url:"https://www.google.com/maps/search/"+qMaps},
-    {label:"🚢 ImportYeti 免费查提单", url:"https://www.importyeti.com/search?q="+qYeti},
-    {label:"🏗️ Google 找 EPC 工程商/招标", url:"https://www.google.com/search?q="+qEpc},
-    {label:"👔 LinkedIn 找采购负责人", url:"https://www.google.com/search?q="+qLiIn},
-    {label:"🎯 竞品官网经销商截流", url:"https://www.google.com/search?q="+qDist}
+    {label:"🌐 本地域名+找当地经销商" + (cleanTld && cleanTld !== "com" ? " (." + cleanTld + ")" : ""), url:"https://www.google.com/search?q="+qLocal+glParam},
+    {label:"🗺️ Google Maps 工业区扫街", url:"https://www.google.com/maps/search/?api=1&query="+qMaps},
+    {label:"🚢 ImportYeti 查美国海关提单（仅北美）", url:"https://www.importyeti.com/search?q="+qYeti},
+    {label:"🏗️ Google 找当地 EPC / 招标", url:"https://www.google.com/search?q="+qEpc+glParam},
+    {label:"👔 LinkedIn 找该国采购负责人", url:"https://www.google.com/search?q="+qLiIn+glParam},
+    {label:"🎯 竞品官网当地经销商截流", url:"https://www.google.com/search?q="+qDist+glParam}
   ];
 }
 
@@ -3124,18 +3173,24 @@ window.getRepSignature = function(){
 
   function updateLF(){
     var c = lfSel.value;
-    var prod = document.getElementById("lfCustom").value.trim() || document.getElementById("lfPreset").value;
+    var customVal = document.getElementById("lfCustom").value.trim();
+    var prod = customVal || document.getElementById("lfPreset").value;
     var links = buildLeadUrls(c, prod);
     document.getElementById("lfButtons").innerHTML = links.map(function(l, i){
       return '<a class="pill '+(i<2?'primary':'')+'" target="_blank" rel="noopener" href="'+l.url+'">'+l.label+'</a>';
     }).join("");
     var meta = COUNTRY_META[c];
+    var gl = COUNTRY_GL[c] || "";
+    var activeProdShow = customVal ? ("自定义「" + customVal + "」") : ("预设「" + prod.split(/\s+OR\s+/i)[0] + "」");
     document.getElementById("lfHint").textContent = meta
-      ? ("当前国家已匹配专属搜客参数：顶级域名 " + (meta.tld||"通用") + " ｜ 本地经销商词「" + meta.localDist + "」｜ 地图扫街热点「" + meta.hub + "」")
-      : ("当前国家使用通用英文搜客指令（可直接在输入框切换产品词）");
+      ? ("当前生效：" + (CN[c]||c) + "（域名 " + (meta.tld||"通用") + (gl ? " · Google 区域锁 gl=" + gl : "") + "）｜" + activeProdShow + "｜地图定位「" + meta.hub + ", " + c.replace(/\s*\([^)]*\)/g,"") + "」（注：ImportYeti 为免费美国海关提单库，仅查北美买家）")
+      : ("当前生效：" + (CN[c]||c) + (gl ? "（gl=" + gl + "）" : "") + "｜" + activeProdShow + "（注：ImportYeti 仅查美国海关提单）");
   }
   lfSel.addEventListener("change", updateLF);
-  document.getElementById("lfPreset").addEventListener("change", updateLF);
+  document.getElementById("lfPreset").addEventListener("change", function(){
+    document.getElementById("lfCustom").value = "";
+    updateLF();
+  });
   document.getElementById("lfCustom").addEventListener("input", updateLF);
   var btnLiAp = document.getElementById("btnCopyLiAppeal");
   if(btnLiAp){
