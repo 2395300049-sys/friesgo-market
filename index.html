@@ -276,6 +276,7 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
     </div>
     <nav class="tabs" role="tablist" aria-label="主功能分区">
       <button class="tab-btn" role="tab" data-tab="market" aria-selected="true">🗺️ 选市场</button>
+      <button class="tab-btn" role="tab" data-tab="radar" aria-selected="false">⚡ 商机雷达</button>
       <button class="tab-btn" role="tab" data-tab="outreach" aria-selected="false">🎯 获客与报价</button>
       <button class="tab-btn" role="tab" data-tab="products" aria-selected="false">📦 产品与配套</button>
       <button class="tab-btn" role="tab" data-tab="deep" aria-selected="false">📊 深度数据</button>
@@ -424,6 +425,7 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
         <div>
           <label for="lfPreset">常用工业品关键词预设</label>
           <select id="lfPreset">
+            <option value="steel structure OR prefabricated steel warehouse">钢结构/工业厂房（steel structure）</option>
             <option value="industrial valve">工业阀门（industrial valve）</option>
             <option value="water pump OR centrifugal pump">工业水泵/离心泵（water pump）</option>
             <option value="power cable OR electrical cable">电力/通信电缆（power cable）</option>
@@ -1182,9 +1184,274 @@ footer img{height:34px;width:34px;object-fit:contain;background:#fff;border-radi
   </section>
 </div>
 
+<!-- ==================== TAB 6: 商机雷达 & 合伙人 ==================== -->
+<div class="tab-panel" id="panel-radar">
+  <div class="sub-nav">
+    <a href="#radar-money">💰 银行放款与建厂雷达</a>
+    <a href="#radar-jobs">👔 招聘信号反推大客户</a>
+    <a href="#radar-weather">🌪️ 台风灾害与季节触发</a>
+    <a href="#radar-expos">🎪 10 大国际展名录墙</a>
+    <a href="#radar-agents">🤝 纯佣金海外合伙人招募</a>
+  </div>
+
+  <!-- Module 1: Bank Loans, EIA / New Factory, CAPEX & Chinese EPC Piggyback Radar -->
+  <section class="block" id="radar-money">
+    <h2>💰 资金与大项目商机雷达（提前 3–6 个月抢在招标前切入）</h2>
+    <p class="sub">盯着“大银行刚放完款、环评刚批过、中资央国企刚中标”的公开信号，在买家预算刚到账、还没锁死供应商前第一时间切入业主及其 EPC 总包商。</p>
+    <div class="card">
+      <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr">
+        <div>
+          <label for="rdCountry">目标国家（全部 146 国）</label>
+          <select id="rdCountry"></select>
+        </div>
+        <div>
+          <label for="rdSector">盯防行业 / 项目方向</label>
+          <select id="rdSector">
+            <option value="steel">🏗️ 钢结构 / 新建厂房与物流仓</option>
+            <option value="power">⚡ 电力电网 / 变电站 / 光伏新能源</option>
+            <option value="mining">⛏️ 矿业开采 / 选矿与冶炼</option>
+            <option value="water">💧 市政供水 / 海水淡化 / 污水处理</option>
+            <option value="agri">🌾 农业加工 / 冷链与农场现代化</option>
+            <option value="infra">🚢 港口 / 工业园 / 综合基建</option>
+          </select>
+        </div>
+        <div>
+          <label for="rdBankName">放款银行/资金方名称（用于下方开发信）</label>
+          <input id="rdBankName" type="text" value="IFC / ADB / local development bank" placeholder="如：IFC / ADB / 某商业银行">
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <div style="font-size:12.5px;font-weight:800;color:var(--brown);margin-bottom:6px">📡 一键扫描近 30–90 天实时放款与建厂动态（自动拼好国家 + 行业指令）：</div>
+        <div class="lead-links" id="rdQueryBtns" style="margin-top:0"></div>
+      </div>
+
+      <div style="margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)">
+        <div style="font-size:12.5px;font-weight:800;color:var(--brown);margin-bottom:6px">🏦 国际开发银行官方放款披露库（免费公开，比新闻更早看到借款公司名）：</div>
+        <div class="pills" style="margin-top:0">
+          <a class="pill good-btn" target="_blank" rel="noopener" href="https://disclosures.ifc.org/">🏦 IFC 国际金融公司（专贷各国私营工厂！）</a>
+          <a class="pill" target="_blank" rel="noopener" href="https://projects.worldbank.org/">🌍 世界银行项目库</a>
+          <a class="pill" target="_blank" rel="noopener" href="https://www.adb.org/projects">🌏 亚开行 ADB 项目库</a>
+          <a class="pill" target="_blank" rel="noopener" href="https://www.aiib.org/en/projects/list/index.html">🏛️ 亚投行 AIIB 项目库</a>
+          <a class="pill" target="_blank" rel="noopener" href="https://www.iadb.org/en/projects">🌎 美洲开发银行 IDB</a>
+          <a class="pill" target="_blank" rel="noopener" href="https://projectsportal.afdb.org/">🌍 非洲开发银行 AfDB</a>
+        </div>
+      </div>
+
+      <div class="detail-box" style="margin-top:12px">
+        <div class="detail-box-title">✉️ 配套话术：「祝贺获批大额融资 / 绿色节能合规」开发信模板</div>
+        <div class="email-box" id="rdPitchOut" style="font-size:12.5px"></div>
+        <div class="pills" style="margin-top:8px">
+          <button class="pill primary" id="btnCopyRdPitch" type="button">📋 复制融资触发开发信</button>
+          <span class="flag-note" style="margin:0">💡 隐藏玩法：IFC 等银行常把钱先贷给当地<b>设备融资租赁公司（FI）</b>，同步联系当地租赁商进其白名单，一次撬动上百个终端厂！</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 2: Job-Posting Reverse-Engineering Intent Radar -->
+  <section class="block" id="radar-jobs">
+    <h2>👔 招聘信号反推大客户雷达（看对方招什么人 → 测出它马上买什么）</h2>
+    <p class="sub">企业花钱在招聘网招「钢构工程师」「进口清关专员」「新厂调试经理」，等于提前 3–6 个月公开了采购计划！选国家 + 选意图岗位，一键扫描 LinkedIn 与当地头号招聘网近 30 天发帖企业。</p>
+    <div class="card">
+      <div class="form-grid" style="grid-template-columns:1fr 1.6fr">
+        <div>
+          <label for="rjCountry">目标国家（自动匹配当地主流招聘网）</label>
+          <select id="rjCountry"></select>
+        </div>
+        <div>
+          <label for="rjSignal">选择要监控的「高采购意图」岗位信号</label>
+          <select id="rjSignal">
+            <option value="steel">🏗️ 招钢构/土建/仓库建设工程师 → 反推：正在建新厂房/新物流仓</option>
+            <option value="import">🚢 招进口采购/中国采购/清关专员 → 反推：准备跳过中间商直接从中国进口！</option>
+            <option value="plant">⚙️ 招新厂调试/公用工程/设备维护经理 → 反推：新产线快投产，缺辅机与备件</option>
+            <option value="epc">⚡ 招光伏/变电站/矿业/水处理项目经理 → 反推：刚中标大工程，正在找供应商入网</option>
+            <option value="tech">🔧 扩招工业机电/农机维修技师 → 反推：设备保有量暴增，进入维修更换潮</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="lead-links" id="rjBtns"></div>
+      <p class="flag-note" id="rjHint"></p>
+
+      <div class="mini-scroll" style="margin-top:12px">
+        <table>
+          <thead><tr><th>看到对方在招什么岗位</th><th>背后正在发生什么事</th><th>你们顺手主推什么工业品</th></tr></thead>
+          <tbody>
+            <tr><td><b>钢构 / 厂房基建 / 仓库建设经理</b></td><td>正在建新厂房、新物流仓或扩建园区</td><td>钢结构、彩钢板、高强紧固件、行车起重、厂房配电电缆</td></tr>
+            <tr><td><b>进口采购 / 中国采购 / 报关专员</b></td><td>准备绕过本地贸易商，直接从中国大批量直采</td><td>全品类工厂直供报价 + 多品类一站式拼柜方案</td></tr>
+            <tr><td><b>产线调试 / 公用工程 / 设备维护经理</b></td><td>新产线即将装机投产，急需公用配套与备件库</td><td>空压机、工业水泵、阀门、管道法兰、五金维修工具</td></tr>
+            <tr><td><b>矿业 / 淡化水 / 光伏 / 变电站项目经理</b></td><td>刚拿到大工程合同，正在整理 BOQ 和寻源</td><td>对应行业成套工业打包方案（进业主/EPC 短名单）</td></tr>
+            <tr><td><b>大量扩招某品类售后/维修技师</b></td><td>当地该设备存量激增，进入替换与配件采购期</td><td>替换整机、耐磨易损件、电机/密封件/五金工具</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 3: Typhoon, Disaster & Seasonal Trigger Radar (Heavy focus on Steel Structures + Emergency Bundles) -->
+  <section class="block" id="radar-weather">
+    <h2>🌪️ 全球台风灾害 &amp; 季节刚需触发雷达（含钢结构抗风/抢修专包）</h2>
+    <p class="sub">盯准台风登陆路径、雨季/旱季与限电高峰，提前 1–2 个月卡位推送。<b>切记：</b>灾前/灾后重点推给当地<b>工业园区、大型物流仓、钢构工程商与保险理赔修缮商</b>，受灾小厂注意核查现金流防坏账！</p>
+    <div class="card" style="margin-bottom:14px">
+      <div style="font-size:13px;font-weight:800;color:var(--brown);margin-bottom:8px">🛰️ 3 大免费全球台风与灾害实时预警入口（建议每周看 1 次）：</div>
+      <div class="pills" style="margin-top:0">
+        <a class="pill primary" target="_blank" rel="noopener" href="https://zoom.earth/">🌀 Zoom Earth 实时台风/飓风路径（提前 3–7 天锁工业省）</a>
+        <a class="pill primary" target="_blank" rel="noopener" href="https://www.gdacs.org/">🚨 GDACS 联合国全球红橙色灾害预警（台风/地震/洪水）</a>
+        <a class="pill" target="_blank" rel="noopener" href="https://reliefweb.int/disasters">📋 ReliefWeb 全球灾后重建与应急拨款动态</a>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-bottom:14px">
+      <div class="card" style="border-top:4px solid var(--danger)">
+        <h3>🌪️ 场景 A：台风 / 飓风 / 洪涝（灾前加固 + 灾后抢修）</h3>
+        <p><b>高发区：</b>菲律宾、越南、印尼、墨西哥湾、加勒比、孟加拉（通常 5–11 月频发）</p>
+        <p><b>全品类应急 4 件套：</b><b>抗风钢结构/彩钢瓦/高强紧固件</b> + <b>大流量排涝水泵</b> + <b>应急柴油发电机</b> + <b>抢修电缆与配电箱</b></p>
+        <p><b>精准目标买家：</b>本地钢构安装承包商、工业园区管委会、大型港口仓储运营商、保险修缮总包商</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--orange)">
+        <h3>☀️ 场景 B：旱季 / 农忙季前 2 个月（提前备货）</h3>
+        <p><b>重点区：</b>巴西、尼日利亚、阿尔及利亚、肯尼亚、阿根廷、泰国、越南</p>
+        <p><b>主推套装：</b><b>柴油/光伏农业灌溉泵</b> + <b>拖拉机与耕作农机具</b> + <b>喷灌阀门与管件</b></p>
+        <p><b>精准目标买家：</b>当地农机大经销商、大型种植园/农场采购部、农业合作社</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--med)">
+        <h3>⚡ 场景 C：夏季用电高峰 / 限电季前 2 个月</h3>
+        <p><b>重点区：</b>南非、尼日利亚、巴基斯坦、埃及、中东、东南亚工业园</p>
+        <p><b>主推套装：</b><b>柴油发电机组</b> + <b>光伏逆变器与储能</b> + <b>配电变压器/稳压器</b> + <b>电力电缆</b></p>
+        <p><b>精准目标买家：</b>工业园工厂业主、商业综合体物业、本地电力工程安装商</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--good)">
+        <h3>🏗️ 场景 D：雨季结束 / 干季集中开工前 2 个月</h3>
+        <p><b>重点区：</b>东南亚、西非、拉美基建与房地产集中开工期</p>
+        <p><b>主推套装：</b><b>预制钢结构主材</b> + <b>施工排水泵/空压机</b> + <b>工地临时配电电缆</b> + <b>五金工具与紧固件</b></p>
+        <p><b>精准目标买家：</b>本地建筑承包商、建材五金大批发商、市政基建总包</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>✉️ 专攻话术：「台风/灾前加固 &amp; 灾后快速复工现货」开发信（专业不冒犯）</h3>
+      <div class="form-grid" style="margin-top:8px">
+        <div>
+          <label for="wtRegion">目标受影响市场/地区</label>
+          <input id="wtRegion" type="text" value="Southeast Asia (Vietnam / Philippines)" placeholder="如：Philippines / Central Vietnam / Mexico">
+        </div>
+        <div>
+          <label for="wtLang">语言</label>
+          <select id="wtLang">
+            <option value="en">英文（通用/菲律宾/非洲/中东）</option>
+            <option value="vi">越南语（越南）</option>
+            <option value="id">印尼语（印尼）</option>
+            <option value="es">西班牙语（墨西哥/拉美）</option>
+          </select>
+        </div>
+        <div>
+          <label for="wtMode">切入时机</label>
+          <select id="wtMode">
+            <option value="pre">台风/雨季前：主打抗风加固与防涝备货</option>
+            <option value="post">台风/灾后：主打 7–15 天现货快速复工修复</option>
+          </select>
+        </div>
+      </div>
+      <div class="email-box" id="wtPitchOut" style="font-size:12.5px;margin-top:10px"></div>
+      <div class="pills" style="margin-top:8px">
+        <button class="pill primary" id="btnCopyWtPitch" type="button">📋 复制应急/钢构开发信</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module 4: 10 Major Global Industrial Trade Show Exhibitor Directories -->
+  <section class="block" id="radar-expos">
+    <h2>🎪 全球 10 大工业展「官网参展商名录」免费白嫖墙（不出国挖大经销商）</h2>
+    <p class="sub">不用花十几万出国参展！敢在国外顶级大展买展位的当地公司，90% 都是当地最有实力、真正在找中国供应链的本地大经销商和工程总包商。直接点开官网参展商名单，配合「背调」逐个开发！</p>
+    <div class="table-card"><div class="mini-scroll"><table>
+      <thead><tr><th>展会名称</th><th>国家/城市</th><th>核心工业品类</th><th>一键免费挖参展商 / 参会采购人</th></tr></thead>
+      <tbody id="expoTbody"></tbody>
+    </table></div></div>
+  </section>
+
+  <!-- Module 5: Commission-Only Overseas Local Sales Partner Recruitment Workbench -->
+  <section class="block" id="radar-agents">
+    <h2>🤝 纯佣金海外本地合伙人（兼职业务员）招募工作台</h2>
+    <p class="sub">策略：<b>纯佣金、无底薪、不压库存、不影响对方本职</b>——重点挖掘手里本来就有当地工厂/工地/工程商通讯录的<b>独立厂商代表（Manufacturers' Rep）</b>和<b>有 3 年以上工业销售经验的本地业务员</b>。</p>
+
+    <div class="card" style="margin-bottom:14px">
+      <h3>① 找人渠道：10 国主流招聘网 + 全球独立代理平台 + LinkedIn 精准挖人</h3>
+      <div class="form-grid" style="grid-template-columns:1fr 1.6fr;margin-top:8px">
+        <div>
+          <label for="raCountry">选择你要招募本地合伙人的国家</label>
+          <select id="raCountry"></select>
+        </div>
+        <div>
+          <label for="raCat">招募对应的行业方向</label>
+          <select id="raCat">
+            <option value="steel structures, industrial valves, pumps & full-category industrial supplies">工业全品类（含钢结构 / 泵阀 / 电缆 / 五金）</option>
+            <option value="steel structures, prefabricated warehouses & construction hardware">钢结构、预制厂房与工程建材</option>
+            <option value="industrial valves, water pumps, pipes & mining/water equipment">工业阀门、水泵、管件与矿业/供水设备</option>
+            <option value="power cables, transformers, switchgear & backup generators">电力电缆、变压器、开关柜与发电机</option>
+            <option value="agricultural machinery, irrigation pumps & farm hardware">农机设备、灌溉水泵与农场五金</option>
+          </select>
+        </div>
+      </div>
+      <div class="lead-links" id="raFindBtns"></div>
+      <div class="pills" style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)">
+        <span style="font-size:12px;font-weight:800;color:var(--brown)">🌐 全球专业纯佣金独立代理平台：</span>
+        <a class="pill" target="_blank" rel="noopener" href="https://www.commissioncrowd.com/">CommissionCrowd</a>
+        <a class="pill" target="_blank" rel="noopener" href="https://www.iucab.com/">IUCAB 国际商业代理联合会</a>
+        <a class="pill" target="_blank" rel="noopener" href="https://www.salesagents.international/">SalesAgents.international</a>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:14px">
+      <h3>② 多语种「纯佣金海外合伙人」加好友 &amp; 邀约话术生成器（不写死比例，弹性洽谈）</h3>
+      <div class="form-grid" style="margin-top:8px">
+        <div>
+          <label for="raLang">话术语言</label>
+          <select id="raLang">
+            <option value="en">英文（全球通用 / 菲律宾 / 非洲 / 中东）</option>
+            <option value="vi">越南语（Vietnam）</option>
+            <option value="id">印尼语（Indonesia）</option>
+            <option value="th">泰语（Thailand）</option>
+            <option value="es">西班牙语（墨西哥 / 智利 / 拉美）</option>
+            <option value="pt">葡萄牙语（巴西）</option>
+            <option value="ar">阿拉伯语（沙特 / 中东）</option>
+          </select>
+        </div>
+        <div>
+          <label for="raChannel">发送场景</label>
+          <select id="raChannel">
+            <option value="short">招聘网 / LinkedIn / WhatsApp 加好友破冰短消息</option>
+            <option value="detail">加完好友后：完整纯佣金合作方案邀约（邮件 / 长消息）</option>
+          </select>
+        </div>
+        <div>
+          <label for="raTargetName">对方称呼（选填）</label>
+          <input id="raTargetName" type="text" placeholder="如：Minh / Carlos / Ahmed">
+        </div>
+      </div>
+      <div class="email-box" id="raPitchOut" style="font-size:13px;margin-top:10px"></div>
+      <div class="pills" style="margin-top:8px">
+        <button class="pill primary" id="btnCopyRaPitch" type="button">📋 一键复制招募话术</button>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:5px solid var(--danger)">
+      <h3>③ 🛡️ 纯佣金海外本地业务员防坑 6 条铁律（谈合作与签协议必守底线）</h3>
+      <div class="detail-grid" style="margin-top:8px">
+        <div><h4>1. 绝不签劳动合同，只签「独立商务代理协议」</h4><p>合同明确对方是 <b>Independent Contractor / Commercial Agent</b>，自理当地税务与社保，彻底避免海外劳动法天价遣散费纠纷。</p></div>
+        <div><h4>2. 铁律：全额收到货款后才结佣金</h4><p>写明「我司官方对公账户收到客户全额货款后 7 个工作日内结算佣金」，绝不按签合同或收定金发佣，防内外勾结下假单。</p></div>
+        <div><h4>3. 严禁本地业务员代收任何货款</h4><p>所有定金与尾款必须由买家直接汇入我司官方银行账户，严禁个人代收现金或走私人账户。</p></div>
+        <div><h4>4. 客户提前报备锁归属（防飞单扯皮）</h4><p>业务员开发前需把客户公司名、联系人、项目名报备登记，确认未撞单即锁定其佣金归属期（如 6–12 个月）。</p></div>
+        <div><h4>5. 区域独家权必须绑定季度业绩指标</h4><p>合作初期一律签「非独家（Non-Exclusive）」，仅在连续完成约定季度成交额后才给独家，未达标自动取消。</p></div>
+        <div><h4>6. 靠“极速报价 + 现货资料”留住高手</h4><p>纯佣金高手最怕等 3 天拿不到价格。给他们配 1 页纸核心清单 + 24 小时快速报价群，先帮他跑通第一笔佣金，比画大饼有效 10 倍。</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
 <footer>
   <img class="js-logo" alt="FriesGo Global">
-  <div><b>FriesGo Global · 全球工业品出海作战地图（实战 Pro 版）</b><br>数据截至 2024（五大国含 2025）｜合规核查：2026-11-23｜仅供内部选市场、报价试算与获客参考，正式签约发货前须复核官方关税与制裁清单。</div>
+  <div><b>FriesGo Global · 全球工业品出海作战地图（实战 Pro 版）</b><br>数据截至 2024（五大国含 2025）｜合规核查：2026-11-23｜仅供内部选市场、商机追踪、报价与获客参考，正式签约发货前须复核官方关税与制裁清单。</div>
 </footer>
 </div>
 
@@ -2560,6 +2827,7 @@ document.getElementById("mainScopeFull").addEventListener("click", function(){ s
 
   /* 5. High-Frequency Industrial HS6 Quick Reference Table (Tab 3) */
   var HS_REF = [
+    ["钢结构 / 预制钢构厂房","730890","Steel structures & prefabricated steel buildings","核实最新退税"],
     ["工业阀门（闸/球/蝶阀等）","848180","Industrial valves (gate/ball/butterfly)","13%（参考）"],
     ["离心水泵 / 液体泵","841370","Centrifugal pumps for liquids","13%（参考）"],
     ["空气压缩机 / 风机","841480","Air compressors & industrial fans","13%（参考）"],
@@ -3041,6 +3309,247 @@ document.getElementById("mainScopeFull").addEventListener("click", function(){ s
 
   renderPortals();
   updateVerdict();
+})();
+
+/* ===== Tab 6: Opportunity Radars & Commission-Only Overseas Partner Workbench ===== */
+(function(){
+  function cpTxt(txt, lbl){
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function(){ showToast("已复制"+lbl); });
+    else { var ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); showToast("已复制"+lbl); }
+  }
+
+  /* Populate 3 country selects (rdCountry, rjCountry, raCountry) */
+  var rdSel = document.getElementById("rdCountry"), rjSel = document.getElementById("rjCountry"), raSel = document.getElementById("raCountry");
+  var sortedR = DATA.slice().sort(function(a,b){ return (effImpM(b)||0)-(effImpM(a)||0); });
+  sortedR.forEach(function(d){
+    var txt = (CN[d.country]||d.country) + " (" + d.country + ")";
+    [rdSel, rjSel, raSel].forEach(function(sel){
+      var o = document.createElement("option"); o.value = d.country; o.textContent = txt; sel.appendChild(o);
+    });
+  });
+  rdSel.value = "Vietnam"; rjSel.value = "Vietnam"; raSel.value = "Vietnam";
+
+  /* Local Job Boards per Country */
+  var JOB_BOARDS = {
+    "Vietnam": {name:"VietnamWorks", dom:"vietnamworks.com", url:"https://www.vietnamworks.com/"},
+    "Indonesia": {name:"JobStreet 印尼", dom:"id.jobstreet.com", url:"https://id.jobstreet.com/"},
+    "Malaysia": {name:"JobStreet 马来", dom:"my.jobstreet.com", url:"https://my.jobstreet.com/"},
+    "Philippines": {name:"JobStreet 菲律宾", dom:"ph.jobstreet.com", url:"https://ph.jobstreet.com/"},
+    "Singapore": {name:"JobStreet 新加坡", dom:"sg.jobstreet.com", url:"https://sg.jobstreet.com/"},
+    "Thailand": {name:"JobsDB 泰国", dom:"th.jobsdb.com", url:"https://th.jobsdb.com/"},
+    "Saudi Arabia": {name:"Bayt 中东招聘", dom:"bayt.com", url:"https://www.bayt.com/en/saudi-arabia/jobs/"},
+    "United Arab Emirates": {name:"Bayt / Naukrigulf", dom:"bayt.com", url:"https://www.bayt.com/en/uae/jobs/"},
+    "Mexico": {name:"OCCMundial 墨西哥", dom:"occ.com.mx", url:"https://www.occ.com.mx/"},
+    "Brazil": {name:"InfoJobs 巴西", dom:"infojobs.com.br", url:"https://www.infojobs.com.br/"},
+    "Chile": {name:"Trabajando 智利", dom:"trabajando.cl", url:"https://www.trabajando.cl/"},
+    "Nigeria": {name:"Jobberman 尼日利亚", dom:"jobberman.com", url:"https://www.jobberman.com/"},
+    "South Africa": {name:"Careers24 南非", dom:"careers24.com", url:"https://www.careers24.com/"},
+    "India": {name:"Naukri 印度", dom:"naukri.com", url:"https://www.naukri.com/"},
+    "Germany": {name:"StepStone 德国", dom:"stepstone.de", url:"https://www.stepstone.de/"},
+    "Turkey (Türkiye)": {name:"Kariyer 土耳其", dom:"kariyer.net", url:"https://www.kariyer.net/"},
+    "Peru": {name:"Computrabajo 秘鲁", dom:"pe.computrabajo.com", url:"https://pe.computrabajo.com/"},
+    "Colombia": {name:"Computrabajo 哥伦比亚", dom:"co.computrabajo.com", url:"https://co.computrabajo.com/"},
+    "Kenya": {name:"BrighterMonday 肯尼亚", dom:"brightermonday.co.ke", url:"https://www.brightermonday.co.ke/"},
+    "Egypt": {name:"Wuzzuf 埃及", dom:"wuzzuf.net", url:"https://wuzzuf.net/"}
+  };
+
+  /* 1. Bank Loan / EIA / CAPEX / Chinese EPC Radar */
+  var SECTORS = {
+    steel: {kw:'"steel structure" OR "factory" OR "warehouse" OR "industrial park" OR "plant"', cn:'钢结构、预制厂房与工业配套', prodEn:'prefabricated steel structures, structural fasteners & factory MEP supplies'},
+    power: {kw:'"power plant" OR "solar" OR "substation" OR "grid" OR "renewable energy"', cn:'电力电缆、变压器与开关柜', prodEn:'power cables, distribution transformers, switchgear & backup generators'},
+    mining: {kw:'"mining" OR "smelter" OR "nickel" OR "copper" OR "mineral processing"', cn:'矿用渣浆泵、高压阀门与耐磨管件', prodEn:'heavy-duty mining slurry pumps, high-pressure valves & wear-resistant piping'},
+    water: {kw:'"water treatment" OR "desalination" OR "pipeline" OR "sewage"', cn:'市政供水阀门、离心水泵与管件', prodEn:'waterworks valves, centrifugal pumps, pipe fittings & control panels'},
+    agri: {kw:'"agribusiness" OR "food processing" OR "cold storage" OR "irrigation"', cn:'农业机械、灌溉水泵与钢构冷库', prodEn:'agricultural machinery, irrigation pumps, cold-storage steel structures & generators'},
+    infra: {kw:'"port" OR "infrastructure" OR "logistics hub" OR "industrial zone"', cn:'综合基建钢构、泵阀电缆与五金', prodEn:'steel structures, industrial valves/pumps, cables & construction hardware'}
+  };
+  function updateMoneyRadar(){
+    var c = rdSel.value, cn = CN[c]||c, s = SECTORS[document.getElementById("rdSector").value] || SECTORS.steel;
+    var bank = document.getElementById("rdBankName").value.trim() || "IFC / ADB / development bank";
+    var qLoan = encodeURIComponent('("secured loan" OR "project financing" OR "credit facility" OR "loan approved" OR "IFC" OR "ADB") "'+c+'" ('+s.kw+') ("million" OR "billion")');
+    var qEia = encodeURIComponent('("breaks ground" OR "new factory" OR "environmental impact assessment" OR "EIA" OR "building permit") "'+c+'" ('+s.kw+')');
+    var qCapex = encodeURIComponent('("CAPEX" OR "capital expenditure" OR "capacity expansion" OR "plant expansion") "'+c+'" ('+s.kw+')');
+    var qCnEpc = encodeURIComponent('("中标" OR "签约" OR "建厂" OR "开工" OR "EPC") "'+cn+'" ("钢结构" OR "厂房" OR "电站" OR "工业园" OR "矿山" OR "水务")');
+    var qShort = encodeURIComponent('("lead time" OR "price increase" OR "supply shortage" OR "plant closure") ('+s.kw+')');
+    var btns = [
+      {l:"💸 搜近 30 天大额银行放款/融资", u:"https://www.google.com/search?q="+qLoan+"&tbs=qdr:m", p:true},
+      {l:"🏗️ 搜近 90 天环评(EIA)/新建厂房", u:"https://www.google.com/search?q="+qEia+"&tbs=qdr:m3", p:true},
+      {l:"🇨🇳 搜中资央国企/民企当地中标顺风车", u:"https://www.google.com/search?q="+qCnEpc+"&tbs=qdr:m3", p:true},
+      {l:"📈 搜上市公司 CAPEX 扩产公告", u:"https://www.google.com/search?q="+qCapex+"&tbs=qdr:y", p:false},
+      {l:"🚨 搜竞品涨价/交期拉长捡漏机会", u:"https://www.google.com/search?q="+qShort+"&tbs=qdr:m3", p:false}
+    ];
+    document.getElementById("rdQueryBtns").innerHTML = btns.map(function(b){
+      return '<a class="pill '+(b.p?'primary':'')+'" target="_blank" rel="noopener" href="'+b.u+'">'+b.l+'</a>';
+    }).join("");
+    document.getElementById("rdPitchOut").textContent =
+      "Subject: Compliant " + s.prodEn + " supply for your newly financed project in " + c + " | FriesGo Global\n\n"
+      + "Dear Project / Procurement Director,\n\n"
+      + "Congratulations on your recent project financing supported by " + bank + " in " + c + ".\n\n"
+      + "We work closely with project owners and EPC contractors on DFI-backed expansions, supplying full-category industrial packages (" + s.prodEn + ") directly from audited Chinese factories.\n\n"
+      + "• Full ISO / CE / energy-efficiency & material traceability docs to support lender ESG/compliance audits\n"
+      + "• One-stop multi-category consolidation into full containers to simplify your EPC site scheduling\n"
+      + "• Third-party SGS / BV pre-shipment inspection & fast FOB/CIF quotation within 24 hours\n\n"
+      + "Could we be added to your vendor shortlist or share a reference package for your upcoming BOQ?\n\n"
+      + "Best regards,\nFriesGo Global Export Team";
+  }
+  ["rdCountry","rdSector","rdBankName"].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){ el.addEventListener("change", updateMoneyRadar); el.addEventListener("input", updateMoneyRadar); }
+  });
+  document.getElementById("btnCopyRdPitch").addEventListener("click", function(){ cpTxt(document.getElementById("rdPitchOut").textContent, "融资触发开发信"); });
+  updateMoneyRadar();
+
+  /* 2. Job-Posting Reverse-Engineering Intent Radar */
+  var JOB_SIGNALS = {
+    steel: {kw:'("steel structure engineer" OR "warehouse construction" OR "civil site engineer" OR "plant construction manager")', note:"正在建新厂房/新物流仓 → 立刻切入推钢结构、彩钢板、紧固件与厂房电缆"},
+    import: {kw:'("import purchasing" OR "China sourcing" OR "import specialist" OR "customs clearance")', note:"准备绕过本地贸易商直接从中国进口 → 立刻给工厂直供价 + 拼柜清单"},
+    plant: {kw:'("commissioning engineer" OR "plant maintenance manager" OR "utilities engineer" OR "factory manager")', note:"新产线快装机投产或大规模扩产 → 推空压机、水泵、阀门、管道法兰与五金工具"},
+    epc: {kw:'("solar EPC" OR "substation engineer" OR "mining piping" OR "desalination project manager")', note:"刚拿到大工程订单正整理采购清单(BOQ) → 推对应场景成套打包方案"},
+    tech: {kw:'("hydraulic technician" OR "pump technician" OR "generator technician" OR "agricultural machinery mechanic")', note:"当地该设备保有量暴增进入维修替换期 → 推替换整机、易损件与维修工具"}
+  };
+  function updateJobRadar(){
+    var c = rjSel.value, sig = JOB_SIGNALS[document.getElementById("rjSignal").value] || JOB_SIGNALS.steel;
+    var jb = JOB_BOARDS[c];
+    var qLi = encodeURIComponent('site:linkedin.com/jobs '+sig.kw+' "'+c+'"');
+    var qInd = encodeURIComponent('site:indeed.com '+sig.kw+' "'+c+'"');
+    var btns = [
+      {l:"👔 扫 LinkedIn 近 30 天高意图招聘企业", u:"https://www.google.com/search?q="+qLi+"&tbs=qdr:m", p:true}
+    ];
+    if(jb){
+      var qLoc = encodeURIComponent('site:'+jb.dom+' '+sig.kw);
+      btns.push({l:"🎯 扫 "+jb.name+" 近 30 天发帖企业", u:"https://www.google.com/search?q="+qLoc+"&tbs=qdr:m", p:true});
+      btns.push({l:"🌐 直达 "+jb.name+" 官网", u:jb.url, p:false});
+    } else {
+      btns.push({l:"🌐 扫 Indeed 近 30 天招聘企业", u:"https://www.google.com/search?q="+qInd+"&tbs=qdr:m", p:true});
+    }
+    var qGen = encodeURIComponent(sig.kw+' "'+c+'" ("apply now" OR "job description" OR "hiring")');
+    btns.push({l:"🔍 全网扫该国招聘启事（近 30 天）", u:"https://www.google.com/search?q="+qGen+"&tbs=qdr:m", p:false});
+    document.getElementById("rjBtns").innerHTML = btns.map(function(b){
+      return '<a class="pill '+(b.p?'primary':'')+'" target="_blank" rel="noopener" href="'+b.u+'">'+b.l+'</a>';
+    }).join("");
+    document.getElementById("rjHint").textContent = "💡 信号解读：" + sig.note + "。查到正在招人的公司名后，直接复制去「🕵️ 背调与合规」查官网和采购负责人！";
+  }
+  rjSel.addEventListener("change", updateJobRadar);
+  document.getElementById("rjSignal").addEventListener("change", updateJobRadar);
+  updateJobRadar();
+
+  /* 3. Typhoon / Weather Steel-Structure & Emergency Recovery Pitch */
+  function updateWeatherPitch(){
+    var reg = document.getElementById("wtRegion").value.trim() || "your region";
+    var lang = document.getElementById("wtLang").value;
+    var mode = document.getElementById("wtMode").value;
+    var map = {
+      en: {
+        pre: "Subject: Wind-resistant steel structures & typhoon-season readiness stock for " + reg + " | FriesGo Global\n\nDear Operations / Engineering Team,\n\nWith the upcoming typhoon / heavy-rain season approaching " + reg + ", industrial parks and warehouses often reinforce roofing, steel frames, drainage and backup power ahead of peak weather.\n\nFriesGo Global keeps ready-to-ship inventory in China for fast dispatch (7–15 days):\n• High-wind-load steel structures, corrugated steel roofing sheets & high-strength fasteners\n• Heavy-duty drainage / dewatering pumps & industrial valves\n• Emergency diesel generator sets, waterproof power cables & distribution boxes\n\nWould you like our quick-dispatch stock sheet & wind-load spec summary so your team has a reliable backup supplier ready?\n\nBest regards,\nFriesGo Global Export Team",
+        post: "Subject: Fast-track recovery supply (7–15 days): Steel structures, drainage pumps & generators for " + reg + "\n\nDear Facility / Project Manager,\n\nWe hope your team and facilities in " + reg + " are safe following the recent severe weather.\n\nTo support fast warehouse/factory repairs and minimize downtime, FriesGo Global has allocated fast-track export stock ready for 7–15 day shipment from China:\n• Replacement steel structure frames, purlins, metal roofing panels & structural bolts\n• High-flow dewatering pumps, industrial valves & pipe fittings\n• Backup diesel generators & emergency power cables\n\nIf you or your contracting partners need urgent FOB/CIF pricing or consolidated emergency container shipping, send us your rough BOQ and we will quote within 12 hours.\n\nBest regards,\nFriesGo Global Export Team"
+      },
+      vi: {
+        pre: "Chủ đề: Giải pháp kết cấu thép chịu gió bão & thiết bị dự phòng mùa mưa bão tại " + reg + " | FriesGo Global\n\nKính gửi Anh/Chị,\n\nTrước mùa mưa bão sắp tới tại " + reg + ", nhiều nhà xưởng và kho bãi đang gia cố mái tôn, khung thép và chuẩn bị hệ thống thoát nước/điện dự phòng.\n\nFriesGo Global luôn có sẵn hàng xuất nhanh (7–15 ngày từ Trung Quốc, có C/O Form E giảm thuế):\n• Kết cấu thép chịu gió cao, tôn lợp, xà gồ & bu-lông cường độ cao\n• Máy bơm thoát nước lưu lượng lớn & van công nghiệp\n• Máy phát điện dự phòng & cáp điện chống nước\n\nEm gửi Anh/Chị danh mục hàng sẵn kho và báo giá tham khảo nhé?\n\nTrân trọng,\nFriesGo Global Export Team",
+        post: "Chủ đề: Cung ứng nhanh (7–15 ngày) kết cấu thép, bơm thoát nước & máy phát khắc phục sau bão tại " + reg + "\n\nKính gửi Anh/Chị,\n\nMong rằng đội ngũ và nhà xưởng của Quý công ty tại " + reg + " đều an toàn sau đợt bão vừa qua.\n\nĐể hỗ trợ sửa chữa nhà xưởng và khôi phục sản xuất nhanh nhất, FriesGo Global ưu tiên nguồn hàng sẵn kho xuất nhanh 7–15 ngày (kèm C/O Form E):\n• Khung kết cấu thép, tôn mái, xà gồ & bu-lông thay thế\n• Máy bơm thoát nước công suất lớn, van & phụ kiện đường ống\n• Máy phát điện diesel & cáp điện khẩn cấp\n\nQuý công ty chỉ cần gửi danh mục khối lượng (BOQ), chúng tôi báo giá FOB/CIF trong vòng 12 giờ.\n\nTrân trọng,\nFriesGo Global Export Team"
+      },
+      id: {
+        pre: "Subjek: Stok cepat struktur baja tahan angin & peralatan siap musim hujan untuk " + reg + " | FriesGo Global\n\nYth. Tim Proyek / Pengadaan,\n\nMenjelang musim hujan & angin kencang di " + reg + ", kami menyediakan stok siap kirim cepat (7–15 hari, tersedia Form E):\n• Struktur baja, atap baja & baut kekuatan tinggi\n• Pompa drainase kapasitas besar & katup industri\n• Genset diesel darurat & kabel listrik\n\nBolehkah kami kirimkan daftar stok siap kirim & estimasi harga?\n\nHormat kami,\nFriesGo Global Export Team",
+        post: "Subjek: Pasokan cepat (7–15 hari) struktur baja, pompa & genset untuk pemulihan pabrik di " + reg + "\n\nYth. Tim Proyek / Pengadaan,\n\nSemoga tim dan fasilitas Anda di " + reg + " dalam keadaan aman. Untuk mendukung perbaikan cepat gudang/pabrik, FriesGo Global menyediakan jalur pengiriman cepat (7–15 hari + Form E) untuk struktur baja, atap logam, pompa drainase, genset dan kabel listrik.\n\nSilakan kirim BOQ Anda untuk penawaran FOB/CIF dalam 12 jam.\n\nHormat kami,\nFriesGo Global Export Team"
+      },
+      es: {
+        pre: "Asunto: Estructuras de acero resistentes a huracanes y equipos de respaldo para " + reg + " | FriesGo Global\n\nEstimado equipo de Proyectos / Compras,\n\nAnte la temporada de huracanes y lluvias en " + reg + ", disponemos de despacho rápido (7–15 días desde China) para:\n• Estructuras metálicas de alta resistencia al viento, láminas y tornillería estructural\n• Bombas de drenaje de alto caudal y válvulas industriales\n• Generadores diésel de emergencia y cables eléctricos\n\n¿Le enviamos nuestra lista de stock rápido y precios referenciales FOB/CIF?\n\nSaludos cordiales,\nFriesGo Global Export Team",
+        post: "Asunto: Suministro urgente (7–15 días): estructuras de acero, bombas y generadores para " + reg + "\n\nEstimado equipo,\n\nEsperamos que su equipo e instalaciones en " + reg + " se encuentren bien tras el reciente temporal. Para apoyar la reparación rápida de naves industriales, contamos con envío prioritario (7–15 días) de estructuras metálicas, cubiertas, bombas de achique, generadores y cableado.\n\nEnvíenos su lista de materiales (BOQ) y cotizamos FOB/CIF en 12 horas.\n\nSaludos cordiales,\nFriesGo Global Export Team"
+      }
+    };
+    document.getElementById("wtPitchOut").textContent = (map[lang] || map.en)[mode];
+  }
+  ["wtRegion","wtLang","wtMode"].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){ el.addEventListener("input", updateWeatherPitch); el.addEventListener("change", updateWeatherPitch); }
+  });
+  document.getElementById("btnCopyWtPitch").addEventListener("click", function(){ cpTxt(document.getElementById("wtPitchOut").textContent, "台风/应急钢构开发信"); });
+  updateWeatherPitch();
+
+  /* 4. 10 Global Trade Show Exhibitor Directory Wall */
+  var EXPOS = [
+    ["Big 5 Global（迪拜五大行业展）","🇦🇪 阿联酋 · 迪拜","钢结构、建材五金、水暖泵阀、施工机械","https://www.big5global.com/","Big 5 Global"],
+    ["Middle East Energy（中东电力展）","🇦🇪 阿联酋 · 迪拜","电力电缆、变压器、开关柜、柴油发电机、光伏","https://www.middleeast-energy.com/","Middle East Energy"],
+    ["ADIPEC（阿布扎比油气展）","🇦🇪 阿联酋 · 阿布扎比","油气高压阀门、工业泵、钢管法兰、防爆电气","https://www.adipec.com/","ADIPEC"],
+    ["Manufacturing Indonesia（印尼工业制造展）","🇮🇩 印尼 · 雅加达","机床机械、空压机、泵阀、自动化、五金工具","https://www.manufacturingindonesia.com/","Manufacturing Indonesia"],
+    ["METALEX（泰国/越南机床金属展）","🇹🇭 曼谷 / 🇻🇳 胡志明","金属加工机械、钢构加工、工业电机、紧固件","https://www.metalex.co.th/","METALEX"],
+    ["FABTECH Mexico（墨西哥金属制造展）","🇲🇽 墨西哥 · 蒙特雷","钢结构焊接、机床配件、空压机、工业工具","https://mexico.fabtechexpo.com/","FABTECH Mexico"],
+    ["FEIMEC（巴西国际工业机械展）","🇧🇷 巴西 · 圣保罗","工业机械、阀门、水泵、电机、自动化设备","https://www.feimec.com.br/en/home.html","FEIMEC"],
+    ["Agrishow（巴西拉美最大农机展）","🇧🇷 巴西 · 圣保罗州","拖拉机、农机具、灌溉水泵、农场钢构粮仓","https://www.agrishow.com.br/en/home.html","Agrishow"],
+    ["EXPOMIN（智利拉美第一矿业展）","🇨🇱 智利 · 圣地亚哥","矿用渣浆泵、高压阀门、矿用电缆、选矿机械","https://www.expomin.cl/en/","EXPOMIN"],
+    ["Electra Mining Africa（南非矿业电力展）","🇿🇦 南非 · 约翰内斯堡","矿业机械、泵阀、电力设备、工业五金与钢构","https://www.electramining.co.za/","Electra Mining Africa"]
+  ];
+  document.getElementById("expoTbody").innerHTML = EXPOS.map(function(e){
+    var qDir = encodeURIComponent('"'+e[4]+'" ("exhibitor list" OR "exhibitor directory" OR "exhibitors")');
+    var qLi = encodeURIComponent('site:linkedin.com/posts "'+e[4]+'" ("attending" OR "visiting" OR "procurement" OR "distributor")');
+    return '<tr><td><b>'+e[0]+'</b></td><td>'+e[1]+'</td><td style="font-size:12.5px;color:var(--muted)">'+e[2]+'</td>'
+      + '<td><a class="pill primary" style="min-height:28px;padding:3px 9px;font-size:11.5px" target="_blank" rel="noopener" href="https://www.google.com/search?q='+qDir+'">📋 搜参展商名录</a> '
+      + '<a class="pill" style="min-height:28px;padding:3px 9px;font-size:11.5px" target="_blank" rel="noopener" href="https://www.google.com/search?q='+qLi+'">👔 LinkedIn 截流参展人</a> '
+      + '<a class="pill" style="min-height:28px;padding:3px 9px;font-size:11.5px" target="_blank" rel="noopener" href="'+e[3]+'">🌐 官网</a></td></tr>';
+  }).join("");
+
+  /* 5. Commission-Only Overseas Local Sales Partner Recruitment Workbench (NO hardcoded commission %!) */
+  function updateAgentFinder(){
+    var c = raSel.value, jb = JOB_BOARDS[c];
+    var qRep = encodeURIComponent('site:linkedin.com/in ("Independent Sales Agent" OR "Manufacturers Representative" OR "Sales Representative" OR "Business Development") ("industrial" OR "construction" OR "steel" OR "machinery" OR "EPC") "'+c+'"');
+    var qOpen = encodeURIComponent('site:linkedin.com/in ("open to work" OR "freelance" OR "consultant") ("industrial sales" OR "machinery sales" OR "steel" OR "engineering sales") "'+c+'"');
+    var btns = [
+      {l:"👔 LinkedIn 挖当地独立工业代理 / 厂商代表", u:"https://www.google.com/search?q="+qRep, p:true},
+      {l:"🔥 LinkedIn 找求职中/自由工业销售", u:"https://www.google.com/search?q="+qOpen, p:true}
+    ];
+    if(jb){
+      btns.push({l:"💼 直达 "+jb.name+" 找本地工业销售人才", u:jb.url, p:true});
+    } else {
+      btns.push({l:"💼 搜 "+c+" 当地招聘网工业销售", u:"https://www.google.com/search?q="+encodeURIComponent('"industrial sales" jobs "'+c+'"'), p:false});
+    }
+    document.getElementById("raFindBtns").innerHTML = btns.map(function(b){
+      return '<a class="pill '+(b.p?'primary':'')+'" target="_blank" rel="noopener" href="'+b.u+'">'+b.l+'</a>';
+    }).join("");
+    document.getElementById("raLang").value = guessLang(c) === "fr" || guessLang(c) === "de" || guessLang(c) === "ru" ? "en" : guessLang(c);
+    updateAgentPitch();
+  }
+
+  function updateAgentPitch(){
+    var c = raSel.value, cat = document.getElementById("raCat").value, lang = document.getElementById("raLang").value;
+    var ch = document.getElementById("raChannel").value;
+    var nm = document.getElementById("raTargetName").value.trim() || "there";
+    var P = {
+      en: {
+        short: "Hi " + nm + ", I saw your strong background in industrial/engineering sales in " + c + ". We are FriesGo Global (full-category Chinese industrial supplier covering " + cat + "). We're looking for independent local commission-based partners in " + c + "—zero fixed hours, keep your current work/network, uncapped tiered commission paid upon order completion. Open to a quick chat?",
+        detail: "Subject: Independent Commission-Based B2B Partner Opportunity in " + c + " | FriesGo Global\n\nHi " + nm + ",\n\nI came across your profile and experience in " + c + "'s industrial sector.\n\nWe are FriesGo Global, an integrated industrial equipment exporter in China supplying " + cat + ". We are expanding in " + c + " through independent, commission-only local sales partners (not full-time employment—you work flexibly with zero inventory risk).\n\nHow the partnership works:\n• Monetize your existing factory, EPC, contractor or distributor contacts in " + c + "\n• Competitive, uncapped tiered commission tailored to product category & order volume (discussed transparently once we connect)\n• Full technical & commercial backing from our China team: 24-hour FOB/CIF quoting, CAD specs, mixed-container consolidation & SGS/BV inspection\n• Clear Independent Agency Agreement protecting your registered clients, with commission paid promptly upon receipt of buyer payment\n\nIf you have active industrial contacts in " + c + " and want an extra high-ticket income stream, reply here or share your WhatsApp and I will send our 1-page partner brief.\n\nBest regards,\nFriesGo Global"
+      },
+      vi: {
+        short: "Chào Anh/Chị " + nm + ", thấy Anh/Chị có kinh nghiệm mảng công nghiệp/kỹ thuật tại Việt Nam. Bên em là FriesGo Global (nhà cung cấp thiết bị công nghiệp đa ngành từ Trung Quốc: " + cat + "), đang tìm đối tác kinh doanh cộng tác hoa hồng không giới hạn tại Việt Nam (không ràng buộc thời gian, không cần vốn). Anh/Chị có tiện trao đổi nhanh không ạ?",
+        detail: "Chủ đề: Hợp tác đối tác kinh doanh hưởng hoa hồng (B2B công nghiệp) tại Việt Nam | FriesGo Global\n\nKính gửi Anh/Chị " + nm + ",\n\nFriesGo Global chuyên cung cấp " + cat + " trực tiếp từ Trung Quốc (hỗ trợ C/O Form E giảm thuế). Chúng tôi đang tìm đối tác cộng tác độc lập (hưởng hoa hồng theo đơn hàng, không lương cứng, không ràng buộc giờ giấc):\n• Tận dụng sẵn mối quan hệ với nhà xưởng, nhà thầu EPC, đại lý tại Việt Nam\n• Hoa hồng lũy tiến cạnh tranh theo ngành hàng & giá trị đơn (trao đổi cụ thể khi làm việc), thanh toán nhanh ngay sau khi khách thanh toán đủ\n• Đội ngũ tại Trung Quốc hỗ trợ báo giá FOB/CIF trong 24h, tài liệu kỹ thuật & gom container\n• Ký thỏa thuận bảo vệ danh sách khách hàng đã đăng ký của đối tác\n\nNếu Anh/Chị quan tâm, nhắn lại Zalo/WhatsApp để em gửi tài liệu hợp tác 1 trang nhé!\n\nTrân trọng,\nFriesGo Global"
+      },
+      id: {
+        short: "Halo Bapak/Ibu " + nm + ", saya melihat pengalaman Anda di bidang industri di Indonesia. Kami dari FriesGo Global (pemasok " + cat + " dari Tiongkok) mencari mitra penjualan independen berbasis komisi (tanpa jam kerja tetap, tanpa modal stok). Boleh diskusi singkat lewat WhatsApp?",
+        detail: "Subjek: Peluang Mitra Penjualan B2B Berbasis Komisi di Indonesia | FriesGo Global\n\nYth. Bapak/Ibu " + nm + ",\n\nFriesGo Global adalah pemasok peralatan industri lengkap dari Tiongkok (" + cat + ", mendukung Form E). Kami membuka kerja sama mitra penjualan independen (komisi murni tanpa gaji pokok, fleksibel tanpa mengganggu pekerjaan utama):\n• Maksimalkan jaringan pabrik, kontraktor EPC & distributor Anda di Indonesia\n• Skema komisi berjenjang yang kompetitif sesuai kategori & nilai proyek (dibahas transparan)\n• Dukungan penuh tim Tiongkok: penawaran FOB/CIF 24 jam, spesifikasi teknis & konsolidasi kontainer\n• Perjanjian keagenan independen untuk melindungi daftar klien yang Anda daftarkan\n\nSilakan balas atau kirim nomor WhatsApp Anda jika tertarik.\n\nHormat kami,\nFriesGo Global"
+      },
+      th: {
+        short: "สวัสดีครับคุณ " + nm + " เห็นประสบการณ์ด้านอุตสาหกรรมในไทยของคุณครับ เราคือ FriesGo Global ผู้ส่งออก " + cat + " จากจีน กำลังมองหาพาร์ทเนอร์ขายอิสระแบบรับค่าคอมมิชชั่นไม่จำกัดเพดาน (ไม่ฟิกซ์เวลา ไม่ต้องสต๊อกสินค้า) สะดวกคุยรายละเอียดสั้นๆ ไหมครับ?",
+        detail: "หัวข้อ: โอกาสพาร์ทเนอร์ขายอิสระ B2B รับค่าคอมมิชชั่นในประเทศไทย | FriesGo Global\n\nเรียนคุณ " + nm + ",\n\nFriesGo Global เป็นผู้จัดจำหน่าย " + cat + " จากประเทศจีน (ออก Form E ได้) เรากำลังขยายตลาดในไทยผ่านพาร์ทเนอร์ขายอิสระแบบค่าคอมมิชชั่น (ไม่ใช่พนักงานประจำ ไม่มีเงินเดือนประจำ แต่รับค่าคอมมิชชั่นแบบขั้นบันไดตามยอดขาย):\n• ต่อยอดคอนเนกชันโรงงาน ผู้รับเหมา EPC และตัวแทนจำหน่ายที่คุณมีอยู่แล้ว\n• ทีมงานจีนซัพพอร์ตใบเสนอราคา FOB/CIF ภายใน 24 ชม. พร้อมเอกสารสเปกครบถ้วน\n• มีสัญญาคุ้มครองรายชื่อลูกค้าที่คุณลงทะเบียน และจ่ายค่าคอมมิชชั่นทันทีหลังได้รับชำระเงินครบ\n\nหากสนใจตอบกลับหรือแจ้ง LINE/WhatsApp ได้เลยครับ\n\nขอแสดงความนับถือ,\nFriesGo Global"
+      },
+      es: {
+        short: "Hola " + nm + ", vi tu experiencia en ventas industriales en " + c + ". En FriesGo Global (proveedor integral desde China de " + cat + ") buscamos representantes comerciales independientes a comisión (sin horario fijo, sin inversión en inventario, comisiones competitivas sin tope). ¿Conversamos brevemente?",
+        detail: "Asunto: Oportunidad de Representante Comercial Independiente (Comisión B2B) en " + c + " | FriesGo Global\n\nHola " + nm + ",\n\nSomos FriesGo Global, proveedor industrial en China especializado en " + cat + ". Buscamos socios comerciales independientes en " + c + " bajo esquema 100% comisión (sin salario base ni horario fijo, ideal para monetizar tu red actual de fábricas, contratistas EPC y distribuidores):\n• Comisión escalonada competitiva según categoría y volumen (sin tope, a definir según línea)\n• Respaldo total desde China: cotizaciones FOB/CIF en 24h, fichas técnicas y consolidación en contenedor\n• Acuerdo de agencia independiente con registro y protección de tus clientes; pago ágil de comisión al cobrarse la orden\n\nSi te interesa, respóndeme o compárteme tu WhatsApp para enviarte nuestro resumen de 1 página.\n\nSaludos,\nFriesGo Global"
+      },
+      pt: {
+        short: "Olá " + nm + ", vi sua experiência em vendas industriais no Brasil. Somos a FriesGo Global (fornecedora da China de " + cat + ") e buscamos representantes comerciais independentes sob comissão (horário livre, sem estoque, comissão escalonada sem teto). Topa uma conversa rápida?",
+        detail: "Assunto: Parceria Comercial Independente (Comissão B2B) no Brasil | FriesGo Global\n\nOlá " + nm + ",\n\nA FriesGo Global fornece " + cat + " diretamente da China. Estamos expandindo no Brasil com representantes comerciais independentes 100% comissionados (sem vínculo empregatício, ideal para rentabilizar sua carteira atual de indústrias, construtoras e distribuidores):\n• Comissão escalonada competitiva conforme categoria e volume (definida de forma transparente)\n• Suporte completo da equipe na China: cotações FOB/CIF em 24h, catálogos técnicos e consolidação de carga\n• Contrato de representação independente protegendo seus clientes cadastrados, com pagamento após liquidação do pedido\n\nSe tiver interesse, envie seu WhatsApp para receber nosso resumo.\n\nAtenciosamente,\nFriesGo Global"
+      },
+      ar: {
+        short: "مرحباً " + nm + "، اطلعت على خبرتك في المبيعات الصناعية في " + c + ". نحن شركة FriesGo Global (مورد معدات صناعية متكاملة من الصين: " + cat + ") ونبحث عن شركاء مبيعات مستقلين بنظام العمولة فقط بدون دوام ثابت أو مخزون. هل يناسبك حديث قصير؟",
+        detail: "الموضوع: فرصة شراكة تجارية مستقلة بنظام العمولة في " + c + " | FriesGo Global\n\nالأستاذ/الأستاذة " + nm + "،\n\nشركة FriesGo Global متخصصة في توريد " + cat + " مباشرة من الصين. نبحث عن وكلاء وشركاء مبيعات مستقلين في " + c + " بنظام العمولة التنافسية (بدون راتب ثابت وبدون التزام بدوام):\n• استثمر شبكة علاقاتك مع المصانع والمقاولين وشركات EPC في " + c + "\n• عمولات تصاعدية مجزية حسب الفئة وحجم الطلب (تُحدد بشفافية عند التواصل)\n• دعم فني وتسعير FOB/CIF خلال 24 ساعة من فريقنا في الصين\n• اتفاقية وكالة مستقلة تحمي عملاءك المسجلين، مع صرف العمولة فور تحصيل كامل قيمة الطلب\n\nإذا كنت مهتماً، أرسل رقم واتساب الخاص بك لنرسل لك ملخص الشراكة.\n\nتحياتنا،\nFriesGo Global"
+      }
+    };
+    document.getElementById("raPitchOut").textContent = (P[lang] || P.en)[ch];
+  }
+  raSel.addEventListener("change", updateAgentFinder);
+  ["raCat","raLang","raChannel","raTargetName"].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){ el.addEventListener("change", updateAgentPitch); el.addEventListener("input", updateAgentPitch); }
+  });
+  document.getElementById("btnCopyRaPitch").addEventListener("click", function(){ cpTxt(document.getElementById("raPitchOut").textContent, "海外合伙人招募话术"); });
+  updateAgentFinder();
 })();
 
 /* ===== Compliance 6-Step Checklist ===== */
