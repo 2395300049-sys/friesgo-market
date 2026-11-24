@@ -332,6 +332,14 @@ html[data-theme="dark"] .back-top{background:var(--orange);color:#241305;border-
 section.block,.action-card,#table,.controls{scroll-margin-top:72px}
 
 /* Mobile & WeChat Dual-Friendly Layout */
+.tl-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.tl-item{padding:10px 12px;border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:10px;background:var(--surface2);font-size:12.5px}
+.tl-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:4px}
+.qv-card{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);margin-top:8px;font-size:12.5px}
+.qv-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:4px}
+.home-log-bar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:8px 10px;margin-top:6px;border-radius:10px;background:var(--surface2);border:1px dashed var(--orange)}
+.home-log-bar input,.home-log-bar select{min-height:32px;padding:3px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font-size:12.5px}
+.save-status-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);padding:3px 10px;border-radius:999px;background:var(--surface2);border:1px solid var(--line)}
 .mini-scroll,.matrix-wrap,.crm-table-wrap{-webkit-overflow-scrolling:touch}
 .mobile-subbar::-webkit-scrollbar,.preset-bar::-webkit-scrollbar,.inner-tool-bar::-webkit-scrollbar{display:none}
 @media(max-width:960px){
@@ -1019,6 +1027,8 @@ Best regards,
       <div class="pills" style="margin-top:12px">
         <button class="pill primary" id="btnShowRfq" type="button">生成正式英文报价单</button>
         <button class="pill" id="btnCopyQuote" type="button">复制简版报价（发 WhatsApp）</button>
+        <select id="qcBindClient" aria-label="选择客户归档报价" style="min-height:36px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);font-size:12.5px;max-width:100%"><option value="">选择客户以归档报价版本…</option></select>
+        <button class="pill" id="btnSaveQuoteVersion" type="button">归档报价版本（V1/V2）</button>
       </div>
       <div id="rfqPreviewWrap" hidden style="margin-top:10px">
         <div class="email-box" id="rfqEmailOut"></div>
@@ -1143,15 +1153,15 @@ Best regards,
 
   <!-- UPGRADED: 10 High-Frequency Industrial Objection Handling & Deal-Rescue Scripts -->
   <section class="block" id="objections">
-    <h2>🛡️ 外贸 10 大高频异议回复 &amp; 丢单救场英文话术库（LAER 实战脚本）</h2>
-    <p class="sub">覆盖客户嫌贵、问贸易商、嫌 MOQ 高、要赊账，以及最易丢单的<b>报价后沉默诊断、寄样签收破冰、原材料涨价沟通、交期延误提前补救</b>，点一下直接复制即发。</p>
+    <h2>高频异议与跟进话术库</h2>
+    <p class="sub">覆盖嫌贵、贸易商疑问、MOQ、赊账、报价沉默、寄样跟进、涨价与交期沟通，点击即可复制使用。</p>
     <div class="grid2" id="objGrid"></div>
   </section>
 
   <!-- 10 Pilot Country Action Cards -->
   <section class="block" id="actions">
-    <h2>📋 获客行动卡（扩容至 10 国）：东南亚 · 中东 · 拉美 · 非洲主力市场</h2>
-    <p class="sub">含主推产品线、官方招标入口、年度核心展会、最佳联系时间（北京时间）与付款底线。点击卡片右上角按钮可一键载入开发信或跳到报价试算。</p>
+    <h2>10 国重点市场行动卡</h2>
+    <p class="sub">汇总主推产品、官方招标入口、年度展会、联系时段（北京时间）与付款建议。</p>
     <div class="pills" style="margin:0 0 12px">
       <a class="pill" href="#act-Vietnam">🇻🇳 越南</a>
       <a class="pill" href="#act-Indonesia">🇮🇩 印尼</a>
@@ -1269,8 +1279,8 @@ Best regards,
   </div>
   <!-- 5 Cross-Sell Industrial Solution Bundles -->
   <section class="block" id="bundles">
-    <h2>🧩 全品类成套打包方案（把“产品多”变成打败单一工厂的杀手锏）</h2>
-    <p class="sub">单一工厂只能卖一个件，你们可以做<b>成套打包 + 一站式拼柜发货</b>。客户来询左边的任意主品时，业务员顺手推荐整套清单，客单价和毛利翻倍：</p>
+    <h2>工业场景配套清单</h2>
+    <p class="sub">按矿业、市政供水、农灌、建厂与备电 5 类常见工程场景整理配套产品，便于成套报价与拼柜出运。</p>
     <div class="bundle-grid">
       <div class="bundle-card">
         <h3>⛏️ 场景 1：矿业开采与选矿项目</h3>
@@ -1682,9 +1692,10 @@ Best regards,
     <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px">
       <div>
         <h2 style="margin:0">客户列表与跟进</h2>
-        <p class="sub" style="margin:3px 0 0">统一管理所有海外买家与本地渠道代理；点开任意客户即可查看基本资料、跟进记录、背调结果，并一键写信或做报价。</p>
+        <p class="sub" style="margin:3px 0 0">集中管理海外买家与渠道代理的跟进时间线、历史报价版本（V1/V2）与背调快照。</p>
       </div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span class="save-status-pill" id="crmSaveStatus">● 已本地保存</span>
         <label style="font-size:12.5px;color:var(--muted);font-weight:700">默认负责人：<input id="defaultOwner" type="text" placeholder="填你的名字" style="width:110px;min-height:32px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></label>
         <button class="pill primary" id="btnToggleAddClient" type="button">＋ 新增客户</button>
       </div>
@@ -1735,9 +1746,11 @@ Best regards,
         <button class="pill" id="btnFollowExport" type="button">导出客户表（CSV）</button>
         <button class="pill" id="btnBackupJson" type="button">备份数据（JSON）</button>
         <button class="pill" id="btnRestoreJson" type="button">恢复备份（JSON）</button>
+        <button class="pill" id="btnToggleTrash" type="button">回收站 (<span id="crmTrashCount">0</span>)</button>
         <input id="restoreFile" type="file" accept=".json" hidden>
         <button class="pill danger" id="btnClearFollow" type="button">清空客户列表</button>
       </div>
+      <div id="crmTrashBox" hidden style="margin-top:10px;padding:12px;border:1px dashed var(--line);border-radius:10px;background:var(--surface2)"></div>
     </div>
   </section>
 
@@ -2562,9 +2575,89 @@ function localDateTimeStr(d){
   var mm = String(dt.getMinutes()).padStart(2, "0");
   return localDateStr(dt) + " " + hh + ":" + mm + " (" + localTzTag() + ")";
 }
+function localDateOffsetStr(days){
+  var dt = new Date();
+  dt.setDate(dt.getDate() + (parseInt(days, 10) || 0));
+  return localDateStr(dt);
+}
 
 var _lastKnownLeadsRaw = "[]";
 var _deletedLeadIds = {};
+var crmTrash = [];
+var lastSavedAtStr = "";
+var lastBackupTs = 0;
+
+try {
+  var rawTrash = JSON.parse(localStorage.getItem("friesgo_trash_v1") || "[]");
+  if(Array.isArray(rawTrash)){
+    var cutoff30d = Date.now() - 30 * 86400000;
+    crmTrash = rawTrash.filter(function(x){ return x && x.lead && x.lead.company && (!x.deletedAt || x.deletedAt > cutoff30d); }).slice(0, 50);
+  }
+  lastBackupTs = parseInt(localStorage.getItem("friesgo_last_backup") || "0", 10) || 0;
+} catch(e){}
+
+function saveTrashLocal(){
+  try { localStorage.setItem("friesgo_trash_v1", JSON.stringify(crmTrash.slice(0, 50))); } catch(e){}
+  var tc = document.getElementById("crmTrashCount");
+  if(tc) tc.textContent = String(crmTrash.length);
+}
+function moveLeadToTrash(lead){
+  if(!lead || !lead.company) return;
+  crmTrash.unshift({ deletedAt: Date.now(), deletedAtStr: localDateTimeStr(), lead: JSON.parse(JSON.stringify(lead)) });
+  if(crmTrash.length > 50) crmTrash = crmTrash.slice(0, 50);
+  saveTrashLocal();
+}
+function restoreLeadFromTrash(idx){
+  if(idx < 0 || idx >= crmTrash.length) return null;
+  var item = crmTrash.splice(idx, 1)[0];
+  saveTrashLocal();
+  if(!item || !item.lead) return null;
+  var l = item.lead;
+  delete _deletedLeadIds[l.id];
+  l.updated = localDateStr();
+  l.updatedAt = Date.now();
+  if(!crmLeads.some(function(x){ return x.id === l.id; })) crmLeads.unshift(l);
+  saveLeadsLocal();
+  if(typeof renderTools === "function") renderTools();
+  if(typeof render === "function") render();
+  if(typeof renderTrashPanel === "function") renderTrashPanel();
+  showToast("已从回收站恢复「" + l.company + "」");
+  return l;
+}
+function appendTimelineEntry(lead, entry){
+  if(!lead) return;
+  if(!Array.isArray(lead.timeline)) lead.timeline = [];
+  lead.timeline.unshift({
+    id: "tl_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,5),
+    at: localDateTimeStr(),
+    channel: (entry && entry.channel) || "跟进",
+    result: String((entry && entry.result) || "").trim(),
+    nextAction: String((entry && entry.nextAction) || "").trim(),
+    nextDate: String((entry && entry.nextDate) || "").trim(),
+    owner: String((entry && entry.owner) || lead.owner || defaultOwner || "").trim()
+  });
+  lead.updated = localDateStr();
+  lead.updatedAt = Date.now();
+}
+function updateSaveBackupStatus(justSaved){
+  if(justSaved){
+    var dt = new Date();
+    lastSavedAtStr = String(dt.getHours()).padStart(2,"0") + ":" + String(dt.getMinutes()).padStart(2,"0");
+  }
+  var el = document.getElementById("crmSaveStatus");
+  if(!el) return;
+  var savePart = lastSavedAtStr ? ("● 已本地保存 " + lastSavedAtStr) : "● 本地存储就绪";
+  var daysSince = lastBackupTs ? Math.floor((Date.now() - lastBackupTs) / 86400000) : 999;
+  var backupPart = "";
+  if(crmLeads.length > 0 && (!lastBackupTs || daysSince >= 7)){
+    backupPart = ' · <b style="color:var(--high)">' + (lastBackupTs ? ("已 " + daysSince + " 天未备份") : "尚未导出备份") + '</b>';
+  } else if(lastBackupTs){
+    backupPart = " · 已备份(" + localDateStr(new Date(lastBackupTs)) + ")";
+  }
+  el.innerHTML = savePart + backupPart;
+  var tc = document.getElementById("crmTrashCount");
+  if(tc) tc.textContent = String(crmTrash.length);
+}
 
 try {
   var savedCmp = JSON.parse(localStorage.getItem("friesgo_cmp") || "[]");
@@ -2722,6 +2815,8 @@ function saveLeadsLocal(opts){
     showStorageError((e && e.message) ? e.message : "存储空间不足或无痕模式受限");
   }
   updateFollowBadge();
+  updateSaveBackupStatus(true);
+  if(typeof window.refreshQuoteClientSelect === "function") window.refreshQuoteClientSelect();
   if(typeof renderHomeWorkspace === "function") renderHomeWorkspace();
 }
 function saveLocal(opts){
@@ -2737,6 +2832,8 @@ window.addEventListener("storage", function(e){
         crmLeads = incoming;
         _lastKnownLeadsRaw = e.newValue;
         updateFollowBadge();
+        updateSaveBackupStatus(false);
+        if(typeof window.refreshQuoteClientSelect === "function") window.refreshQuoteClientSelect();
         if(typeof renderTools === "function") renderTools();
         if(typeof render === "function") render();
         if(typeof renderHomeWorkspace === "function") renderHomeWorkspace();
@@ -3080,12 +3177,27 @@ function renderHomeWorkspace(){
         ? '<p style="color:var(--muted);margin:6px 0">今天暂无到期或逾期的跟进任务（当前共维护 '+crmLeads.length+' 位客户）。</p>'
         : '<p style="color:var(--muted);margin:6px 0">还没有客户档案。点上方「＋ 新增客户」，或去「找客户」导入名单后即可自动排程提醒。</p>';
     } else {
+      var defNext3 = localDateOffsetStr(3);
       dueBox.innerHTML = dueItems.slice(0, 6).map(function(x){
         var l = x.lead;
-        return '<div class="due-item">'
-          + '<div><b>'+esc(l.company)+'</b> <span class="'+x.info.cls+'" style="margin-left:4px">'+esc(x.info.label)+'</span>'
-          + '<div class="src-ok" style="margin-top:2px">'+esc(CN[l.country]||l.country)+' · '+esc(l.stage||"跟进中")+(l.note?(' · '+esc(l.note.slice(0,36))):'')+'</div></div>'
-          + '<div style="display:flex;gap:6px"><button type="button" class="pill" data-home-client="'+esc(l.id)+'" style="min-height:30px;padding:3px 10px;font-size:12px">查看详情</button></div>'
+        var lastTl = (Array.isArray(l.timeline) && l.timeline.length) ? l.timeline[0] : null;
+        var summaryTxt = lastTl ? (lastTl.channel + "：" + lastTl.result) : (l.note || "");
+        return '<div class="due-item" style="flex-direction:column;align-items:stretch;gap:8px">'
+          + '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">'
+          + '<div style="min-width:0;flex:1 1 200px"><b>'+esc(l.company)+'</b> <span class="'+x.info.cls+'" style="margin-left:4px">'+esc(x.info.label)+'</span>'
+          + '<div class="src-ok" style="margin-top:2px">'+esc(CN[l.country]||l.country)+' · '+esc(l.stage||"跟进中")+(summaryTxt?(' · '+esc(summaryTxt.slice(0,42))):'')+'</div></div>'
+          + '<div style="display:flex;gap:6px;flex-wrap:wrap">'
+          + '<button type="button" class="pill primary" data-home-done="'+esc(l.id)+'" style="min-height:30px;padding:3px 9px;font-size:12px">✓ 已联系 (+3天)</button>'
+          + '<button type="button" class="pill" data-home-snooze="'+esc(l.id)+'" style="min-height:30px;padding:3px 9px;font-size:12px">顺延 +7天</button>'
+          + '<button type="button" class="pill" data-home-log="'+esc(l.id)+'" style="min-height:30px;padding:3px 9px;font-size:12px">记结果</button>'
+          + '<button type="button" class="pill" data-home-client="'+esc(l.id)+'" style="min-height:30px;padding:3px 9px;font-size:12px">详情</button>'
+          + '</div></div>'
+          + '<div class="home-log-bar" data-home-log-box="'+esc(l.id)+'" hidden>'
+          + '<select data-hl-ch aria-label="联系渠道"><option value="邮件">邮件</option><option value="WhatsApp">WhatsApp</option><option value="电话">电话</option><option value="会议/拜访">会议/拜访</option><option value="社媒">社媒</option></select>'
+          + '<input type="text" data-hl-res placeholder="一句话记录本次联系结果（如：已发报价，客户周四反馈）">'
+          + '<input type="date" data-hl-dt value="'+esc(defNext3)+'" aria-label="下次跟进日期">'
+          + '<button type="button" class="pill primary" data-home-log-save="'+esc(l.id)+'" style="min-height:30px;padding:3px 10px;font-size:12px">保存</button>'
+          + '</div>'
           + '</div>';
       }).join("");
     }
@@ -3131,6 +3243,54 @@ window.renderHomeWorkspace = renderHomeWorkspace;
 var homeDueWrap = document.getElementById("homeDueList");
 if(homeDueWrap){
   homeDueWrap.addEventListener("click", function(e){
+    var bDone = e.target.closest("button[data-home-done]");
+    if(bDone){
+      var l1 = findLeadById(bDone.getAttribute("data-home-done"));
+      if(!l1) return;
+      var next3 = localDateOffsetStr(3);
+      l1.nextDate = next3;
+      appendTimelineEntry(l1, {channel:"快捷打卡", result:"已联系跟进，安排下次跟进", nextDate:next3});
+      saveLeadsLocal(); renderTools(); render();
+      showToast("已记录联系「" + l1.company + "」，下次提醒：" + next3);
+      return;
+    }
+    var bSnz = e.target.closest("button[data-home-snooze]");
+    if(bSnz){
+      var l2 = findLeadById(bSnz.getAttribute("data-home-snooze"));
+      if(!l2) return;
+      var next7 = localDateOffsetStr(7);
+      l2.nextDate = next7;
+      appendTimelineEntry(l2, {channel:"延期", result:"待办顺延 7 天", nextDate:next7});
+      saveLeadsLocal(); renderTools(); render();
+      showToast("已将「" + l2.company + "」顺延至 " + next7);
+      return;
+    }
+    var bLog = e.target.closest("button[data-home-log]");
+    if(bLog){
+      var lid = bLog.getAttribute("data-home-log");
+      var box = homeDueWrap.querySelector('[data-home-log-box="'+lid+'"]');
+      if(box){
+        box.hidden = !box.hidden;
+        if(!box.hidden){ var inp = box.querySelector("[data-hl-res]"); if(inp) inp.focus(); }
+      }
+      return;
+    }
+    var bSave = e.target.closest("button[data-home-log-save]");
+    if(bSave){
+      var lid2 = bSave.getAttribute("data-home-log-save");
+      var l3 = findLeadById(lid2);
+      var box2 = homeDueWrap.querySelector('[data-home-log-box="'+lid2+'"]');
+      if(!l3 || !box2) return;
+      var ch = (box2.querySelector("[data-hl-ch]") || {}).value || "跟进";
+      var res = ((box2.querySelector("[data-hl-res]") || {}).value || "").trim();
+      var dt = ((box2.querySelector("[data-hl-dt]") || {}).value || "").trim();
+      if(!res){ showToast("请先填写本次联系结果"); var i2 = box2.querySelector("[data-hl-res]"); if(i2) i2.focus(); return; }
+      if(dt) l3.nextDate = dt;
+      appendTimelineEntry(l3, {channel:ch, result:res, nextDate:dt});
+      saveLeadsLocal(); renderTools(); render();
+      showToast("已记录「" + l3.company + "」跟进结果" + (dt ? ("，下次：" + dt) : ""));
+      return;
+    }
     var b = e.target.closest("button[data-home-client]");
     if(!b) return;
     var cid = b.getAttribute("data-home-client");
@@ -4218,16 +4378,26 @@ window.getRepSignature = function(){
       port: document.getElementById("qcPort").value.trim() || "Ningbo / Shanghai",
       destPort: destPort,
       freightNote: freightNote,
+      priceMode: qcPriceMode,
+      rawFac: rawFac,
+      unitName: unitName,
       unitSingular: unitSingular,
       unitPlural: unitPlural,
       qty: qty,
+      rebPct: Math.round(reb * 1000) / 10,
       fx: fx,
       marginPct: Math.round(mgn * 1000) / 10,
+      locRmb: loc,
       costRmb: Math.round(totalCostRmb + commRmb),
       freightUsd: frt,
+      insPct: Math.round(insPct * 10000) / 100,
       insUsd: insUsd,
+      bankUsd: bankUsd,
+      commPct: Math.round(commPct * 1000) / 10,
+      dutyPct: Math.round(duty * 1000) / 10,
       lead: v.lead,
       validDays: v.validDays,
+      payTerms: (document.getElementById("qcPayTerms") && document.getElementById("qcPayTerms").value) || "",
       fobUsd: fobUsd,
       unitFobUsd: unitFobUsd,
       cifUsd: cifUsd,
@@ -4389,11 +4559,138 @@ window.getRepSignature = function(){
   });
   syncCountryDuty();
 
-  window.loadIntoCalc = function(country, prod){
+  window.refreshQuoteClientSelect = function(){
+    var sel = document.getElementById("qcBindClient");
+    if(!sel) return;
+    var prev = sel.value;
+    var opts = '<option value="">— 选择客户以保存报价版本 —</option>';
+    (crmLeads || []).forEach(function(l){
+      opts += '<option value="'+esc(l.id)+'">'+esc(l.company)+' ('+esc(CN[l.country]||l.country)+')</option>';
+    });
+    sel.innerHTML = opts;
+    if(prev && (crmLeads || []).some(function(l){ return l.id === prev; })) sel.value = prev;
+  };
+  window.refreshQuoteClientSelect();
+
+  var btnSaveQv = document.getElementById("btnSaveQuoteVersion");
+  if(btnSaveQv){
+    btnSaveQv.addEventListener("click", function(){
+      var s = _lastQuoteState;
+      if(!s || !s.ok){
+        showToast("无法归档：当前报价参数无效，请先修正错误项");
+        return;
+      }
+      var sel = document.getElementById("qcBindClient");
+      var cid = sel ? sel.value : "";
+      var lead = cid ? findLeadById(cid) : null;
+      if(!lead){
+        showToast("请先在左侧选择要绑定的客户（如尚未建档，请先到「客户跟进」新增客户）");
+        if(sel) sel.focus();
+        return;
+      }
+      if(!Array.isArray(lead.quotes)) lead.quotes = [];
+      var ver = "V" + (lead.quotes.length + 1);
+      var qDate = localDateStr();
+      var snap = {
+        ver: ver,
+        savedAt: localDateTimeStr(),
+        date: qDate,
+        prod: s.prod,
+        qty: s.qty,
+        priceMode: s.priceMode || "unit",
+        rawFac: s.rawFac,
+        unitName: s.unitName || "units",
+        unitSingular: s.unitSingular,
+        unitPlural: s.unitPlural,
+        country: s.country,
+        port: s.port,
+        destPort: s.destPort || "",
+        freightNote: s.freightNote || "",
+        rebPct: s.rebPct,
+        fx: s.fx,
+        marginPct: s.marginPct,
+        locRmb: s.locRmb,
+        costRmb: s.costRmb,
+        freightUsd: s.freightUsd,
+        insPct: s.insPct,
+        insUsd: s.insUsd,
+        bankUsd: s.bankUsd,
+        commPct: s.commPct,
+        dutyPct: s.dutyPct,
+        unitFobUsd: s.unitFobUsd,
+        fobUsd: s.fobUsd,
+        unitCifUsd: s.unitCifUsd,
+        cifUsd: s.cifUsd,
+        fobStr: s.fobStr,
+        cifStr: s.cifStr,
+        validDays: s.validDays,
+        lead: s.lead,
+        payTerms: s.payTerms || "",
+        owner: lead.owner || defaultOwner || ""
+      };
+      lead.quotes.unshift(snap);
+      appendTimelineEntry(lead, {
+        channel: "报价归档",
+        result: "归档报价 " + ver + "：" + s.prod + " (" + s.qty + " " + s.unitPlural + ") FOB " + s.fobStr + " / CIF " + s.cifStr + "（汇率 " + s.fx + "，有效期 " + s.validDays + " 天）"
+      });
+      saveLeadsLocal();
+      if(typeof renderTools === "function") renderTools();
+      if(typeof render === "function") render();
+      showToast("已为「" + lead.company + "」归档报价 " + ver, {
+        label: "查看报价版本",
+        onClick: function(){
+          navigateTo("client-list");
+          if(typeof window.openClientDetail === "function") window.openClientDetail(lead.id, "quote");
+        }
+      });
+    });
+  }
+
+  window.loadIntoCalc = function(country, prod, clientId, quoteSnap){
     navigateTo("quote-calc");
     if(country && DATA.some(function(d){ return d.country === country; })) qcSel.value = country;
     if(prod) document.getElementById("qcProdName").value = prod;
     syncCountryDuty();
+    if(typeof window.refreshQuoteClientSelect === "function") window.refreshQuoteClientSelect();
+    var cSel = document.getElementById("qcBindClient");
+    if(cSel && clientId) cSel.value = clientId;
+    if(quoteSnap && typeof quoteSnap === "object"){
+      if(quoteSnap.priceMode && quoteSnap.priceMode !== qcPriceMode && modePills){
+        qcPriceMode = quoteSnap.priceMode;
+        var facEl = document.getElementById("qcFactoryRmb");
+        if(facEl) facEl.step = (qcPriceMode === "total") ? "1000" : "10";
+        var fl = document.getElementById("qcFacLabel");
+        if(fl) fl.textContent = (qcPriceMode === "total") ? "工厂含税采购总价（RMB）" : "工厂含税单价（RMB / 件）";
+        modePills.querySelectorAll("button[data-qcmode]").forEach(function(x){
+          var on = x.getAttribute("data-qcmode") === qcPriceMode;
+          x.setAttribute("aria-pressed", on ? "true" : "false");
+          x.classList.toggle("primary", on);
+        });
+      }
+      var setVal = function(id, val){ var el = document.getElementById(id); if(el && val != null && val !== "") el.value = val; };
+      setVal("qcProdName", quoteSnap.prod);
+      if(quoteSnap.rawFac != null) setVal("qcFactoryRmb", quoteSnap.rawFac);
+      setVal("qcQty", quoteSnap.qty);
+      setVal("qcUnitName", quoteSnap.unitName);
+      if(quoteSnap.rebPct != null) setVal("qcRebate", quoteSnap.rebPct);
+      setVal("qcFx", quoteSnap.fx);
+      setVal("qcMargin", quoteSnap.marginPct);
+      if(quoteSnap.locRmb != null) setVal("qcLocalRmb", quoteSnap.locRmb);
+      if(quoteSnap.freightUsd != null) setVal("qcFreightUsd", quoteSnap.freightUsd);
+      if(quoteSnap.insPct != null) setVal("qcInsPct", quoteSnap.insPct);
+      if(quoteSnap.bankUsd != null) setVal("qcBankUsd", quoteSnap.bankUsd);
+      if(quoteSnap.commPct != null) setVal("qcCommPct", quoteSnap.commPct);
+      if(quoteSnap.dutyPct != null) setVal("qcDutyPct", quoteSnap.dutyPct);
+      setVal("qcPort", quoteSnap.port);
+      if(quoteSnap.destPort != null){ var dp = document.getElementById("qcDestPort"); if(dp) dp.value = quoteSnap.destPort; }
+      if(quoteSnap.freightNote != null){ var fn = document.getElementById("qcFreightNote"); if(fn) fn.value = quoteSnap.freightNote; }
+      setVal("qcLeadDays", quoteSnap.lead);
+      setVal("qcValidDays", quoteSnap.validDays);
+      if(quoteSnap.payTerms) setVal("qcPayTerms", quoteSnap.payTerms);
+      updateCalc();
+      showToast("已载入历史报价版本 " + (quoteSnap.ver || "") + "（" + (quoteSnap.date || "") + "）");
+      return;
+    }
     showToast("已载入「"+(CN[country]||country)+"」参考关税到成本与报价计算");
   };
 
@@ -6324,6 +6621,8 @@ window.addCustomerToCrm = function(p){
     source: p.source || "手动建档",
     note: note,
     ddRecord: p.ddRecord || null,
+    timeline: Array.isArray(p.timeline) ? p.timeline : [],
+    quotes: Array.isArray(p.quotes) ? p.quotes : [],
     updated: today,
     updatedAt: Date.now()
   };
@@ -6380,13 +6679,15 @@ function renderClientDetailPanel(){
   var waUrl = waDigits.length >= 7 ? ("https://wa.me/" + waDigits) : "";
   var ddStale = isDdRecordStale(l);
   var ddStaleTag = (ddStale && ddStale.stale) ? ' <span class="comp-tag comp-red" style="margin:0">背调失效 · 主体已变更</span>' : '';
+  var tlList = Array.isArray(l.timeline) ? l.timeline : [];
+  var qList = Array.isArray(l.quotes) ? l.quotes : [];
 
   var tabBtns = [
     ["info", "基本资料"],
-    ["follow", "跟进记录"],
+    ["follow", "跟进时间线" + (tlList.length ? (" (" + tlList.length + ")") : "")],
     ["dd", "背调记录" + (ddStale && ddStale.stale ? " ⚠️" : "")],
     ["email", "邮件 / WhatsApp"],
-    ["quote", "快捷报价"]
+    ["quote", "报价版本" + (qList.length ? (" (" + qList.length + ")") : "")]
   ].map(function(t){
     return '<button type="button" class="crm-detail-tab'+(selectedClientTab===t[0]?' active':'')+'" data-cd-tab="'+t[0]+'">'+t[1]+'</button>';
   }).join("");
@@ -6404,13 +6705,34 @@ function renderClientDetailPanel(){
       + '<div><label>意向产品</label><input type="text" data-cd-f="product" value="'+esc(l.product||"")+'" placeholder="如 阀门/钢构/电缆"></div>'
       + '</div>';
   } else if(selectedClientTab === "follow"){
+    var defNext3 = localDateOffsetStr(3);
+    var tlHtml = tlList.length
+      ? ('<div class="tl-list">' + tlList.map(function(t){
+          return '<div class="tl-item">'
+            + '<div class="tl-head"><span class="meta-pill" style="padding:1px 7px">'+esc(t.channel||"跟进")+'</span><span>'+esc(t.at||"")+'</span>'+(t.owner?('<span>· '+esc(t.owner)+'</span>'):'')+'</div>'
+            + '<div class="tl-body">'+esc(t.result||"")+'</div>'
+            + ((t.nextAction || t.nextDate) ? ('<div class="tl-next">下一步：'+esc(t.nextAction||"继续跟进")+(t.nextDate?('（提醒日期：'+esc(t.nextDate)+'）'):'')+'</div>') : '')
+            + '</div>';
+        }).join("") + '</div>')
+      : '<p style="color:var(--muted);font-size:12.5px;margin:8px 0">暂无时间线记录。在上方追加每次联系结果，历史记录将永久按时间顺序留档，不会覆盖。</p>';
     bodyHtml = '<div class="form-grid" style="gap:8px">'
       + '<div><label>当前阶段</label><select data-cd-f="stage">'+STATUS_OPTS.map(function(st){ return '<option value="'+st+'"'+(l.stage===st?' selected':'')+'>'+st+'</option>'; }).join("")+'</select></div>'
       + '<div><label>下次跟进日期</label><input type="date" data-cd-f="nextDate" value="'+esc(l.nextDate||"")+'"></div>'
       + '<div><label>线索来源</label><input type="text" data-cd-f="source" value="'+esc(l.source||"")+'"></div>'
       + '</div>'
-      + '<div style="margin-top:8px"><label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px">跟进备注（询盘规格、报价进度、下次跟进动作）</label>'
-      + '<textarea data-cd-f="note" style="width:100%;min-height:76px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface2);color:var(--ink);font-size:13px">'+esc(l.note||"")+'</textarea></div>';
+      + '<div class="detail-box" style="margin-top:10px">'
+      + '<div style="font-size:12.5px;font-weight:800;color:var(--brown);margin-bottom:6px">追加一条跟进记录（不覆盖历史）</div>'
+      + '<div class="form-grid-4" style="gap:8px">'
+      + '<div><label>联系渠道</label><select id="cdTlChannel"><option value="邮件">邮件</option><option value="WhatsApp">WhatsApp</option><option value="电话">电话</option><option value="会议/拜访">会议/拜访</option><option value="社媒">社媒</option><option value="展会">展会</option></select></div>'
+      + '<div><label>本次联系结果</label><input id="cdTlResult" type="text" placeholder="如：已发正式报价，客户评估交期"></div>'
+      + '<div><label>下一步动作</label><input id="cdTlNextAction" type="text" placeholder="如：周四追问技术图纸确认"></div>'
+      + '<div><label>更新下次跟进日期</label><input id="cdTlNextDate" type="date" value="'+esc(defNext3)+'"></div>'
+      + '</div>'
+      + '<div class="pills" style="margin-top:8px"><button type="button" class="pill primary" data-cd-action="add-tl">＋ 追加到跟进时间线</button></div>'
+      + '</div>'
+      + tlHtml
+      + '<div style="margin-top:10px"><label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px">置顶摘要备注（客户画像 / 固定偏好，兼容旧数据）</label>'
+      + '<textarea data-cd-f="note" style="width:100%;min-height:64px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface2);color:var(--ink);font-size:13px">'+esc(l.note||"")+'</textarea></div>';
   } else if(selectedClientTab === "dd"){
     var dd = l.ddRecord;
     if(dd){
@@ -6446,11 +6768,36 @@ function renderClientDetailPanel(){
       + (waUrl ? ('<a class="pill good-btn" target="_blank" rel="noopener" href="'+waUrl+'">打开 WhatsApp ('+esc(phInfo.formatted)+')</a>') : '<span class="src-ok">填写电话后可一键打开 WhatsApp</span>')
       + '</div>' + phPreview;
   } else if(selectedClientTab === "quote"){
-    bodyHtml = '<p style="color:var(--muted);font-size:13px;margin:4px 0 8px">一键将「'+esc(l.company)+'」的目的国（'+esc(CN[l.country]||l.country)+'）与意向产品带入成本与报价计算器。</p>'
-      + '<div class="pills" style="margin-top:4px">'
-      + '<button type="button" class="pill primary" data-cd-action="quote">带入成本与报价计算</button>'
+    var todayStr = localDateStr();
+    var qHtml = qList.length
+      ? ('<div style="margin-top:10px">' + qList.map(function(q, qIdx){
+          var expDate = "";
+          var isExp = false;
+          if(q.date && q.validDays){
+            var d0 = new Date(q.date + "T00:00:00");
+            if(!isNaN(d0.getTime())){
+              d0.setDate(d0.getDate() + (parseInt(q.validDays, 10) || 15));
+              expDate = localDateStr(d0);
+              isExp = expDate < todayStr;
+            }
+          }
+          var stBadge = expDate
+            ? (isExp ? ('<span class="mx-bad">已过期 ('+esc(expDate)+')</span>') : ('<span class="mx-ok">有效至 '+esc(expDate)+'</span>'))
+            : ('<span class="src-ok">有效期 '+esc(q.validDays||15)+' 天</span>');
+          return '<div class="qv-card">'
+            + '<div class="qv-head">'
+            + '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="action-tag" style="margin:0">'+esc(q.ver||("V"+(qList.length-qIdx)))+'</span><b>'+esc(q.prod||"")+'</b><span class="src-ok">× '+esc(q.qty)+' '+esc(q.unitPlural||"units")+'</span> '+stBadge+'</div>'
+            + '<button type="button" class="pill" data-cd-load-q="'+qIdx+'" style="min-height:28px;padding:2px 10px;font-size:12px">载入到报价器</button>'
+            + '</div>'
+            + '<div class="qv-meta">FOB '+esc(q.port||"")+'：<b>'+esc(q.fobStr||("$"+Number(q.fobUsd||0).toFixed(2)))+'</b>（单价 $'+Number(q.unitFobUsd||0).toFixed(2)+'） ｜ CIF '+esc(q.destPort||q.country||"")+'：<b>'+esc(q.cifStr||("$"+Number(q.cifUsd||0).toFixed(2)))+'</b>（单价 $'+Number(q.unitCifUsd||0).toFixed(2)+'）</div>'
+            + '<div class="qv-meta">报价时间：'+esc(q.savedAt||q.date||"—")+' ｜ 汇率：'+esc(q.fx)+' ｜ 毛利：'+esc(q.marginPct)+'% ｜ 核算成本：¥'+Number(q.costRmb||0).toLocaleString("zh-CN")+(q.freightNote?(' ｜ 运费依据：'+esc(q.freightNote)):'')+'</div>'
+            + '</div>';
+        }).join("") + '</div>')
+      : '<p style="color:var(--muted);font-size:12.5px;margin:8px 0">该客户尚无归档报价版本。点击下方「新建 / 归档报价」进入报价器，算完后点「保存报价版本」即可保留 V1/V2/V3 完整快照。</p>';
+    bodyHtml = '<div class="pills" style="margin-top:4px">'
+      + '<button type="button" class="pill primary" data-cd-action="quote">新建 / 归档报价（自动绑定该客户）</button>'
       + '<button type="button" class="pill" data-cd-action="market">查看该国市场资料</button>'
-      + '</div>';
+      + '</div>' + qHtml;
   }
 
   panel.innerHTML = '<div class="crm-detail-head">'
@@ -6682,23 +7029,49 @@ if(cdPanel){
   cdPanel.addEventListener("click", function(e){
     var tb = e.target.closest("[data-cd-tab]");
     if(tb){ selectedClientTab = tb.getAttribute("data-cd-tab"); renderClientDetailPanel(); return; }
+    var lq = e.target.closest("[data-cd-load-q]");
+    if(lq){
+      var l0 = selectedClientId ? findLeadById(selectedClientId) : null;
+      var qIdx = parseInt(lq.getAttribute("data-cd-load-q"), 10);
+      if(l0 && Array.isArray(l0.quotes) && l0.quotes[qIdx] && typeof window.loadIntoCalc === "function"){
+        window.loadIntoCalc(l0.country, l0.quotes[qIdx].prod || l0.product || "", l0.id, l0.quotes[qIdx]);
+      }
+      return;
+    }
     var act = e.target.closest("[data-cd-action]");
     if(!act) return;
     var a = act.getAttribute("data-cd-action");
     var l = selectedClientId ? findLeadById(selectedClientId) : null;
     if(a === "close"){ selectedClientId = null; renderTools(); return; }
     if(!l) return;
+    if(a === "add-tl"){
+      var ch = (document.getElementById("cdTlChannel") || {}).value || "跟进";
+      var res = ((document.getElementById("cdTlResult") || {}).value || "").trim();
+      var nxtA = ((document.getElementById("cdTlNextAction") || {}).value || "").trim();
+      var nxtD = ((document.getElementById("cdTlNextDate") || {}).value || "").trim();
+      if(!res){ showToast("请先填写本次联系结果"); var rEl = document.getElementById("cdTlResult"); if(rEl) rEl.focus(); return; }
+      if(nxtD) l.nextDate = nxtD;
+      appendTimelineEntry(l, {channel:ch, result:res, nextAction:nxtA, nextDate:nxtD});
+      saveLeadsLocal(); renderTools(); render();
+      showToast("已追加跟进记录到「" + l.company + "」时间线");
+      return;
+    }
     if(a === "dd" && typeof window.loadIntoDd === "function"){ window.loadIntoDd(l.country, l.company, l.website||"", l.email||""); return; }
     if(a === "email" && typeof window.loadIntoEmailGen === "function"){ window.loadIntoEmailGen(l.country, guessLang(l.country), l.product||"", l.company, l.email||""); return; }
-    if(a === "quote" && typeof window.loadIntoCalc === "function"){ window.loadIntoCalc(l.country, l.product||""); return; }
+    if(a === "quote" && typeof window.loadIntoCalc === "function"){ window.loadIntoCalc(l.country, l.product||"", l.id); return; }
     if(a === "market"){ jumpToCountry(l.country); return; }
     if(a === "delete"){
-      if(confirm("确定删除档案「" + l.company + "」吗？")){
+      if(confirm("确定将档案「" + l.company + "」移入回收站吗？（30 天内可随时恢复）")){
+        moveLeadToTrash(l);
         _deletedLeadIds[l.id] = 1;
         crmLeads = crmLeads.filter(function(x){ return x.id !== l.id; });
         selectedClientId = null;
         saveLeadsLocal(); renderTools(); render();
-        showToast("已删除「" + l.company + "」");
+        if(typeof renderTrashPanel === "function") renderTrashPanel();
+        showToast("已移入回收站：「" + l.company + "」", {
+          label: "撤销恢复",
+          onClick: function(){ restoreLeadFromTrash(0); }
+        });
       }
     }
   });
@@ -6721,6 +7094,61 @@ if(cdPanel){
   }
   cdPanel.addEventListener("input", onCdFieldChange);
   cdPanel.addEventListener("change", onCdFieldChange);
+}
+
+function renderTrashPanel(){
+  var box = document.getElementById("crmTrashBox");
+  var tc = document.getElementById("crmTrashCount");
+  if(tc) tc.textContent = String(crmTrash.length);
+  if(!box || box.hidden) return;
+  if(!crmTrash.length){
+    box.innerHTML = '<div style="font-size:12.5px;color:var(--muted)">回收站为空。删除客户档案后将在此保留 30 天（最多 50 条），防止误删丢失。</div>';
+    return;
+  }
+  box.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">'
+    + '<b style="font-size:13px;color:var(--brown)">回收站（保留 30 天 · 共 '+crmTrash.length+' 条）</b>'
+    + '<button type="button" class="pill danger" data-trash-empty="1" style="min-height:26px;padding:2px 9px;font-size:11.5px">彻底清空回收站</button>'
+    + '</div>'
+    + crmTrash.map(function(item, idx){
+        var ld = item.lead || {};
+        return '<div class="due-item" style="padding:7px 10px;margin-top:6px">'
+          + '<div><b>'+esc(ld.company||"")+'</b> <span class="src-ok">('+esc(CN[ld.country]||ld.country||"")+') · 删除于 '+esc(item.deletedAtStr||"")+'</span></div>'
+          + '<div style="display:flex;gap:6px"><button type="button" class="pill primary" data-trash-restore="'+idx+'" style="min-height:26px;padding:2px 9px;font-size:11.5px">恢复档案</button>'
+          + '<button type="button" class="pill" data-trash-purge="'+idx+'" style="min-height:26px;padding:2px 8px;font-size:11.5px">彻底删除</button></div>'
+          + '</div>';
+      }).join("");
+}
+window.renderTrashPanel = renderTrashPanel;
+
+var btnToggleTrash = document.getElementById("btnToggleTrash");
+if(btnToggleTrash){
+  btnToggleTrash.addEventListener("click", function(){
+    var box = document.getElementById("crmTrashBox");
+    if(!box) return;
+    box.hidden = !box.hidden;
+    renderTrashPanel();
+  });
+}
+var trashBoxEl = document.getElementById("crmTrashBox");
+if(trashBoxEl){
+  trashBoxEl.addEventListener("click", function(e){
+    var bR = e.target.closest("button[data-trash-restore]");
+    if(bR){ restoreLeadFromTrash(parseInt(bR.getAttribute("data-trash-restore"), 10)); return; }
+    var bP = e.target.closest("button[data-trash-purge]");
+    if(bP){
+      var idx = parseInt(bP.getAttribute("data-trash-purge"), 10);
+      if(idx >= 0 && idx < crmTrash.length){
+        crmTrash.splice(idx, 1); saveTrashLocal(); renderTrashPanel();
+        showToast("已彻底删除该回收站记录");
+      }
+      return;
+    }
+    var bE = e.target.closest("button[data-trash-empty]");
+    if(bE && confirm("确定彻底清空回收站中的 " + crmTrash.length + " 条记录吗？此操作不可撤销。")){
+      crmTrash = []; saveTrashLocal(); renderTrashPanel();
+      showToast("已清空回收站");
+    }
+  });
 }
 
 function downloadFile(name, text, mime){
@@ -6774,11 +7202,19 @@ document.getElementById("btnFollowExport").addEventListener("click", exportFollo
 document.getElementById("btnClearCmp").addEventListener("click", function(){ compareList=[]; saveCompareOnly(); renderTools(); showToast("已清空对比"); });
 document.getElementById("btnClearFollow").addEventListener("click", function(){
   if(!crmLeads.length) return;
-  if(confirm("确定要清空本地所有客户跟进记录与备注吗？建议先点「备份数据（JSON）」。")){ crmLeads=[]; followMap={}; selectedClientId=null; saveLeadsLocal({replaceAll:true}); renderTools(); render(); showToast("已清空客户列表"); }
+  if(confirm("确定要清空本地所有客户档案吗？清空的档案将先移入回收站（保留最近 50 条）。")){
+    crmLeads.slice().reverse().forEach(function(ld){ moveLeadToTrash(ld); });
+    crmLeads=[]; followMap={}; selectedClientId=null;
+    saveLeadsLocal({replaceAll:true}); renderTools(); render(); renderTrashPanel();
+    showToast("已清空客户列表（可在回收站恢复）");
+  }
 });
 document.getElementById("btnBackupJson").addEventListener("click", function(){
-  downloadFile("friesgo-crm-backup-"+localDateStr()+".json", JSON.stringify({version:2, exportedAt:localDateTimeStr(), compareList:compareList, crmLeads:crmLeads, defaultOwner:defaultOwner}, null, 2), "application/json");
-  showToast("已下载 JSON 备份（含 " + crmLeads.length + " 条客户档案）");
+  downloadFile("friesgo-crm-backup-"+localDateStr()+".json", JSON.stringify({version:3, exportedAt:localDateTimeStr(), compareList:compareList, crmLeads:crmLeads, defaultOwner:defaultOwner}, null, 2), "application/json");
+  lastBackupTs = Date.now();
+  try { localStorage.setItem("friesgo_last_backup", String(lastBackupTs)); } catch(e){}
+  updateSaveBackupStatus(false);
+  showToast("已下载 JSON 备份（含 " + crmLeads.length + " 条客户档案及时间线/报价版本）");
 });
 document.getElementById("btnRestoreJson").addEventListener("click", function(){ document.getElementById("restoreFile").click(); });
 document.getElementById("restoreFile").addEventListener("change", function(e){
@@ -6807,6 +7243,8 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
             source: String(x.source || "备份恢复"),
             note: String(x.note || ""),
             ddRecord: (x.ddRecord && typeof x.ddRecord === "object") ? x.ddRecord : null,
+            timeline: Array.isArray(x.timeline) ? x.timeline : [],
+            quotes: Array.isArray(x.quotes) ? x.quotes : [],
             updated: String(x.updated || localDateStr()),
             updatedAt: x.updatedAt || Date.now()
           };
@@ -6818,7 +7256,7 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
             id: makeLeadId(), company: (CN[c]||c)+" 市场跟进（备份恢复）", country: c, leadType: "客户",
             contact:"", email:"", phone:"", website:"", product:"",
             stage: f.status || "重点跟进", nextDate: f.nextDate || "",
-            owner: f.owner || defaultOwner, source: "备份恢复", note: f.note || "", ddRecord: null, updated: f.updated || localDateStr(), updatedAt: Date.now()
+            owner: f.owner || defaultOwner, source: "备份恢复", note: f.note || "", ddRecord: null, timeline: [], quotes: [], updated: f.updated || localDateStr(), updatedAt: Date.now()
           };
         });
       } else {
@@ -7796,6 +8234,8 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
 })();
 
 updateFollowBadge();
+updateSaveBackupStatus(false);
+if(typeof window.refreshQuoteClientSelect === "function") window.refreshQuoteClientSelect();
 renderTools();
 render();
 renderHomeWorkspace();
