@@ -1,0 +1,46 @@
+name: Daily Global Industrial Radar
+
+on:
+  schedule:
+    # Runs every day at 00:00 UTC (08:00 Beijing Time)
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-radar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Fetch live global typhoons, World Bank projects & EPC/financing leads
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WXPUSHER_APP_TOKEN: ${{ secrets.WXPUSHER_APP_TOKEN }}
+          WXPUSHER_TOPIC_ID: ${{ secrets.WXPUSHER_TOPIC_ID }}
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+          PUSHPLUS_TOPIC: ${{ secrets.PUSHPLUS_TOPIC }}
+          WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+        run: python3 scripts/fetch_radar.py
+
+      - name: Commit updated radar feed
+        run: |
+          git config user.name "FriesGo Radar Bot"
+          git config user.email "radar-bot@users.noreply.github.com"
+          git add data/radar_feed.json data/radar_feed.js
+          if git diff --cached --quiet; then
+            echo "No changes to radar feed."
+          else
+            git commit -m "chore(radar): auto-update daily global opportunity feed"
+            git push
+          fi
