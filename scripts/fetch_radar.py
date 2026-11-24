@@ -597,55 +597,77 @@ def enrich_with_gemini(items):
     if not api_key or not items:
         return False
 
-    # Pick English items needing Chinese translation (cap at 24 to keep 1 single fast API call)
+    # Prioritize English loan & news items (weather alerts already have crisp Chinese titles)
     targets = []
-    for idx, it in enumerate(items):
-        # Skip if already mostly Chinese
-        zh_chars = len(re.findall(r"[\u4e00-\u9fff]", it["title"]))
-        if zh_chars < 6 and len(targets) < 24:
-            targets.append({
-                "i": idx,
-                "cat": it["cat"],
-                "country": it["countryCn"],
-                "title": it["title"],
-                "entity": it["entity"],
-                "amount": it["amount"],
-            })
+    for cat_prio in ("loan", "news", "weather"):
+        for idx, it in enumerate(items):
+            if it["cat"] != cat_prio:
+                continue
+            zh_chars = len(re.findall(r"[\u4e00-\u9fff]", it["titleCn"]))
+            if zh_chars < 6 and len(targets) < 40:
+                targets.append({
+                    "i": idx,
+                    "cat": it["cat"],
+                    "country": it["countryCn"],
+                    "title": it["title"],
+                    "entity": it["entity"],
+                    "amount": it["amount"],
+                })
     if not targets:
         return True
 
-    prompt = (
-        "你是中国全品类工业品外贸总监（主营钢结构、阀门、水泵、电缆、机械、农机、五金）。\n"
-        "请把下面每条海外商机翻译成精炼中文标题，并给一句实战外贸切入建议（25字以内）。\n"
-        "严格返回纯 JSON 数组，每个对象只含字段：i（原整数索引）、titleCn（中文标题）、angleCn（一句外贸打法建议）。不要返回 markdown 代码块。\n"
-        + json.dumps(targets, ensure_ascii=False)
-    )
-    endpoint = (
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
-        + urllib.parse.quote(api_key)
-    )
-    body = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"},
-    }
-    try:
-        resp_txt = http_post_json(endpoint, body, timeout=30)
-        resp_json = json.loads(resp_txt)
-        text = resp_json["candidates"][0]["content"]["parts"][0]["text"]
-        text = re.sub(r"^```json\s*|\s*```$", "", text.strip())
-        arr = json.loads(text)
-        if isinstance(arr, list):
-            for obj in arr:
-                i = obj.get("i")
-                if isinstance(i, int) and 0 <= i < len(items):
-                    if obj.get("titleCn"):
-                        items[i]["titleCn"] = clean_text(obj["titleCn"])
-                    if obj.get("angleCn"):
-                        items[i]["angleCn"] = clean_text(obj["angleCn"])
-            print(f"[INFO] Gemini enriched {len(arr)} items successfully.")
-            return True
-    except Exception as e:
-        print(f"[WARN] Gemini enrichment skipped/failed: {e}")
+    endpoints = [
+        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {"x-goog-api-key": api_key}),
+        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent", {"x-goog-api-key": api_key}),
+        ("https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-2.5-flash:generateContent?key=" + urllib.parse.quote(api_key), {}),
+    ]
+
+    enriched_total = 0
+    working_ep = None
+    # Process in clean batches of 20 so JSON output stays fast & never truncates
+    for start in range(0, len(targets), 20):
+        batch = targets[start : start + 20]
+        prompt = (
+            "你是中国全品类工业品外贸总监（主营钢结构、阀门、水泵、电缆、机械、农机、五金）。\n"
+            "请把下面每条海外商机翻译成精炼易懂的中文标题（带国别，28字以内），并给一句实战外贸切入建议（30字以内）。\n"
+            "严格返回纯 JSON 数组，每个对象只含字段：i（原整数索引）、titleCn（中文标题）、angleCn（外贸切入建议）。不要输出任何多余文字。\n"
+            + json.dumps(batch, ensure_ascii=False)
+        )
+        body = {
+            "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+            "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"},
+        }
+        try_list = [working_ep] if working_ep else endpoints
+        resp_txt = None
+        for ep_url, ep_hdrs in try_list:
+            try:
+                resp_txt = http_post_json(ep_url, body, timeout=45, headers=ep_hdrs)
+                working_ep = (ep_url, ep_hdrs)
+                break
+            except Exception as e_ep:
+                print(f"[WARN] Gemini endpoint failed ({ep_url.split('?')[0]}): {e_ep}")
+        if not resp_txt:
+            break
+        try:
+            resp_json = json.loads(resp_txt)
+            text = resp_json["candidates"][0]["content"]["parts"][0]["text"]
+            text = re.sub(r"^```json\s*|\s*```$", "", text.strip())
+            arr = json.loads(text)
+            if isinstance(arr, list):
+                for obj in arr:
+                    i = obj.get("i")
+                    if isinstance(i, int) and 0 <= i < len(items):
+                        if obj.get("titleCn"):
+                            items[i]["titleCn"] = clean_text(obj["titleCn"])
+                        if obj.get("angleCn"):
+                            items[i]["angleCn"] = clean_text(obj["angleCn"])
+                        enriched_total += 1
+        except Exception as e_parse:
+            print(f"[WARN] Gemini batch parse failed: {e_parse}")
+
+    if enriched_total > 0:
+        print(f"[INFO] Gemini enriched {enriched_total} items successfully.")
+        return True
     return False
 
 
