@@ -604,7 +604,7 @@ def enrich_with_gemini(items):
             if it["cat"] != cat_prio:
                 continue
             zh_chars = len(re.findall(r"[\u4e00-\u9fff]", it["title"]))
-            if zh_chars < 6 and len(targets) < 40:
+            if zh_chars < 6 and len(targets) < 48:
                 targets.append({
                     "i": idx,
                     "cat": it["cat"],
@@ -616,6 +616,7 @@ def enrich_with_gemini(items):
     if not targets:
         return True
 
+    import time
     endpoints = [
         ("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent", {"x-goog-api-key": api_key}),
         ("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent", {"x-goog-api-key": api_key}),
@@ -625,9 +626,11 @@ def enrich_with_gemini(items):
 
     enriched_total = 0
     working_ep = None
-    # Process in clean batches of 20 so JSON output stays fast & never truncates
-    for start in range(0, len(targets), 20):
-        batch = targets[start : start + 20]
+    # Process in clean batches of 16 with polite pause so free-tier RPM/timeout never drops batch 2
+    for start in range(0, len(targets), 16):
+        if start > 0:
+            time.sleep(4)
+        batch = targets[start : start + 16]
         prompt = (
             "你是中国全品类工业品外贸总监（主营钢结构、阀门、水泵、电缆、机械、农机、五金）。\n"
             "请把下面每条海外商机翻译成精炼易懂的中文标题（带国别，28字以内），并给一句实战外贸切入建议（30字以内）。\n"
@@ -638,17 +641,18 @@ def enrich_with_gemini(items):
             "contents": [{"role": "user", "parts": [{"text": prompt}]}],
             "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"},
         }
-        try_list = [working_ep] if working_ep else endpoints
+        try_list = ([working_ep] + [e for e in endpoints if e != working_ep]) if working_ep else endpoints
         resp_txt = None
         for ep_url, ep_hdrs in try_list:
             try:
-                resp_txt = http_post_json(ep_url, body, timeout=45, headers=ep_hdrs)
+                resp_txt = http_post_json(ep_url, body, timeout=55, headers=ep_hdrs)
                 working_ep = (ep_url, ep_hdrs)
                 break
             except Exception as e_ep:
                 print(f"[WARN] Gemini endpoint failed ({ep_url.split('?')[0]}): {e_ep}")
+                time.sleep(2)
         if not resp_txt:
-            break
+            continue
         try:
             resp_json = json.loads(resp_txt)
             text = resp_json["candidates"][0]["content"]["parts"][0]["text"]
