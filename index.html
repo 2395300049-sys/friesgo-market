@@ -920,7 +920,17 @@ Best regards,
         <div><label for="qcCountry">目的国（自动带入参考关税）</label><select id="qcCountry"></select></div>
         <div><label for="qcProdName">报价品名（英文，用于正式报价）</label><input id="qcProdName" type="text" value="Industrial Valves & Water Pumps"></div>
         <div><label for="qcFactoryRmb" id="qcFacLabel">工厂含税单价（RMB / 件）</label><input id="qcFactoryRmb" type="number" value="1000" min="0" step="10"></div>
-        <div><label for="qcQty">数量（件 / 套，须大于 0）</label><input id="qcQty" type="number" value="100" min="1" step="1"></div>
+        <div><label for="qcQty">数量（须大于 0）</label><input id="qcQty" type="number" value="100" min="1" step="1"></div>
+        <div>
+          <label for="qcUnitName">计量单位（正式报价用）</label>
+          <select id="qcUnitName">
+            <option value="units" selected>units（台/件）</option>
+            <option value="pcs">pcs（个/支）</option>
+            <option value="sets">sets（套）</option>
+            <option value="tons">MT（公吨）</option>
+            <option value="meters">meters（米）</option>
+          </select>
+        </div>
         <div>
           <label for="qcRebate">出口退税率（%）</label>
           <select id="qcRebate">
@@ -939,7 +949,9 @@ Best regards,
         <div><label for="qcDutyPct">目的国参考进口关税（%，可改）</label><input id="qcDutyPct" type="number" value="0" min="0" max="100" step="0.5"></div>
         <div><label for="qcLeadDays">生产交期（天）</label><input id="qcLeadDays" type="number" value="20" min="1" step="1"></div>
         <div><label for="qcValidDays">报价有效期（天）</label><input id="qcValidDays" type="number" value="15" min="3" max="60" step="1"></div>
-        <div><label for="qcPort">中国装运港</label><input id="qcPort" type="text" value="Ningbo / Shanghai"></div>
+        <div><label for="qcPort">中国装运港（POL）</label><input id="qcPort" type="text" value="Ningbo / Shanghai"></div>
+        <div><label for="qcDestPort">目的港（POD，CIF 条款必填）</label><input id="qcDestPort" type="text" value="" placeholder="如：Ho Chi Minh / Manzanillo"></div>
+        <div><label for="qcFreightNote">运费日期与依据（选填）</label><input id="qcFreightNote" type="text" value="" placeholder="如：货代海运报价，1x20'GP"></div>
       </div>
       <div id="qcFtaNote" style="margin-top:10px;font-size:12.5px;padding:8px 10px;border-radius:10px;background:var(--surface2);border:1px solid var(--line)"></div>
 
@@ -1045,6 +1057,7 @@ Best regards,
           <tbody id="ctnTbody"></tbody>
         </table>
       </div>
+      <div id="ctnValWarn" class="storage-warn-banner" hidden style="margin-top:10px"></div>
       <div id="ctnOogWarn" hidden style="margin-top:10px;padding:8px 12px;border-radius:10px;background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;font-size:12.5px;font-weight:700"></div>
       <div class="pills" style="margin-top:10px">
         <button class="pill primary" id="btnAddCtnRow" type="button">➕ 增加一个拼柜品名</button>
@@ -1061,8 +1074,8 @@ Best regards,
 
   <!-- Interactive Multilingual Email Generator: Upgraded to 21-Day 5-Touch Cadence -->
   <section class="block" id="email-gen">
-    <h2>✉️ 21 天 5 步多语种开发信生成器（工业大客户高回复节奏）</h2>
-    <p class="sub">工业品 80% 的有效回复来自第 3–5 封跟进！按 <b>Day 1 破冰 → Day 4 技术规格与原产地降税 → Day 8 同行案例 → Day 12 拼柜方案 → Day 18 礼貌唤醒</b> 生成，支持 10 种语言。<b>你的姓名和 WhatsApp 会自动记忆并同步到全站所有开发信与 RFQ 报价单！</b></p>
+    <h2>多语种开发信生成</h2>
+    <p class="sub">按 <b>Day 1 破冰 → Day 4 技术与单证跟进 → Day 8 同行案例 → Day 12 拼柜方案 → Day 18 礼貌唤醒</b> 生成，支持 10 种语言。承诺条款默认不勾选，请按真实供货能力勾选后再发。</p>
     <div class="card">
       <div class="form-grid">
         <div><label for="emCountry">目标国家</label><select id="emCountry"></select></div>
@@ -1084,32 +1097,33 @@ Best regards,
         <div>
           <label for="emType">21 天跟进节奏模板</label>
           <select id="emType">
-            <option value="first">Day 1 · 第 1 封：精准破冰开发信（痛点+信任钩子）</option>
-            <option value="followup">Day 4 · 第 2 封：技术规格（TDS/CAD）与原产地降税跟进</option>
-            <option value="case">Day 8 · 第 3 封：同区域交付案例与品控背书</option>
-            <option value="logistics">Day 12 · 第 4 封：全品类拼柜降海运成本方案</option>
-            <option value="breakup">Day 18 · 第 5 封：礼貌“断舍离”唤醒信（高回复）</option>
-            <option value="wa">WhatsApp / Zalo / LINE 简短破冰话术</option>
+            <option value="first" data-base="Day 1 · 第 1 封：破冰开发信">Day 1 · 第 1 封：破冰开发信</option>
+            <option value="followup" data-base="Day 4 · 第 2 封：技术规格与单证跟进">Day 4 · 第 2 封：技术规格与单证跟进</option>
+            <option value="case" data-base="Day 8 · 第 3 封：同区域交付案例">Day 8 · 第 3 封：同区域交付案例</option>
+            <option value="logistics" data-base="Day 12 · 第 4 封：多品类拼柜方案">Day 12 · 第 4 封：多品类拼柜方案</option>
+            <option value="breakup" data-base="Day 18 · 第 5 封：礼貌唤醒信">Day 18 · 第 5 封：礼貌唤醒信</option>
+            <option value="wa" data-base="WhatsApp / Zalo / LINE 简短破冰话术">WhatsApp / Zalo / LINE 简短破冰话术</option>
           </select>
         </div>
         <div><label for="emCompany">客户公司名称</label><input id="emCompany" type="text" value="ABC Industrial Co."></div>
         <div><label for="emContact">联系人姓名（选填）</label><input id="emContact" type="text" placeholder="如：David / Minh / Ahmed"></div>
         <div><label for="emToEmail">收件人邮箱（从 CSV/雷达自动带入，可改）</label><input id="emToEmail" type="email" placeholder="如：procurement@buyer.com"></div>
         <div><label for="emProduct">主推产品名称（英文）</label><input id="emProduct" type="text" value="industrial valves & water pumps"></div>
-        <div><label for="emEdge">核心交期 / 认证卖点</label><input id="emEdge" type="text" value="ISO/CE certified, 15-day lead time"></div>
+        <div><label for="emEdge">确认的认证 / 交期卖点（选填，不填不承诺）</label><input id="emEdge" type="text" value="" placeholder="确认后再填，如：ISO 9001 certified, 20-day lead time"></div>
         <div><label for="emSender">你的英文名 / 职位（本机自动记忆并同步全站）</label><input id="emSender" type="text" value="" placeholder="如：Amy · Export Manager, FriesGo Global"></div>
         <div><label for="emPhone">你的 WhatsApp / 电话（本机自动记忆并同步全站）</label><input id="emPhone" type="text" placeholder="如：+86 138 xxxx xxxx"></div>
       </div>
 
       <div style="margin-top:10px">
-        <span style="font-size:12px;font-weight:800;color:var(--brown)">✅ 勾选工业信任钩子（自动写入 Day 1 正文，提升大客户回复率）：</span>
+        <span style="font-size:12px;font-weight:800;color:var(--brown)">按真实能力勾选附加说明（默认全部不选，避免误承诺）：</span>
         <div class="check-grid" id="trustHooks">
-          <label class="check-pill"><input type="checkbox" value="cad" checked> 📐 提供 CAD/3D 图纸与规格书</label>
-          <label class="check-pill"><input type="checkbox" value="sgs" checked> 🔍 支持 SGS / BV / TUV 装船前验货</label>
-          <label class="check-pill"><input type="checkbox" value="co" checked> 🆓 可出 Form E / RCEP / FTA 原产地免税证</label>
-          <label class="check-pill"><input type="checkbox" value="mix" checked> 📦 多品类工业品一站式拼柜降运费</label>
-          <label class="check-pill"><input type="checkbox" value="sample"> 🧪 支持先寄样品 / 视频连线验厂</label>
+          <label class="check-pill"><input type="checkbox" value="cad"> 提供 CAD/3D 图纸与规格书</label>
+          <label class="check-pill"><input type="checkbox" value="sgs"> 支持 SGS / BV / TUV 装船前验货</label>
+          <label class="check-pill" id="emCoHookLabel"><input type="checkbox" value="co" id="emCoHookCb"> 可办优惠原产地证（须目的国享对华自贸协定且 HS 编码合规）</label>
+          <label class="check-pill"><input type="checkbox" value="mix"> 多品类工业品拼柜出运</label>
+          <label class="check-pill"><input type="checkbox" value="sample"> 支持寄样 / 视频连线验厂</label>
         </div>
+        <div id="emCoFtaHint" class="flag-note" style="margin:6px 0 0"></div>
       </div>
 
       <div style="margin-top:8px">
@@ -2095,12 +2109,22 @@ Best regards,
 </nav>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="cmpReplaceModal" hidden style="position:fixed;inset:0;z-index:1200;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;padding:16px">
+  <div class="card" style="max-width:440px;width:100%;margin:0;box-shadow:0 20px 45px rgba(0,0,0,.22)">
+    <h3 id="cmpReplaceTitle" style="margin:0 0 6px;font-size:16px;color:var(--brown)">对比栏已满（最多 4 国）</h3>
+    <p id="cmpReplaceDesc" style="margin:0 0 12px;font-size:13px;color:var(--muted)">请选择要替换掉的国家：</p>
+    <div id="cmpReplaceBtns" class="pills" style="margin:0 0 12px"></div>
+    <div style="display:flex;justify-content:flex-end">
+      <button type="button" class="pill" id="btnCmpReplaceCancel">取消</button>
+    </div>
+  </div>
+</div>
 <button class="back-top" id="backTopBtn" type="button" title="回到顶部">⬆ 顶部</button>
 <script src="data/radar_feed.js"></script>
 
 <script>
 /* ===== Single compressed Logo (128x128) ===== */
-var LOGO_SRC = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAACMCAYAAACDHqzBAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAYKADAAQAAAABAAAAjAAAAABEF3WQAABAAElEQVR4Ae29CbRuV1Xnu/b+2tPevs1Nc9OTPrnplFCE0KRAEKsU1AfFk3qO+PAZAR31lOcrvaOs8lkqViHIM6lXoKPoJCI+wKCCGAIyQshNhwkh3Q25fXuae7qv2Xu/33/Otb/znettzrn3IhlvuM7Ze692rrn+c665mt18Ifyz+4EikPxAaz9J5UUIydQfrF9dyYYvrNeys/MsWVkJ2WAe8oFQpINpUlTzvEhDTk5cmhatPMtnijQZT5Pke53p/B8e6O7Z9aqtoXuSqn5gyS9JARRFSDofPOuqUDTemSbpG9Nq5eyQJPWkAk4kusv9orAJIF4VLhBRu5vnnWxvt5t9sT3Xvnu0NvlQsjXEQpHES+DykhPAE1svr1+4tv0TtfrQ+5L6yBV5Ug0hawFmC2A7gA2GOoIA59ovEItXkvJkIXTzpGh3k0679djkTPe31g9P/TlCeEn1Blr30nKXjM7cngyt+6VizeVXZJXhPIw9G8LsRAidOYAFVIEL9iDMIW23gDcimqIiCoikgn5QZN3iqmqR3fn8vuphpPJlz/zSOKcvDTaci9nfPv+cMND80byx+tqQNPIw/kIIEy+GMHckFO1Zjjk6QRtUOTJ6QyaBcKDtAr081DNAniSlF0W3yIu5TnEDWV/3xP8SVr6U2vyS6gFJLbuCkfTqSjGdZIefLsLUgRAAPmTdkKDdhbRfTkqfJozDDBbyW6/AmlrnIE49gDhKqAxZEsblUEfbLs1mw2ZK0BNeGu4lJYC0KNYk3e7qYnrCQCw6gN8zJxF8cNPAhWL3APehFcD7rJHBKyHILGUMyuooeVidVsLqlwb0zsVLSgCgXi+63XpIMDeZAMa0AGLSQ5Y4/5cEzG/SUKTJx0QTNZ8GqiMoG11A6NMVakUSav8sgOMikHSSHHvDP2MngAGaNLgnAAEsVCMB2R/5e50jJihMWRcOZVRexYqiQxEGj5eOO60eUGwNTCsuHFwZGnPJ1ifap9ssBtGZpFKZNq1PBBx2XkQjrkZfMtAhgPHorygFYRmUnQLCPApPOVUGclOVIhyJ2U75Uvz+poHQTTbOhHRZJcsmG0M7dyS/GJgnL90tWQD7t64ZXrF8+IdYaf4Y+nnTSN5e0W7PHpz9j+u+kubtTzR+fezbS2fDSxRZciSvFUeEvdASaPLKuQwcWNNoRTCqlmBbJuVTvLKZ1hcmBA0jmcJFmOQ4ZQHYGmXN7FuKovKzWbW4tp5lAwzxrfbMhqdn/1P3s0kn/GnjsgPbk7cGRpzFuUULoPjDNcNZPnxbUan/fJrWbk2rtYbZ6Dnm55W586shu6E9l/7rw//H6G+u/K3Jjy2u+oW58koxnoZiXNgLRHOSRhl2EOcTY9iylvmj1AqTjtkdy48AGF6KybwSWFQs3W3fel5z4+rO+2oj694VmivXJLNTRTEzViRzM7VKKLakIdmC/bxj9uk1nyh+q/jofe2Dzy9mC+SkAjDgi5Wv7laq70ob9VemtYFmFipF3p7Lg+bidP8CkIo8ZcJRXJQW2a/tfvfQgY0fmP7rpTYzozuHtDIpmhj/WLyHbBSKwjJNXJWlTEZIpdcKSmiaquqPLsBijDVZGEvTMG3pSzytX568rT6y4n/OVl62CknmYYqZbMGiGo3JKhXmDMbXOY00/Gony952Y3X1R2d/tfrRZnPviyfaAjnuQmz31o2DxYcvfk03XfXx0Bz6VGVk9e3F4KpGllTy0J4uQnsqhBazlW6H7m5gmZ5ids/L8u4dz90Rli2xjWE4qUywaJoQUubUJo4FwFp3mEfb0sxmaTRQ/oW5ZYqyjD6VhxlO+/eeggBm3r/x7Fq9/rZubWRTmDkUwqGngl3ZHklkbVRlhdqrTCHSap5Wq2c3KtVfrwx1/2q2svq9+//d0Hqxdiz3j3pAcVeozcxdelWzUfnFvN78V5XG8EgW6kylW3mYG4sLI8ZbM6y20nS/1BGNq7Bp1qiGq7JO5TVY3s8cq9LjxuVT00VlZAylooKE6WiJpskW+ugL9S6EWJgzYzpqIBYqphiwZWuBpJih3PhX/zgsebJQrQ2+Ma01L2JTIykmd4Vilk6aQ8aaH5VFAz5O5lNKqr6X1JJLqt3890ZHBn566tfr/6WVJp9ftfXwZH/7F/SA4q6LV3e7l767Odz8i3TZmnfkQ+sAv4bujOfF5EH2ZCirxZFMj83RVWlkAB8DMxgBXwgbsMFvfObO0Oiv7GT+nY2JuWpRjIElA4s71QCUpuPa9bRm2sn03YxR6UMKXijOfsSaTIPECDBHuExu7WfYc5/wPPmhS1fRt34kD9U1BT3een7GVogEa/oB1Qi+CIkD6YKGIMxpVlTSvFarbKlV0o/U8+LDk+8buXTrVkslg2czz+yHNp+bFQO/U1m+8T+HlRdv6lZG8jA9lofJPZia8ZB0mWXlDrxpoZkJtYziVqsu/FUqoVarDjSryZa8Vb3BiC/ytGkytLJKGANHzIU7YcqOg7VV6ykpu07SNKs4oaWl3wARHgLFcVFBHWmRTADMeCS76Esjb72q2qxfEiq1mikfJtd6v7VfUhApO/XR9HjmYInYwwLmeSWt1avp29DQu35hbnRL8ZagzXWXxPR/Pntjtb78F5Pl574zX7sFQwb743tCgb3TBljoMthowIkNVH0OEBNRAuZH85NqGlKOSoVrGjbW0vT1fVyd1KvBKs0KpJ1MujI7dW+jzqrPu4Olq2Kr3E49+vTDeUjEqwSA+cEuLGkG9MwfXEgPTn8kC80N1nZ6vgZ0lz6EnTGvV/4FbJTpJcMV7Q/mlaT4F3m3u/WZs+oXq2CqShpDgzckjcGfyYfXheLIriIcfpodSJSFnUetSsuNFOt31t2kVaWUy4qpHVQSNlsqTMySSrqsluQ3f/cd4SxVtGiX5BNoN0BZ62IxtawMUzchdXPFWpvtpBzusfGAtFzjBeCLZcz1RJotTQDndrOrmW1fm6eVQd2PKDpR+2N9JhQxY4cqibgQpThxKp21q85A1mJ3pdspbk9mitueeVsYTTcmrVVFmt6aJtnKMLEjDwe/Q65pMgM8m1hO1AkZNQiJpHiQflpNnK2VIJdINTFDjUY1HWhULqgP1F6n5MU6BDue5tl4ry5VoXokXHnLxnusc0Cy2Sil42yYpuUafLUaNhNQhAm8CwZAz338Mz36TUmlfhZVsoGBAKSMNuMzppwXeWOcgLZ/oe6cOS7qNWyNyzQyI5NGVDCr10/Vwsq0MlsMJVl2XmjNhDC9D5PDFeBtD8Z4E1EzvD3i1ljVgRPepTYKHOGjgTjFDGH31jI1e93uO8KgZV7EqZqkE6A24V2dArEeKyrisZIS8P5ky0OETI7NfNTWjKZwP42J+sFuc/Gr4OID3JuoVF/BHbnlmmoHFNImZer4SBLSXl30lHxIAY1NRZR5pBIqA666ZlyzvFjTzLVFztiatTjNzTj42HvYtgpEqASYKHeRsEtbjPjRG9dVQDVjihBCo14NV7fT5s2x9MkvWXcchTkMgxCJLVAp0SVoPJVUaIxlWZjTeJeJlAkyM8QEGmpjw/sC05jFuU5R3F6pNzbbgKbJh2m/KuKQRkev+LIJgQEl7uRYcZhXyw8vIuB5YCB0OxkHQmjnE1Pd0E2zdG4qybrPm71vIwgGW93QkHkpQTaaOlGpuXg1Q6TaJQRLEDOEuXue0AuqGg+SsBaOXx1Lnvwy252hlzJjKcAAanSv/omO1182VLVyqEpd4UMysQgTTuy5oZjKi+TwRV9c3Bqg+MPLh5Okcnu3qKyz8U/TbpkZupMJwJmws8VbnfM8GC7iCB6kCKb1jMAdlLs1x8GSqpOH745iEtPBvQcPt+byb7Rn5ybIkcr8uFZD39okIrGGCLMneLr5DQBnQPinLMiSqgZi9YLqMh4XuWX7/9o8zzk+yXnluLR0DBKzNp6IIEIuOVBpmwDoSpoEbTK3E3VL59RwpVte82hWpRlQPxmCx3bd9tyNoVa/LGXqmcv8mPZ7XqfL2TzUFdteWgJ13BJ00wGZm3YW2mi+dm/anSLtZsULWZLf/1hX7fxgaFWL2W08wvG5VNMsCtjga6B7dd58+alPVEunynWAlnl0hSPTWPyVGnc/mIs2auk5WZ69six2wuudoQ29cWjMGDnLPF/nvI+E2PuUZV5JCIgNnFkK2gFHk3T6RQ3AxVaWDGnxxkqjscEIsehyzQcXnLVQCqH7zWZnhA41kGZjsfAx5LlyE5o9KGbx7Ny0u2F2Nku6nTynM3yU4v/w1ntCxvQ4hOYT4zums+y/t9udZzBH7Kqpq1GhMc/F/nTFRZCj2lnlipYgdBL4YlMXpqJmQuF3LYr66h3vDQNKPZGDBO0vBBabZmoEB0QNU6vES1tjxRfpNmATrayCqRzDPM3YGqf8ohZh7ZUXXppUqj+cZZXRnJv/GGyvw+gaR/jAx5whgi+aOvFiLMvsMOvRxB+k250u2m8PDnCPqfgCmvGp6z8Z2FpQj8UlksT4+CMMfO/PW50ZegGjhwTAv+qwwwMSRkQ5xoOYpRtE+P0qyqYXGgeqlWatklyTzVSvUX0ndQXaKiGIrkPvF2sdURYfqRztN14QBOxrChp1aYLgonoA2+qvr9Qa55iiaUwEQOn4Qqc2xnb2LEKZSwrBwZog72ahA/gd7H6nnaeYn++1K8UHu8+G7SU9E4ACqz4YJivp3F8yX/sTtpQTEZBmmaapflet+cZLGyMP4s/ssgDSnJQErcF1aH+oWqkGBLC+KNJFrQk6IdUg7Bpb9jiR1dEDwyNKFsRf6TdMxDgedldzBrzD3Ak7aQ8o/uDCURZdr8mS6iqb89vgSz3Wdq4L6i8Bd5ZMCSN3Nuhiyjuy+6y85uaypNPNW0Dxe/ls+Nb12+Zvi/YEoKYNbJ3d1U27d1PwAQYz1vPeSDfqal7ZROUuQ5Ex004f/0szZSU0SGqrtlJZkVQYjH8mLPfSxz+nSc5+UDqmZ0kW2HkrYigcVXghX57NDJESWEEVh9LJwP75iV23KK6osusJw1WbFWoxaugjgRJ82ulgq93yS1GpS8qqBASPJWG/Eu1vYXpmub/dNbPwJ7Ot/HPX37NwNb5AAGru8jD91Fy78/5Op3MQ5UGBVXN54LW2ltPU+Qb15ZiPBECBX2V/qMYKa6CWXlBUq1fOZzi2r16vTHJT44gaNd/1bB/IC8CDmTdCNN/OJV+WwbqARwPKDIgcnlo/v8NqeY46FTwSyeBzQ5Yw+Kr3aO9LtB3tmFt1OQR9w5HzEME3y4H280xqaNmcP0+5f/MgPfGuLfeEHZFQ77JAAEZ8a5irh/BVBPBhVoAZBA1ynaxSBcVXj4QSIlO9OKUCEQLQqlg9osKUlAaurVSTax+648SPhhyZTqYheZgZV4cb7o61s0HFkWW7qOLyKCt3ziQ7aSZL/inGwrHr757v9mXOBdflM5tr1fqN0Gv6/hcLUml32dDYRhe0Nc+KuwIIDzJI8zXtlOlh1tOay1KeET7EtPN3R6vhSXKU1HpV/yMBKGXk/+KRtKTzMQaRv2QwsAFZJb10pCEtE3f9qqA8irIsOpkH/Nl5pSeklcoA8rhhRdI4j8TjupENu7QZdYi7krOGPpzLOTX5NPALESWoWTr0zzUCX87FiZ4g9oS7oPCctCvVLUVSuV6A2taDIu1P9bkr61e1DrxVanWb6dHMFM1vtzphdjpLsg47akXyQcbxr27+42P3wGMKQNWNVlvbGbj/a6vdfQ7Jej5ZBBz1u+JZKOJArAFAXMmo5ZQd56jSA2SKKsyGePTn6lj02Jd3hhaaewjJT+nZIAnVKo25jb4i5bEAFwU52WQA5fAZkCKTCao/oQDCH12whl3cm7iXeF6572PTKBEXTQnVHgx2BqxKi/P60XtbP+Wa8aD5c8x6mIImjAV/WXTyT153T+AZy2O74wqAvflutzv+UFakv5N1edUh16rDqjZK0kA12hjFI3OjNUBpEXqAEWErY9LVE8DmglqaXHOie8aqqNvpMnfPdRPFq7WrB3rzD0MGJGysIE3JFowCME7Zhj6JADARV6a16nVJtVoDubjylToDrNEoxx/VIYHEAZdUDfWK44ECNhKw+3HKyaznu6wgfn9sX3je2Tj2+bgCUPY1vxOOZK3Ze9lE+mMWaCgjlalS6/JizdkzQRBSzyhdDyQiLJempSzMmqwJqtVwXZLVLinzHusKtpM0m7k7wvVqyKYaykC8cilBkKqaZVQMHm3oddjaZjOBm9nHdnrIituNNxahcoXGjEQrXxMs+JdVoERqo0Urzg7hAB6y+ax0MzM9rHax+2y2zfII3u8PTIZtr7rvxO8jnFAAYnnl78zu6nTbH8EUPZjkrJL7bzpEXpSvN2CJOTjvF4oJhpPvEdn64AomuVd/Ot6WU/mjHW/GcE8gn3C85+lZPkOmhwRRPmP2DVTfAdVUEEzAJj3UOMF9gE5SvaRWqdzEvtMy7lSBqVa51Kc69B+F0auNhslvieTJwaPb7vgmG9qfseigyEcYv+699HMn3/4+qQDArRjbPfNkNct+m928/Rg7a60A117I/IBrXPVOBnrkUxdtmtmMiHGAAXkD5mXLtfUB9luO7ea62WG065BvJ6tRQsOv5iesqwnepzxKltbbTAQtZBJVzPAQzb5649hrAO37YEGuofhVMmOJth6MlkNc9mJrq3q9nJLEigSBrMr5/twM4DNodvPiG3Pd/L9d/fGw0/If/2QETyoAldcI3p0LX2t38j9ES9SzjTdjMzIklZdMjDldLFFBPNSisUG3oStJWjAQ859cnlc7xzVDnZDvZSGzPWt356jTntnV3oo0NAMkdXmFM+23SNXRPNtrt51HnwrS+XchwOePNwMJo5uWI8TL2a/ZmOvFj3LbuWRevHPYjRj5Y7x40A3ejO1lMz1trXrZaugW+8Dmdyf2he9S8ESup5+LEoAojb7/yEHetfok8H+O3ToIwJjI6HA+jUEDPIZtzOg1hnxoqA1gjHOMK2ex4b8pUuCy0On5mbl2e1veaj1TzLVCl5tGnbl2aM9wzHLMdTjcPzfTCXPEzc12wvR0mykg4bmCVw2SR7tJeGQh5b5Q1lkGkmvRfB6LZ99H93xtC0Zg+3jng4qD7z2CeOtl3tO00Ybd1y6nlgAfqKXha9j93mM1fbUd7RVKoXp07InCT3yrtf2aHx74IGuEK+v15EKwpd/Oz5a1f294Y5es24pYbEsu86ECMN/VjCELDW4UNpXfBHmMisenj/zdQNJ8Gb1lPYXXdriTRHGUzMRsGKm82JDpRgN9jGJQJP7r7Ln/8TWfCM8eg7RFzWWVrMKGv3YsMZHGco9v06q+kqrIGgNtMaE2MOWcYauB3qAnST7T6uafvvLjgUfnTupEzNySBKAR/dCt49w7WPFfkPnvJbVak/WVdwX1iZKsXTlJ46kG6DnRZVERTdVYoChhnG0KPQOkLMd0m/9rGH/mzrkPhenaPpr9LkbUK4C/oV6HFAz0sk5IE8fzySHs4YWke7tJdteN94RHj0k4RjYr2aGpmdaOSppOI4BB0wSt3PucKYfZfwmdP3qIzI422thko2fmqaaczBE/9HweXugruiivDMiS3eFfGTiHZyV/jWnzHayueNYFEky2DUnTdMLC2EAS8ALLFynTR9pJa1b2s/h0N69uveqT7acWw8AjbOLV52qb59jOSHNe0E4SlpwoH4WlBJjkDp7JUO3svOmScOBED8T213fg3w2/slkrfkNPhjBPLlitIwcaZOuWeXgWgM8m2xzHzJFO2mln3NotfrHSCvdcfs+xB/v++o72z9dwdMoJwmCbTPz7wesqRfOueiPdwgoypwdHdRer0kb03u4Gubaou7Zkt3mPnd77Lfj/D1d/iq2OE/SAE7BwxpL+jpdMLjxYfzNT5H/PhuHVlVo1171sPWTGfQwXBi2yHqfNNQbcFtNOmZ7OHI+EZ8Xvz3bz91/3qbB7kUwJc0FkbmF/K2NPcoVCcWRq5kl26n6XHb8x1BlGABxktSJUF+0yJ55jkJydboWpI3NharLN7f+8OzOXf2auk7z36pdl9/6gwVczX8WKf9Pq9mcPjWfvmpjM/nRmqt2ZmZlLWxro2dPpAHYXbckwN6ZExM0w6HdbLLi64e/aSf7RJYD/j5A9pR5QUtn37qF1jaHkTnY638empTouSo+2YA+0FTs3izB4U13rm3Y7bGdv8u52d+Su6+8ZO+HezKffcnm9u3H9iurM7IZ2Jd1EnzqrGtK1DLVrmYCtxGYPo5ENvZrEExR6BoP1EvteeTHDtHOKeD3gu4/HAHcxL99F6o5WI+z5ubu38dDT8d0DPKk2VKm9s14tfm6omV6UVpkuQ8T2WBh4sfU9u9/Kih2hU9zRWRH+9qQ7rcevcsHuwQmyHT9p7y80N7OB+x/qSfL2ju5kMk81RlmU5C2A7xR707TysXZR+W/XfqL1zLEoffqOLcvSoZGLMOhb2P2+ISvyq1gvn41AV7CDwaCrmRZi0JXBtmftLA57CDiaGduYo40xzB+w2aSANQNjfz7F4mUnC8cnSXiY1dc3B5pHvv3Tdz/Nht+8OSh5e+RnmufVsu47ebD53/Bc07nUm2p9pud6ePY8sNTY2cny9zWL8BenYvfLenQ9rR5QEnriHeGcZrPxHvT/f2KsXYed1DskO3mX6nMA+pHr/rTzWJm3vP7JO25cNTg6cCNv27yBr568ilnI+ajbgMBWY4Ue/7LBgtemfm445Ve6TkKPWLyse8EWaFmeUsDLegHNvjC1pENYMzJkok957KTA3yOYv2IH7v6f/fjju44Wxra3hAtZvv8kPeuNTI7OoQpWF8nXKfx/j1TCw4DP0vn03BkRgFjQTZZKu3nWQN7dPDsX2o16/fnLPjazp5+9rSjvxe96xRW1Sv0nmLG/uVKpXlKtVtiqAR/ZE3sKSwIAUYFlQNok1sJAZ7hbutIEvjlJAE9sjQlQ8Vbe89kYpYkBiQgWi5nZzT56TUaP3QGtzydZ8af79j/6za1HbaCxZzVw9VwYeqwZOm+5PBxZ7AzLWDvJ6YwJ4ET1bAX4S37pdWdVu52386DWnbVKbUPCzi/PsjPD1pMaNB/N1QJHAHXpRurutuSHsMEsjceD9ko25ryHuF8DkDldLZ+VMr/yqQfYlcKqz516g+qm60CfYWSMPfhPYczurj7ffOLntm3TuuL76kq2v2+VfOFdt6xoNwd+khsed1br1ct4d6MI1Ro6iDnFTmUs/7t69obZk2y39nm0tyO/wBFwciXoBi5pjiHiO6oFZdg0XQUh4XBL7aGjgjqsHCf8LgTqy1g7hw43UrLdrFP+n0ardve7vvCYppdOQvTOsDuK/TNH/a47ttTWNpZdm1eT/7NRH3hDbXCoUqnzPDBzFm7wMIdmb4eXP7SBhuaZAMy0wIK0XE6tBmsDKCJuF0cjYmIXTrSE/VauaLQKIzHPYcO3YiJBXcoUT7Ow6qEXMo1mat+tSAGKTvYgu6q/eSRMfmXr53efcAblFSz9/H0RwGffc+vyPG3+ZL1a+ZX6wMDm6uBIwYsOmOGCp+CnedNnhjl2C+1v+ypZKMsERZBMSWUaIlCWLL/9l+B5Yy2XRemOWwlALOlZnQpEPcg5xpe57WrRgI7pYxbGjRy28Ri8MUmH6ZwfqietD7/nc9v3LShzBgJsEJ9Z95n33L6B5fz/3mjUf2Ng+ao1zRVr82qDN/t5yqw1PRXmpqbYzZTmAz49QftDsv2yNjaNlJ849YaeuQCxHmZ9ntJrArMcMZ8EYTQJl5msmYTNoi2IjACokOI5fE1DWcbqIhlkoHplN0s3vPaCwce+9Ozkce+uRUJLupxRAXzmf7vt3GqjvrXWHPz55vI1tYHlq9miSMPskUletBwLc9PTPJo9azZfq2WU3kAugS/tvrYxfGCOeACKKTcnWxF4lyC2BFKgmfUhXcKMKRZtiFv5+fwlRsTYRhtlS/xJcq+mBwS0xyIppuEq3bR/zcUrvv3lpw/bc50lldO5njEBfOaXbzu3Vmv8Rn1g6N8OrVwXBpav1PwuTE8cBvxxTM8MeyiYHb0Aos05QDTgDSS1lDjDSvFlkwxug9lyAJYl9dI9n+cHJ5MSlEg38IyqAJ1HN4rSClp2Ie//TtvyRroxXtKxnlOkl7LyPud1Fw0/8uVnJs6IEM6IAD75C6/d2Kw3fqnaHHrXyOr1eWN0pQ2wM2MH+NzbGC/Uz7J9K3OjARegdICSgyq/QPNrCVdvNiOUYnrMaECrjBLsL9LyfA6enSHi4JNTwrV8WnUIWRH1q3lVQFFcVDcs9gTjVouxwQlc0smS0VdeOPrIfc+iWafpTlsAH2XAHa41fgrt/7WR1esqjZEVDLCzYebwAbZr0Xw+5iH7ry1pgayWYWCspd4wtcDT5kEV6hbtiJCuVZMwsTx4Yg7LZgnyOZ6eqMyli/75KHz6V37yWL+y7jOf0RWAVAlNlSqCC8OTwldQePzmjfUnv/7i1GnNjk5LAJpqrhpcfgt7Pb89uHzVquYo77MB9uz4Qez+OLcMI/hsS7tNdxCFSwm2+WlZLywMhErEwjXV83uUn23rT4VxwkZF5gspbKOBRxm9HkHLrCjrHQjWy8byZbaSmjGmSHLh1x+zOV6Bzy9nr+6x885d/sKjL4zrtsQpuVPaji5rWlZbvhmF/oXm4OA59eER1k/cpMDkzExO9MDXc05mXjQvtwZYOyAx31IzD4ohymJ7Se7pxSs1ppVxCsaoki0DVr2rHGAFnhS8lxePPuUnsfcGe/LL7IiuzKQvzlRCzkVkj9vb0x0JN6Eqa9nHevfZSX6B5zm18ykL4GN33jTK84avgZHbKwPDxumcZjsCvzVnNl/rKWCnMXFKqVAcfK1b01oBMO/kj2G1ma1QDcyKMTOhjI6FIeU0FFWmytfL4D4LSsvnn23gNopxoXWvcUgFEof+xa/o9mZSouL/mglZb9MNG3wq8C+4m/yGX73lnBVi7VTcKQug0mlcUE2Sn2kMDdSr1XqhWc7cEd7z0zSTOb5Ax+zTGO1OmscHQrSrbKAa642W1kk43gS76ESc8DMMOff8ZBQNC8/bHytstCNdiyATk3l2ur22ItUIJOIcSuNkIRsDrMTCE/RLocrsqRfoMcwKW7hMsSWSt+fVqnqB2FmyOyUBfJz9nVCtv5rv4lzH/gLPcbZDa4ovbbDC1WzHF1Lwgp4x8eFq+hWb7eCJUwFuKVJz+QxYxbsGmimwTLG88htaZBfw0Sm/nHIZDdmSedcLaMtaufyABOWkx0a03w5C2uU6n7ckp1qVpqf8EIXkdyWvlt7+y7duXFXmWcr1lATQztJN3Lv+sRrfYcl50EqDrQ24zPG5E8BuZr/ZKZsb20mjS6Adi4gPF4O0l+6gqzEOqnqIx+nGTOmsNKdIxa8klznA1ULapvB7duwYaaXLuye8BASlmFM0TBEUjofiqNNczCa/CUcluVvGA8eINXlLLSnOVZLlXcJpyQJg5jPYrPGyXZJeRw/EwnCvtDfb0VwfkGy+z6zZNBEl6QPMld1a1hOEN1zg8qcG9zVaYTceZatymWI7FFMKxaw39akun+eX+S2XDcLCRzqb+HNlFFap6ICOIE5n58HZEFdyJbbl1Z7ykznCeKWXdbP6NT9/65ohy7qE05IFMFxbtgahvxLDz90rPsHCTesOJkiv5NhND9idB7FsnhqE39UxsqdmAa2EZALqIdBr6nw7SCvbHefrBkspLGhEKxbh81TNdGRn3OZH8CGqmpXDc83XYj5PjDqggBw5rS4v53HQAz3uTxe8gFirpsktA+3qks3QkgXAHv4acONVHl45gqkuXxGxTTW+p2AgwKx6fYmNPPITzSGTac2O6SWwsYFkKXG2AsqvLH09SI2XzHqrafJ4DyFS1XIH024P68lhZG6dQlRVv5zKxqt0173z9Vuq1akUCJYMEypJKEXAGVvU772wuIkPVfFZhr4mKONJ3JIEIPNDgUtp4oXMbLA0GmSZ5WD3rWGRGavT2+bMoYPWF0pN98y9bJbVGu0tj0oeG6xUF8SCprlkes2TWKPGmy8WtkFWHY/bjbr1ZnzYHN9KlpCqDh1yQtz5UBU0qSRlOawJ8kXkFIasZLCZKl52x5aNJ30Z3evx85IEUG+no9zLvYopmCrhjqGei2TgFZfm4MSQRiclDP1xLe2++U0txTRp2o7GfHV4ZiVjBW30iF+g8YSFgC7xZDWV+MsMlBGmrAJbEjTVVREKGkJ0CHk5KV/pIpcxSDlzHmtNidkthZOulLY1HkbIeIUXvcOl51yvWDbSGY1EFnVZ0rOhaa0xys3TS236a43RHSTZca5wq2Y5UO7phUkxIIxz/LRidP2msOmyG8Oqcy8OKfcLWmxf7HrqkbCHozs3zc0Vh0nlBHa5qhUArtZ9MEZbj4YjDzhcALEKyKnyqOcQ1J9F6Eod4lVhX7PIB/1YtxSiF+80KKR/hnvNgUSKU1HJrypaNb0HvVfUFuOWIgCqypfR9y6QJvHKkjFlN8kJm02WMKwpEgraJj//7mgEgqoPLwuXvuIN4fLXvTWMrttkkxKlS3CXvvYn8p3/8K3wxBc/GfY9zVPldB3vDSLih4AR3mZuTEVJYss+5WFRgaJ0A1QhFelzlsNylfDrSgnijPOY38H3giT1nNpYOnU8tVXpUhYtd5jantOpd0bKPIu5LnozThtvtVC/GkD+Da8PYYJ4S4CNHj2mrdd07AkG+CtZdI3xCK0cFV+tD4QtP35HuOaNb0+ay1bySDdbWhycWKpiQXmHbMXG88LoWReE8QN7w5F9PLpD4wwutVTkSkSctAFgQurZIm92mU1CMYRV2KaMCsVUJfFngAOuARzjesUg53nUAgXIH3uMXVEC5n+sfVAJummaJX995drJ723bY8ONlznBubSgJ8jiSd3qSIOHp9bBwahq8sdIXNMJODhqpA51XbUgtkJ2t8JjKOdd9/Lwsle9OUkRBDdmRMSyWxGd0HjNqFadfWG4/PafCqs2X+Y3cMSCSAscJ18G7areJm1UFj/F2iMLiraSzI/KKk0oFND0uaMvhuGnffGJDHqUCcJLRsoUIVIEcH7GA4JWDXKh1mEWqCsDH4y0TIs4LdoENVqtOh8wWgMXVWpHwTW4IgBxIg4kyr5tB8Wpa6rXKsvw2rPDFf/yp0Ot6eATZQmiUzbQ4jgBQ9hw8ZVh7MZXh8n9u0JnasyW/l6Rd3tbDUcwrFyfeRA7xpOfCFgNMCObTQi+ZQ6rjcGwdvPl4dzrbgkbLroSXvOw7XMfC3u/8zBrGr0taZT7TmVEbFSsRvUBPmTzBgsDBDB95gXA/FoP84xIYlpISpWMHZ0EhGmhTpG5mCiNbQwMhfO33BLWXXglgzY3B+SUzWh40OJ6J33oqR7WX3ptePHxB8Oex/8+8P0ILyQEcTIcPXNkQENHZqRMF1nPGvMbi6bh9cHBsOmKm8Klt745bHzZdUljaMQ6tbivj6wJf3vXb4bD2/kKPwKxdXVJxyp0fl3f8NMGypn5EixMSoaG6kMwu7h794vuAWnOw/KVgqV2tIHOB5XTaBpuCuj8RGCNN/x5GFm9IWy+4Tbl0XtAKtLLY+joFOmVXo0po2s2hlXnXxYOPvsYP8zGzyUI3AiGZY9lTKstQRFSDPDUE7zKa5MUlJ+xSh9BOevqm8PVr39r2HT59XyRkh/kY/zBBEl7rQcMrFwdmqs3hnz7k5DKNGzAayTlrENUfHhdPcZlgoimj43wZZoz3wP4RbRKp1Mb4G1yurG0UXJ3ZwCIHzmuxhpc6zmgCpq8/OyLwopN56uxVkgQuSuvXkZ4WVqMrjWajAcX8Ln+9WF61zO8NOH6Yvn6tFE9Sc4HbJRBoKkOJCE5CMEVjCtXvvYnwgU//NqkObKcNQiPX7EGUZomDNILTaknxg/bBEC7unx/dt5BR+0UWXPymyC080SzNOyQgUlwPanrYeDFuUX3gJlWNx0c4PURKqMrmFb0mLG61GBr9nw04WpzOKzbfCmPgdZSBl7TfmXwnJFJNS7GlGAqRYAOr14XGsvXhPEXv6vvTDgIZX1cPb9aL4qgon+EY4/0UJ3WGBfc/Lpw3RvfboM7d+3Yv3L7Xmq9xgSp7xyD8YNf/EzY8czjYZBXVtMqH3CHHrIRPZ1E3GqnMhxh1UomG6CZqKvJVKuERblFC4BvaMpO1kRaDPtV1VulkryPDcaZuJP6pWFgaDisPPv8eRNlPaePvyg0awD+nlNfobGNoVHWDstN7AJBOuaN5lxmLz0GjtFOeHkijK7dFK7+lz+FrX9TUmMcYtMQRZepgVddOdQnZ2eOhN3Pfic88bW/CU/c//kwCJDVgYaxYqQhKarWU1Q79VrVfc3AyzBJX+BUy5t9KUbmuKdFC0AUkIB4cKca5e+PiEnlRTZbAA6uWEcDTM/EJsxHIho43MgqkjRvqKUKZ9L5glWoD7K6x/zITDj+ygEDvWYStn9nSruyay68Itz04z8bzrnmFpKYNOtGEbw68Mzb2UKZ4g7es489GB6/796w76ltgSfHwvLhgVBH8/VCvzsJ3SuyJzOMudjs0k8NUknl5AZJ1pI2LtItWgCpvrxWq3XEiqhL2RxI7/5SWCWUV6Ejra4NDocGRymnHvhklz2SBe05x8+Dos+hD4HXB3iDlAG0yPX1MavB8qAQlomzhznzZHNYf/E14eaf+vlw1mU3MDfE5DAAS3UA3frI9NSR8NRDXw+P/s2f24o7ZUE5MoCglw1zmxvk4cO4Enloime1Un/6l3ONib3C8iknvYptvypf5rZMizgtXgAZb4ZWkxa90+yhMWMVSL/k8TrFn9gVM7p/Wq03Q8oaGgSUaYGLbYlxotPHd/T7PVjGHGhqDNeXt7xCF2WvBMLWynz1uZeELf/qnZrlSMvN5Igutj+Z4cHg5769LTz81/eEXY9/IyQ8PDA6PByaDPbqrfbJHa5lW6wegt4asYm60A6v2dnutQEZqx5E0ObFXa2IFuWWIIA2OtRsq8Flpepp8zWRUqIRObaJCktKgbgAXGhYmMaimSZLpxvNEwE1051exJOtpgMqYj7aAs4L5cjTYJ/pkpe/Ppx95Y2+PUKcFlcyO5KnfQ+C+xdnnX9x2LhuXZg+uDtM798dWkf4LggzIn63GCFIwJBWX4G46KusgY7H26Gr56Jx5LDhmQjzz062+ETIIt2iBZAnnSwtGkd9/DpyaFzaiWq50mi7cLXtajbu+P2IyLzYVQujK4sR7MWWHsrbK6+atWBaYlslNC+ssjiFZN/Xnn952Mj8nhU7oDMJlnBx7F0BbhJWrl0X1tz+YxZGqPwoSKuYmTwcDn3vqfDiY98MO779YBjf8awJgbt+Zh5FwUxdrEf05LwJ1OxQm2lD1Cwd0lZlYHJeLz37cc+LF0BoZHyJmNdAYYiPcPbGKNcRl760Xc+iGKim3dwv5jEV9vqrA8NEu15H+BYw5QoVo2wA9rapbJtZim768KM4MYPqKP3qYYwV7DUtW39OGFq5FiWV5ZHWR17gTnXa100YD+Qows5ZGkZWrmHBt559qlvD5KG94Ttf+Yvw9P33hqmDO83UaqdfZSUEB52AIhTFSS1SPaw9FEbkfJ62s3gTNI+j0Tz+aabBBLpIpkz7pFnOhDFjjPW4cxoKyiy0AG+Wh7VkX492BpDy9YjN5yjTZrHbs5N8u4l5uXVxCAs4s1sgr7LiSfWpY/DvZk1XIm3Ww1X+MqzMyqc062H2skgrDK9YHW5667vCm37tQ+Flr3kLv+M0xNhhxl3U4iHQvfnqdUZT9SqZLw5xs2pqfLa26B6waAHUp/X2bzKDpHl1ZKGzui3KG+ap+Gng3NREmDiwAwa1Xyy9i2W5Gh1ri+Ccp6pGyQmgI4f2cezV5rcNlFJ3pVpNJS2F2EU9sn8Hv692gI9IgAS7nJoR2Zv7DN5alQsV9V0Jyp45gr7GCKdHGmBnjBHL120KN7/tPeH8V/xoqLBhJxftu/kMbQkda6DxyYRLnbSAF67CbGVy36IFsGgT1AqjWT3JJ0Gxzcb9IFNMw8AUm5qtcW4PjeEIL2/FTLKx9d2wecutNFeOYgCs8gIdLTLk57EkVXHklvaN7d3Bb6btsdmPWmj51HITmJeyHgE7e556OGz7wseKS277cRZhZ7ExlvGo5BgKsCdMjvFFBQbaKmPR6KrVYcXaszA/q8MAU1wZGTMx9CyBq5cG9ZXHi17+urD7iQfDxM7n2I015v1kHIsHtYUzwtDskG2POXxT9VXA8UJf/hN4Fy2AoRV8jWeOXzqtVPgYUTGomjXPlzYJC1/+c41+w4dAl6nenuee4BexDoXBZcvRyHluHD7Jg40A8pp5s/IotFoydjDse+6p0JqgLK+sW37qLdcOJjpFcuii8WL7N74Ytj/89cBgYB/VmOMFkRY/EK0voRuG0K+wuGuMLAurzrk0XHTjK8NF7NQuZ4BmaDNi8AM9foK7iQmqNPixBX5rhA5cLsQEurnyivAhq3Fgml9MOLJxW9/kMGY93qV/u+l4eSz++jftCQOHN65nP+aNsLKMebP1gHhyTYANZ1IoqhigqlvzNaoRdhhXsSekWVF0yhFz6SrTYi3Sa6I6wnOPPxS+87V7Q3bkIHP1ht0TKAuVbS+JYZgxURyoas6PzXX44bl8apzfAOyEoUYtjA42wjCLrUH8TT5rlcLT9L7vhR2PfiN87/Fv8uoUPLL7qkWfBKBp7/ZvPxye/eaXQzE3xcrYu4DqN0WBV3VpmSCZMz53rgbsytvdP/vtXVO7enydxLNoAdx3Xyh+9KoNq1gIvZ6HkdYa0gaaahAcEUBpD0E1wuOlmXO8qDEb1l18NdsKw0pUIXdov+WMcfaYCxHjB/aFx7/yubDvO99C+2v6cTg+B1TCr6u7ed88Td5X4FvVfLGdMjXtogOeFlp2RL9WvDxaybZDBWEdCjuf+GbY+d1vh/rISkBNTPj3//lHwuy+F0MDWgyuVqEMj+tJBB6+Nb6oF3PeXlSTzz7wvcn9zt3Jz4s2QSLFMruN9Ce0194PhTfdYHTwjUPPI5skUPd999HwyBc+Hn74bXfSGD7gioabowFWkkZoQNSjjbMzU+Efvv6l8L2H7w9N6moAlGFPTjNVKmgCk9AXOqMWI5XXnQCaz2fxMUKzs1qjHioM1OPPPRa+/Ae/Enit0x6z18p6WGnk6ZVHAprdyfQaSV1J1BhC/x9LO/ry3+Jd/9By0lJZkmof93CvZkqUTIghC1iE+kMpIpkGhNCZwz7/ZfjOV+/lI3e81RNXx9YY+rJMjrr0NE9ZP/SlvwgP3/vxkHErkm9O2Db0AkYNDej36sRDHS5y1RyFSj6BY9lLXq2VMV1xJb/0jAZmrs5AUOtMh2XNalg13MRccf+DfC5q0bI+YFUbKdGQUFwiB1pZxg3mxbsl9YBKu91OBpt84gWuVakbj77avDViWD5dSyeta6PZD3ziA2z9PhFeduubwvL1/FAFCyjl03x/3wtPh8f/7vPhhW99hX2amTCE3S5tr+iUCm21zJ/KKvrqcyF4gkPnIDpfAkyTTw3m5UButKHJZzXtt29KwVgJ4nth3eLRw484iVFrAfNa7cVBfvzn+ycA9kpadLVDvXWw2IAB8WBegmqI5FIybCYjBjRAZvwO8favfja88M0vheqqs3idlQ8i8jfGIygTu7czyZ2m2zfY12F6WG4HiK610vuVVQKK5f1fkpwHZYKWo2oBRVhZ7yHYayYBWnypVxba+9HNJVMk0aAszqy5eWJZi3UOIB8Je14FJGJblCXhAK/Yf/8E0EzpA3nC73izKwmYVrkaAhimCWq781W22hoVObb82s00kwTQsy8+GSaxu3zVyuiNYuurI8P43WxZAaOnE1RMsqImkcnNV2YarBipdK8MESRYCewbX+QLGy69IWy+9mYmBnzC65Gvh0P0OgEovo2qriofG6Lnvay8V0uCk1cvklPz+dNGBB+ZYAxI+HjpEtySTFC3OtHutkcPM4PIfDvIli9WnSYJvKwBJ1oZijFxhtOJRDoukR4mG+lVFjtVm16qLWbjSVcWOc/O2SJiLODKdMj8WR5lwvWX8ZAStLwiI14hlKbVcMktrw/X//jPJss38O0lNGbt5TcUD336LiYID5HJZ0pGkgaYopfVOhGry09GlNmSXr+iqGdu8VTWeLUYRAD83Pki3YKx7WRl+AaZpIsJKmb1rTYffeAAsHsw4JXOOO9wFhvhV+LxWO6+eAlPkU6m5xFslqBkU2xJln+dYpFePYrtOS1GkLh2QZVXH9tbec5F4ZJXvD5ZxgoY7efHUeeK5RvOD8vYQe0kDXK5VI2uWKCoxMBZtZpzsH36qTT71IJ6FliwCTnF75mPTbd39hY6sdgJL0sSwND0C3yVnR9W4CftpYv6vIt4LEE2flWdUS0hUgSysmZ4U0ohWGFLVR45laFh5JX+SjDKGyVjOQwSy2XB3qmM9wgpBz6RA7XB0WXh/BtfxXNJV2mX1HZK9QSEXqvla7f80hKZlT+Ks+SCCFK0iRVjYs9TUAJQUDuUKsqn5CYqRWfs7m0n/lw9WRe4JQlAv/zGEnICrsbEUlRL7whG1loRKyj9ltMa6HbTjIjlMXBFpiyBp1xlWpyAsfSYQ+kxTvGRciwvocnFMly0/tAs6+KX384DwT+S8Ot4fIFf011pLb/UzpR36tB+fsx0lqaImpfVbicO9nQrCVWgTtN+ywH0IK81i8+ASOPNS9xBhKC35p2IYhbhliQA0ePJklm4YqXnzXdjMF+nfGLQYmC8BMxzSG+oUvHk07xf4hD7Vk5nt0PExDgBrn+IKk9Zr+eziJ4gvITHiYmEGzMX3vKGcM2b3pHwGQXNgBgptdjjeVAEsYd9Ju1T2b0Gw18dR2ZStejOmCLLdjpd50H86IB3w55yabE/y2uL+Wh3ZNAvSxqEVaSWV+dgcL/jJPkJZOPeuHLwHXgxKU51sRwqJMa5inmzs4Q1dCuWbObUM7ysta6M5mrwQCyOMaIXnaYDoiSzqF++Hl6zIVz1ureEy179r3kQa0Xv/rDdAwC1Q/t2h2cevC9M7XqeaW//g2yig3OGqdF5UEvpO0THdMuktnmYadBenkdZ0hRUJJYsgC6rYWZAB1WtNT9iUGq6iBrvpYfQ/FyJSNNkL2RC8Nw9UqKrru0Rsr7EWBvLpnJVlNkEwDaS0kSAYs9mmEdgzrnmh8Llt/1YWM8Dt+JGz6Mq3cDH9k/z0agn//5vmIbeH9iXs08UG9f4zaCLpmuAPIQUoQNaqps4icWi4pXxai8P6x91y5bEk7glC4DGzBVpY7+Y0CA5r7clQDIrONNSZ94bo0jCpdYKQJeDEnpeab+ijT75jT6oOA6ksGUh0zKovXw0m1+c5dmjkTCydiNP4F3OA71Xh2Xr+BVy7TfZUxEYL4SuZ0P5Vigr7pnw+P1/FR7/mz8LbPiE5uCAtcOY0KkE19C1k7FtSWqZ//uVNlgrqCJLKvu5/ff97wE8psyTrNl+nlFhLWA3TMWlOQPO9KI/Br8ngL08bn5cEFHTy+xcBbwJgbxm910lTRKAmKzYcK497bb5h15jD2zZDifrCe2YKSubfLCHnvK1PXx6Ztw038CfngmP3f/F8ND/+yehO74vjAwN2j6TqjfWVF6BXosU8LgFUerFrhFqGtUm3IjpHKymS1sDiPaSe8Dh2r72xmIjP9WRay0wzFvnNoHQbIHhDZLSYGmss6yzwWxASgBm83XzwnJaa2PrdLEcKmseTmV3Akg9Y3T+za8NF+tRw+agDaoyV/ajy7wvSKVODgZkbpCEbRXz9koY5ytjD3/pz9H8e9jxG+P+wAD7THEsEVOqnPLOpvNpw77iPck9HoIt036l8J/z1ED18LLGi0taBYvUkgUQznuhnW9fc4BNq3G4ZXPfmTW+zB85xu9CMPhhk3xKihfP76XNzJTFlCAUDHjP5UlFGBhdEVbwcl+l2ij0ZqVcKWiBp3yxTj2nz1jC1hK3IbXP/+AXPhVefOSr3KDJw7DAt32gfu7LWsr2EPZ/kRZhVeeu5y1lnozxCzITR39xt8x+ouuSBbB1a8j/6O3dCYzvAZjaJE3wm0FUIw3SQMZmYRwe5+sW8GoEaEeo8HuymSbS1XSLcttqiW4aKIGnMzsdJvkSl77CVWWbWNrvNOkFRtvvUMmrJ533vvBMePLrfx2ee+BLoT1+IIw062xv6yUWNF+ErYxzo75Qylw0lSRXXsWZ1xEHYKVTwPgLyV4eG+cHqJfuliwAVZGmNX4DI9/Nttq1ETLYd5CkvLY27GuAM1kyVyZE7WNTz5waXWbpu84DwCqHJyy2b/t6WHXeZWHDZddi2wWUH3oKQt8pmjx0IHzvqcfC8+Tb89RDoc094aFmjYduB9F6X9NK0BReUJ9CEoAZ0FhpKVRlFHfizw5lJE+ZH3m+ONfmV1tPwZ2SAHjKe7beTHdI222aIo2K2mBsOWdmSYxhTjIHchKGNuZs4FBDY2M9VWEnaXStuRZlBLS3s5+3Zf72rv8Yll3IbGfDubbSneVh2/EDu8PhnS/wTtmL3GI8TB1ZGGBbe4QHbmtsr6reeUWQukh2cQ7n1YpfDa+WTYK1TDCmyYCapJMERYqNdqVIiN7Jh1P+6QQwXE9m2kW6EyXyRsGRaZWd5euz+/hLXVObTMNiI9QmL+eN7IXUQnNOq+eVB8xmDu0M43ueZy+HuYdsPVNMmZQKGt5gijrCnSzd9uwHfR580fAKxKXVz8l6MBEmGuNPkeSjjcqtdYeEol5BlPklQIJan73YqOb/dAJICn4/KG/s5mM5bW6U11BMePRG2dVwI6xrqfp4FZYw3BAoP82lBaZtSjfneiVd9IVGL9pqEMmqbrizx7OgrBKgZxd8Rj0GbJVMhHTby3hWE5DiVRSnHq1q3YkvpUlMnkll7Z1oepd+1YAD0skRqtm9ffzgktcAqica4FjnIi/P73icyoqd3McdQ/wlfw6kWmP8eut9Tk8cQcVYrPLIKaBW9ty8X2BYXqWZFkYg+vLqhnqKedGhgZUbaN4jy2svr7FofCnKgBd1CcQqsVMvXSwpxmPJE3mMqmFC6skpFPuLvLP3nidO8oPRPV4Wek5JAJpuZa3uAfjiBxqkKZrywbX9l2zHimik/ZXYYrf0540qI/vzlg1XPwFgJZkwCIkW5L0G4q1O0VhIR+X6chlvnktC9BQTiXqnFXVovbN6nOcXaXHrzuOwOdSr1XWMfVG9AL9RipGLvpySAJx6OoXleV5TUI0FEf+YpEaWMMGXRjdLcfvZY1WF5MgqcI0Zt2fWHKXqMNCk7SYAF4RJohQAmbx+p+fnGGeBkpeSWFmnJdpWhaPsoCrWTZX4JqRoy4oXKZXpljspns6KlgRwSu6UZkFeU2WKHdtn5BdLGq/UTOvS3g5CrrG2caY04k2L8ZuTnVHZGPSZkQcEqLS935VxpqkKUFJnO1nesgCCpi7xhdysTuW1iijgEHKFWfxGxFTDiMUa5bc6lF8y8GeWPIt6gTWZYslzlVY+FUst+XLKPWCm2TrCy1dPtXjoUlyoZmOOkzdQIT+8HTGsAIdCNkArKK8OaRdpRkwS9YJOxcpQk8XN1yBUFwhVdCkq4MvGKbf9xbJOUBldJiqgJNVcqoN4UowEycV4My88MvESj/pSjX5w+rldnfFTmgGphpJH+Zfkpv/H47PtavIsj43vhn1mA2pEPKDUAyp2WYG6AChrMOwrQa2N4FjDZWrURAOkTOfa7zUEBD51WoqX8XpUl9dXkhY/6oGqxuIoo7zugMECSlSqnOaX1kPwxRKk2TqANrEHJvBe4GbYDgZg3xfxgks65TnYVgAACLRJREFUn7IAtoIxvzC3H6QfF4O2c1nyXrIQw97Q2FxHpq/xEawY4zi4LjpUkRgJxyJvcQK3/IuZ7BKrtJKecR7fmL9kVVmFvbS8HGBdobToUs9zpbKxlwTLH5JH5kK++Ecgysr6rqcsANEoZmYPd4vkW/ZAbR9RMd7vxKxj4WdPI08vGDu/hfvKyitaMkfmlKHsHXgtPV7wK6srg+eWSVMeUS8HcKuTOI/nIr/ptZeRIilNReXRjMdu4BPWQ7j0JLLo04B6IiE8WCvaPzgBPL17ZILfmPsWP7VyAL5191oMeuO4miBkTiLQUfnBkAjtAcVGWoM5lYO1mi5NNDVTXve4WVEieU0UdiKoa5/rF0JftFeneqLPLsYDuVShTjFsuQjazRziJEwO3WtQM7Wbsj3vZI998JuHT3kGpBpPqwfcze9stWfDdph+QDhJWwx/O3lbrCFqgGpTutAirBslctLn+Ss2F7BJdufEDOAeHdFSeXIoTk4UVL+7SENlY5wullflhDFXKYoUxP+UrjhyRkLK03/oaW7xrFuSPv/J/75dyU/7J65OSwBqcKd6ZF+Wd/+WXy/MOgl3ReSUQJOs/R6wGGs06Fk3j3kcBAs4YHFQ9WIRQVEjwvMKMkXEMlzmc3mcZkDmKKRiXlIevGVamUWxrh0xJpKmrO1hmdnxxZjCzPf4KlnKTxoWX8476aLfA+gRP8pz2gL41Xuen+y00IZu9gT3AFM99iGgpKVujvBEp1lQbF4ZJUgc3BgjoCPa8nCg0SJmfi7RKcadaDqqZVGrt0ymS5U0y3TPPl9GWY0eUeJdbZDJke2XoVf9SqeHa5moVjzIRw8euXvb6f+22GkLQPzNFu0X+D78PfZmIh+vs1/DU6vtP5oUQ4HccjTBheFBO3t295JXDZ4/IljEy+chy+r5S68KUEoIlXl0JVqbZk6QcJmm3Eq0egDZQBf42BkTAvXpSWrNguwKaQTEC+vZn/FDdDut/GmezoQAwtbPP32IR52+yL3wR7gXy0+/qlt7T7D+LfAXtLqHhUdbmoOrrOZ6nqOKlukGW9l6Is2M+LiiWFFT1n7rIu1WSknaTAxRMonKJ54FvgZebXX3wGfgpVfxWVCkmIf7O538K3dvO/FvIkNuUe6MCICailar+wwCuAtT1IJx7daaCdJVyic0HIB4JbzAmXkCbMaAcmC2dNDy/hAF0ROkBlunpWsPegIa3wUq/3jsv0fD+CJkkJMuIRgdgU9eab6BT1j3+c0MkcCPVOt3N45kabibD5c/v4D30wgs+iW9k9Vx37OHWz903koeXQ9rMS9Xo0UgOT8FVSMFRWl6okxMT22aT16z9SREo0Xu0im3EspSEdQeuFE4BmhZRqVFyTMZLQmHWAOck+KkFDbVJKEHPrafR7mY9/vBF2+0jkgZDz6S5nMf/8AD+05r7l9yqOsZE4CI3fbcocns0tEXebftGtR+kzVdrcUJOj/paiHUT2ZKQQ8rZ5nkpYjA0/OXiUQ7evLMl5EGywlmab/1AouBfgRcqb2eoTjK6BEWPSGtx1e0qHS/HuTydPjW5OJL9az4zQ88eOB5I7nwpAaUx8KUk4TOqADuo3W3Vjce7Ay1dsDPLQxZK3TTyBodG+sGRg3zw6DXCTvl+MVGE5o3RcRZSDmshJW3AgQtn3WjsrVWZaTXK2E9rBQSmEMDs0OEabseU8evtYze0DfwfddNC8wnq2n1Vx4d2P3oCy9YJyorKq/OVBlawvWMCkD13nfgQHbbioFdnWbyAu24iTYtx7QYtg6fujxwRiwFrJy0UAOdC8sjfeKidA4ngV8FSyF5WYvxkqR5DmVTvF89v+y9/lW/Djc5AC+TA7NmcqwHkA1++J0YfWbz6U6e/nJ6cOfXPv3wce96OSOqb4nujAtA9d+350jn+nXD2+m4TzP9u5HGrjRw1XDSfV4t7RMexCElt8W2x0IkvcHmjWW7DEqQIwkapdAEpkJK7V0VZ4cPqgJa+VWX/Lq6ffcBVo8sCngzP1SglS7fnMPiM+XXRmNefU/10I77PvhsOKV7vsLjRO77IgBV+MDOye7Gocnto83lD9HVNxO1mdmF5tFyNFqASAglUOSg8cjCFk7kKa8OusAzmBGK5SMscPGXYfn9cFNigMc8Vid+baiVtl72vtxsU2+QICDBQppRqSg+nxft9+7/5p4HPnr4uJpP5afnShU7PSonKf3u12w8p9auvheleicv+C1jLNXP3PI7XDSUgH+CwG21bu3IPCleN8z8CQphLKQ1TsjiSxg4oW1hBeQ8XkJVdrA2IXmShOJCF9Blr9M4IGVAAMYMwB+k8N2tVudDd287yD3v76/7JxGAmvDeH9o00K3kL68llf/EMwzX8raqvkXNx1f0U1B6cAp0+McDpL5Zqgd+LaAE4uWUTXoqjD3NYimLiJSFq5saEbMgUQCO3+QS/eUATFCvXkO24DM84Vt87+x9Yd+OB79fJseY6jv9kwmgrPM9r1i9gY+Mvxlw386nz67hId8haTVO+LHZ4iz5ChE//9rLl/N5Et3HsbW4Pq+FJSv1AwMc1Va65TEBUVbqbhWauPAXbCcnD2L4P9ZJi3v/6Bv7TnuDzRlZ3Nlbtri8ZzTXnTetHE3CwJaiGn4UtG4D9wthZpDu4JpMbWKOIIipVxybVReAn41B6wEOumKx+aJoJs2Eio1DPLzlWXyH5dWX80pxbxjrPPrhJw6c8o11q/cUT8du1SkSO9Vi//blq0eG8ubLGJRvZrDcgnl6GYidzSMvKzENfLqVLmDoRTHAtem2ELYWxHjCGmxLcTDAKsgPW4bDzK920OueRKIPEv9AOtl55gcFej9OLwkB9DMk/9bLQ3185bmrsqSzPukU69jmXoserwJeeg0/n5IUDTaFKzwQwCIpTXg9FNT1vGDCV4PzKbbNjtBtxvgyxb5OXtndHOns3b13/9jp3Dw/msd/Dv//BIH/Dx+sL6/FygfyAAAAAElFTkSuQmCC";
+var LOGO_SRC = "data:image/png;base64,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";
 document.querySelectorAll(".js-logo").forEach(function(img){ img.src = LOGO_SRC; });
 
 /* ===== Theme toggle (safe localStorage) ===== */
@@ -2122,11 +2146,29 @@ document.querySelectorAll(".js-logo").forEach(function(img){ img.src = LOGO_SRC;
   });
 })();
 
-function showToast(msg){
+function showToast(msg, action){
   var t = document.getElementById("toast");
-  t.textContent = msg; t.classList.add("show");
+  t.innerHTML = "";
+  var span = document.createElement("span");
+  span.textContent = msg;
+  t.appendChild(span);
+  if(action && action.label && typeof action.onClick === "function"){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = action.label;
+    btn.style.cssText = "margin-left:10px;padding:3px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.18);color:#fff;font-size:12px;font-weight:700;cursor:pointer";
+    btn.addEventListener("click", function(){
+      t.classList.remove("show");
+      action.onClick();
+    });
+    t.appendChild(btn);
+    t.style.pointerEvents = "auto";
+  } else {
+    t.style.pointerEvents = "";
+  }
+  t.classList.add("show");
   clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2300);
+  window._toastTimer = setTimeout(function(){ t.classList.remove("show"); }, action ? 4500 : 2300);
 }
 
 /* ===== Verified Datasets ===== */
@@ -2500,6 +2542,30 @@ var defaultOwner = "";
 
 function makeLeadId(){ return "ld_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,6); }
 
+function localDateStr(d){
+  var dt = (d instanceof Date) ? d : new Date();
+  var y = dt.getFullYear();
+  var m = String(dt.getMonth() + 1).padStart(2, "0");
+  var day = String(dt.getDate()).padStart(2, "0");
+  return y + "-" + m + "-" + day;
+}
+function localTzTag(){
+  var off = -new Date().getTimezoneOffset();
+  var sign = off >= 0 ? "+" : "-";
+  var h = Math.floor(Math.abs(off) / 60);
+  var m = Math.abs(off) % 60;
+  return "UTC" + sign + h + (m ? (":" + String(m).padStart(2, "0")) : "");
+}
+function localDateTimeStr(d){
+  var dt = (d instanceof Date) ? d : new Date();
+  var hh = String(dt.getHours()).padStart(2, "0");
+  var mm = String(dt.getMinutes()).padStart(2, "0");
+  return localDateStr(dt) + " " + hh + ":" + mm + " (" + localTzTag() + ")";
+}
+
+var _lastKnownLeadsRaw = "[]";
+var _deletedLeadIds = {};
+
 try {
   var savedCmp = JSON.parse(localStorage.getItem("friesgo_cmp") || "[]");
   if(Array.isArray(savedCmp)) compareList = savedCmp.filter(function(c){ return DATA.some(function(d){ return d.country===c; }); }).slice(0,4);
@@ -2509,7 +2575,10 @@ try {
   var savedLeadsRaw = localStorage.getItem("friesgo_leads_v2");
   if(savedLeadsRaw){
     var parsedLeads = JSON.parse(savedLeadsRaw);
-    if(Array.isArray(parsedLeads)) crmLeads = parsedLeads;
+    if(Array.isArray(parsedLeads)){
+      crmLeads = parsedLeads;
+      _lastKnownLeadsRaw = savedLeadsRaw;
+    }
   } else if(followMap && Object.keys(followMap).length){
     // Lossless one-time auto-migration from legacy country-level followMap
     Object.keys(followMap).forEach(function(c){
@@ -2524,10 +2593,15 @@ try {
         owner: f.owner || defaultOwner,
         source: "历史迁移",
         note: f.note || "",
-        updated: f.updated || new Date().toISOString().slice(0,10)
+        updated: f.updated || localDateStr(),
+        updatedAt: Date.now()
       });
     });
-    try { localStorage.setItem("friesgo_leads_v2", JSON.stringify(crmLeads)); } catch(e){}
+    try {
+      var migRaw = JSON.stringify(crmLeads);
+      localStorage.setItem("friesgo_leads_v2", migRaw);
+      _lastKnownLeadsRaw = migRaw;
+    } catch(e){}
   }
 } catch(e){}
 
@@ -2548,12 +2622,101 @@ function clearStorageError(){
   if(b) b.hidden = true;
 }
 
-function saveLocal(){
+function saveOwnerOnly(){
+  try {
+    localStorage.setItem("friesgo_owner", defaultOwner);
+    clearStorageError();
+  } catch(e){
+    showStorageError((e && e.message) ? e.message : "存储空间不足或无痕模式受限");
+  }
+}
+function saveCompareOnly(){
   try {
     localStorage.setItem("friesgo_cmp", JSON.stringify(compareList));
-    localStorage.setItem("friesgo_leads_v2", JSON.stringify(crmLeads));
+    clearStorageError();
+  } catch(e){
+    showStorageError((e && e.message) ? e.message : "存储空间不足或无痕模式受限");
+  }
+  updateFollowBadge();
+}
+function saveLeadsLocal(opts){
+  opts = opts || {};
+  try {
+    if(!opts.replaceAll){
+      var diskRaw = localStorage.getItem("friesgo_leads_v2");
+      if(diskRaw && diskRaw !== _lastKnownLeadsRaw){
+        var diskLeads = [];
+        var baseLeads = [];
+        try { diskLeads = JSON.parse(diskRaw) || []; } catch(e1){ diskLeads = []; }
+        try { baseLeads = JSON.parse(_lastKnownLeadsRaw || "[]") || []; } catch(e2){ baseLeads = []; }
+        if(Array.isArray(diskLeads)){
+          var baseMap = {}, diskMap = {}, localMap = {};
+          baseLeads.forEach(function(x){ if(x && x.id) baseMap[x.id] = x; });
+          diskLeads.forEach(function(x){ if(x && x.id) diskMap[x.id] = x; });
+          crmLeads.forEach(function(x){ if(x && x.id) localMap[x.id] = x; });
+
+          var merged = [];
+          var seenIds = {};
+          var mergedFromOther = 0;
+
+          crmLeads.forEach(function(loc){
+            if(!loc || !loc.id || seenIds[loc.id]) return;
+            seenIds[loc.id] = 1;
+            var dsk = diskMap[loc.id];
+            var bas = baseMap[loc.id];
+            if(!dsk){
+              // Added in this tab (or deleted in other tab)
+              if(!bas || JSON.stringify(loc) !== JSON.stringify(bas)){
+                merged.push(loc);
+              }
+              return;
+            }
+            var locStr = JSON.stringify(loc), dskStr = JSON.stringify(dsk), basStr = bas ? JSON.stringify(bas) : "";
+            if(locStr === dskStr){
+              merged.push(loc);
+            } else if(bas && locStr === basStr && dskStr !== basStr){
+              // Untouched locally, modified in another tab -> preserve other tab's update
+              merged.push(dsk);
+              mergedFromOther++;
+            } else if(bas && dskStr === basStr && locStr !== basStr){
+              // Modified locally only
+              merged.push(loc);
+            } else {
+              // Concurrent edit to the same lead in two tabs -> ask user which version to keep
+              var keepLocal = true;
+              if(typeof window.confirm === "function"){
+                keepLocal = window.confirm(
+                  "检测到另一标签页也修改了客户「" + (loc.company || dsk.company || "") + "」：\n"
+                  + "• 点击「确定」保留当前页面版本（" + (loc.company || "") + " / " + (loc.stage || "") + "）\n"
+                  + "• 点击「取消」采用另一标签页版本（" + (dsk.company || "") + " / " + (dsk.stage || "") + "）"
+                );
+              }
+              merged.push(keepLocal ? loc : dsk);
+              if(!keepLocal) mergedFromOther++;
+            }
+          });
+
+          // Preserve leads newly added in another tab
+          diskLeads.forEach(function(dsk){
+            if(!dsk || !dsk.id || seenIds[dsk.id] || _deletedLeadIds[dsk.id]) return;
+            if(!baseMap[dsk.id]){
+              seenIds[dsk.id] = 1;
+              merged.push(dsk);
+              mergedFromOther++;
+            }
+          });
+
+          crmLeads = merged;
+          if(mergedFromOther > 0 && typeof showToast === "function"){
+            showToast("已自动合并另一标签页的 " + mergedFromOther + " 项客户更新，未覆盖已有修改");
+          }
+        }
+      }
+    }
+    var newRaw = JSON.stringify(crmLeads);
+    localStorage.setItem("friesgo_leads_v2", newRaw);
+    _lastKnownLeadsRaw = newRaw;
     localStorage.setItem("friesgo_follow", JSON.stringify(followMap));
-    localStorage.setItem("friesgo_owner", defaultOwner);
     clearStorageError();
   } catch(e){
     showStorageError((e && e.message) ? e.message : "存储空间不足或无痕模式受限");
@@ -2561,9 +2724,43 @@ function saveLocal(){
   updateFollowBadge();
   if(typeof renderHomeWorkspace === "function") renderHomeWorkspace();
 }
+function saveLocal(opts){
+  saveLeadsLocal(opts);
+}
+
+window.addEventListener("storage", function(e){
+  if(!e || !e.key) return;
+  if(e.key === "friesgo_leads_v2" && e.newValue != null){
+    try {
+      var incoming = JSON.parse(e.newValue);
+      if(Array.isArray(incoming)){
+        crmLeads = incoming;
+        _lastKnownLeadsRaw = e.newValue;
+        updateFollowBadge();
+        if(typeof renderTools === "function") renderTools();
+        if(typeof render === "function") render();
+        if(typeof renderHomeWorkspace === "function") renderHomeWorkspace();
+      }
+    } catch(err){}
+  } else if(e.key === "friesgo_owner"){
+    defaultOwner = e.newValue || "";
+    var el = document.getElementById("defaultOwner");
+    if(el && el.value !== defaultOwner) el.value = defaultOwner;
+  } else if(e.key === "friesgo_cmp" && e.newValue != null){
+    try {
+      var cmpIn = JSON.parse(e.newValue);
+      if(Array.isArray(cmpIn)){
+        compareList = cmpIn.slice(0, 4);
+        updateFollowBadge();
+        if(typeof renderTools === "function") renderTools();
+      }
+    } catch(err){}
+  }
+});
+
 function followDueInfo(nextDate){
   if(!nextDate) return {prio:3, cls:"", label:""};
-  var today = new Date().toISOString().slice(0,10);
+  var today = localDateStr();
   var d0 = new Date(today+"T00:00:00Z").getTime(), d1 = new Date(nextDate+"T00:00:00Z").getTime();
   if(isNaN(d1)) return {prio:3, cls:"", label:""};
   var diff = Math.round((d1 - d0) / 86400000);
@@ -2596,7 +2793,7 @@ function updateFollowBadge(){
 var defOwnerEl = document.getElementById("defaultOwner");
 if(defOwnerEl){
   defOwnerEl.value = defaultOwner;
-  defOwnerEl.addEventListener("input", function(){ defaultOwner = this.value.trim(); saveLocal(); });
+  defOwnerEl.addEventListener("input", function(){ defaultOwner = this.value.trim(); saveOwnerOnly(); });
 }
 
 /* ===== 5-Workspace SaaS Router & Single-Tool Focus View ===== */
@@ -2994,27 +3191,73 @@ function resolveCountryEn(c){
   return s;
 }
 
-function cleanPhoneDigits(p, country){
+var COUNTRY_PHONE_LOCAL = {
+  "Brazil":[10,11], "China":[11,11], "Mexico":[10,10], "India":[10,10],
+  "Vietnam":[9,10], "Indonesia":[9,12], "Thailand":[9,9], "Malaysia":[9,10],
+  "Philippines":[10,10], "Singapore":[8,8], "Saudi Arabia":[9,9], "United Arab Emirates":[9,9],
+  "Egypt":[10,10], "Turkey (Türkiye)":[10,10], "Argentina":[10,11], "Chile":[9,9],
+  "Colombia":[10,10], "Peru":[9,9], "Nigeria":[10,10], "South Africa":[9,9],
+  "Kenya":[9,9], "United States":[10,10], "Canada":[10,10], "United Kingdom":[10,10],
+  "Germany":[7,12], "France":[9,9], "Spain":[9,9], "Italy":[9,10], "Poland":[9,9],
+  "Australia":[9,9], "Japan":[10,10], "South Korea":[9,10], "Russia":[10,10], "Kazakhstan":[10,10]
+};
+
+function analyzePhone(p, country){
   var raw = String(p || "").trim();
-  if(!raw) return "";
+  if(!raw) return {raw:"", digits:"", formatted:"", autoAddedCc:false, needsConfirm:false, cc:"", countryEn:""};
   var hasIntl = raw.indexOf("+") === 0 || raw.indexOf("00") === 0;
   var d = raw.replace(/[^\d]/g, "");
   if(raw.indexOf("00") === 0 && d.length > 9) d = d.slice(2);
-  if(d.length < 7) return d;
   var cEn = resolveCountryEn(country);
   var cc = COUNTRY_DIAL[cEn] || "";
+  var range = COUNTRY_PHONE_LOCAL[cEn] || [7, 10];
+  var minLoc = range[0], maxLoc = range[1];
+  if(d.length < 7){
+    return {raw:raw, digits:d, formatted:d ? ("+"+d) : "", autoAddedCc:false, needsConfirm:true, cc:cc, countryEn:cEn};
+  }
+  var autoAddedCc = false;
+  var needsConfirm = false;
   if(!hasIntl && cc){
     if(d.indexOf("0") === 0){
       d = cc + d.replace(/^0+/, "");
-    } else if(d.indexOf(cc) !== 0 && d.length <= 10){
-      d = cc + d;
+      autoAddedCc = true;
+    } else {
+      var alreadyIntl = (d.indexOf(cc) === 0 && d.length >= cc.length + minLoc && d.length <= cc.length + maxLoc);
+      if(!alreadyIntl && d.length >= minLoc && d.length <= maxLoc){
+        d = cc + d;
+        autoAddedCc = true;
+      } else if(!alreadyIntl){
+        needsConfirm = true;
+      }
     }
+  } else if(!hasIntl && !cc){
+    needsConfirm = true;
   }
-  return d;
+  if(cc && d.indexOf(cc) === 0){
+    var natLen = d.length - cc.length;
+    if(natLen < Math.max(6, minLoc - 1) || natLen > maxLoc + 1) needsConfirm = true;
+  } else if(d.length < 10 || d.length > 15){
+    needsConfirm = true;
+  }
+  return {
+    raw: raw,
+    digits: d,
+    formatted: d ? ("+" + d) : "",
+    autoAddedCc: autoAddedCc,
+    needsConfirm: needsConfirm,
+    cc: cc,
+    countryEn: cEn
+  };
 }
 
+function cleanPhoneDigits(p, country){
+  return analyzePhone(p, country).digits;
+}
+window.analyzePhone = analyzePhone;
+window.cleanPhoneDigits = cleanPhoneDigits;
+
 /* Multi-provider DoH DNS Resolver (AliDNS China-direct -> Cloudflare -> Google, all CORS-enabled) */
-window.queryDoh = function(name, type, timeoutMs, matchFn){
+window.queryDoh = function(name, type, timeoutMs, matchFn, extSignal){
   var providers = [
     {label:"阿里云DNS", url:"https://dns.alidns.com/resolve?name="+encodeURIComponent(name)+"&type="+encodeURIComponent(type), headers:{}},
     {label:"Cloudflare", url:"https://cloudflare-dns.com/dns-query?name="+encodeURIComponent(name)+"&type="+encodeURIComponent(type), headers:{"Accept":"application/dns-json"}},
@@ -3022,8 +3265,13 @@ window.queryDoh = function(name, type, timeoutMs, matchFn){
   ];
   var ms = timeoutMs || 4500;
   function fetchOne(p){
+    if(extSignal && extSignal.aborted){
+      var ae = new Error("Aborted"); ae.name = "AbortError"; return Promise.reject(ae);
+    }
     var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
     var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, ms) : null;
+    function onExtAbort(){ if(ctrl) try { ctrl.abort(); } catch(e){} }
+    if(extSignal) extSignal.addEventListener("abort", onExtAbort, {once:true});
     var opts = {headers: p.headers};
     if(ctrl) opts.signal = ctrl.signal;
     return fetch(p.url, opts)
@@ -3037,10 +3285,16 @@ window.queryDoh = function(name, type, timeoutMs, matchFn){
         j._provider = p.label;
         return j;
       })
-      .finally(function(){ if(timer) clearTimeout(timer); });
+      .finally(function(){
+        if(timer) clearTimeout(timer);
+        if(extSignal) extSignal.removeEventListener("abort", onExtAbort);
+      });
   }
   var lastValid = null;
   function tryIdx(i){
+    if(extSignal && extSignal.aborted){
+      var ae = new Error("Aborted"); ae.name = "AbortError"; return Promise.reject(ae);
+    }
     return fetchOne(providers[i]).then(function(j){
       var suspiciousEmpty = j.TC === true || (String(type).toUpperCase() === "TXT" && j.Status === 0 && (!j.Answer || !j.Answer.length));
       var failedMatch = (typeof matchFn === "function" && !matchFn(j));
@@ -3050,6 +3304,7 @@ window.queryDoh = function(name, type, timeoutMs, matchFn){
       }
       return j;
     }).catch(function(err){
+      if(extSignal && extSignal.aborted) throw err;
       if(i + 1 < providers.length) return tryIdx(i + 1);
       if(lastValid) return lastValid;
       throw err;
@@ -3399,12 +3654,28 @@ document.getElementById("tbody").addEventListener("click", function(e){
   var bCmp = e.target.closest("button[data-act='cmp']");
   if(bCmp){
     var cc = bCmp.getAttribute("data-c");
-    if(compareList.indexOf(cc)<0){
-      if(compareList.length>=4) compareList.shift();
-      compareList.push(cc);
-      saveLocal(); renderTools();
-      showToast("已将「"+(CN[cc]||cc)+"」加入并排对比（前往 背调与合规 查看）");
-    } else showToast("「"+(CN[cc]||cc)+"」已在对比列表中");
+    if(compareList.indexOf(cc) >= 0){
+      showToast("「"+(CN[cc]||cc)+"」已在对比列表中", {label:"查看对比", onClick:function(){ navigateTo("compare-panel"); }});
+      return;
+    }
+    if(compareList.length >= 4){
+      var modal = document.getElementById("cmpReplaceModal");
+      var desc = document.getElementById("cmpReplaceDesc");
+      var btns = document.getElementById("cmpReplaceBtns");
+      if(modal && btns){
+        if(desc) desc.textContent = "对比栏已满 4 国。请选择要被「" + (CN[cc]||cc) + "」替换的国家：";
+        btns.innerHTML = compareList.map(function(oldC, idx){
+          return '<button type="button" class="pill" data-cmp-rep="'+idx+'">替换：'+esc(CN[oldC]||oldC)+'</button>';
+        }).join("");
+        modal.hidden = false;
+        modal.setAttribute("data-pending-c", cc);
+        return;
+      }
+      compareList.shift();
+    }
+    compareList.push(cc);
+    saveCompareOnly(); renderTools();
+    showToast("已将「"+(CN[cc]||cc)+"」加入国家对比（市场资料 → 国家对比）", {label:"查看对比", onClick:function(){ navigateTo("compare-panel"); }});
     return;
   }
   var tr = e.target.closest("tr.country-row");
@@ -3422,6 +3693,28 @@ document.getElementById("tbody").addEventListener("input", function(e){
     if(wrap) wrap.innerHTML = [links[0], links[1], links[4]].map(function(l){ return '<a class="pill" style="min-height:30px;padding:4px 10px;font-size:12px" target="_blank" rel="noopener" href="'+l.url+'">'+l.label+'</a>'; }).join("");
   }
 });
+
+(function(){
+  var modal = document.getElementById("cmpReplaceModal");
+  var cancelBtn = document.getElementById("btnCmpReplaceCancel");
+  if(!modal) return;
+  function closeM(){ modal.hidden = true; modal.removeAttribute("data-pending-c"); }
+  if(cancelBtn) cancelBtn.addEventListener("click", closeM);
+  modal.addEventListener("click", function(e){
+    if(e.target === modal){ closeM(); return; }
+    var b = e.target.closest("button[data-cmp-rep]");
+    if(!b) return;
+    var idx = parseInt(b.getAttribute("data-cmp-rep"), 10);
+    var newC = modal.getAttribute("data-pending-c");
+    if(!isNaN(idx) && newC && idx >= 0 && idx < compareList.length){
+      var oldC = compareList[idx];
+      compareList[idx] = newC;
+      saveCompareOnly(); renderTools();
+      closeM();
+      showToast("已将「"+(CN[oldC]||oldC)+"」替换为「"+(CN[newC]||newC)+"」", {label:"查看对比", onClick:function(){ navigateTo("compare-panel"); }});
+    }
+  });
+})();
 
 /* Filter controls */
 document.getElementById("q").addEventListener("input", function(e){ state.q=e.target.value.trim(); render(); });
@@ -3775,12 +4068,27 @@ window.getRepSignature = function(){
     });
   }
 
+  var MAJOR_PORTS_EN = {
+    "Vietnam":"Ho Chi Minh City (Cat Lai)", "Indonesia":"Jakarta (Tanjung Priok)", "Thailand":"Laem Chabang",
+    "Malaysia":"Port Klang", "Philippines":"Manila", "Singapore":"Singapore",
+    "Saudi Arabia":"Dammam / Jeddah", "United Arab Emirates":"Jebel Ali (Dubai)", "Egypt":"Alexandria / Sokhna",
+    "Mexico":"Manzanillo / Veracruz", "Brazil":"Santos", "Chile":"San Antonio / Valparaiso",
+    "Peru":"Callao", "Colombia":"Buenaventura / Cartagena", "Argentina":"Buenos Aires",
+    "Nigeria":"Lagos (Apapa)", "South Africa":"Durban", "Kenya":"Mombasa", "Morocco":"Casablanca / Tanger-Med",
+    "India":"Nhava Sheva (Mumbai)", "Pakistan":"Karachi", "Turkey (Türkiye)":"Istanbul (Ambarli)",
+    "Germany":"Hamburg", "Poland":"Gdansk", "United Kingdom":"Felixstowe", "France":"Le Havre",
+    "Italy":"Genoa", "Spain":"Valencia", "Netherlands":"Rotterdam", "Australia":"Sydney / Melbourne",
+    "United States":"Los Angeles / Houston", "Canada":"Vancouver", "South Korea":"Busan", "Japan":"Tokyo / Yokohama"
+  };
+
   function syncCountryDuty(){
     var c = qcSel.value;
     var meta = COUNTRY_META[c];
     var det = DETAILS[c];
     var duty = meta ? meta.tariffPct : (hasChinaFta(c) ? 0 : 8);
     document.getElementById("qcDutyPct").value = duty;
+    var dpEl = document.getElementById("qcDestPort");
+    if(dpEl) dpEl.value = MAJOR_PORTS_EN[c] || "";
     var note = document.getElementById("qcFtaNote");
     if(hasChinaFta(c)){
       note.innerHTML = '🆓 <b>'+esc(CN[c]||c)+'享对华自贸协定：</b>'+esc(det?det.fta:"已生效 FTA")+'（办原产地证多可享 0% 优惠关税，报价前核实 MacMap）';
@@ -3792,6 +4100,10 @@ window.getRepSignature = function(){
     updateCalc();
   }
   var _lastQuoteState = null;
+
+  function fmtUsd2(n){
+    return "$" + Number(n).toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
 
   function validateQuoteInputs(){
     var errs = [];
@@ -3866,55 +4178,74 @@ window.getRepSignature = function(){
     var rawFac = v.rawFac, qty = v.qty, reb = v.reb, fx = v.fx, mgn = v.mgn;
     var loc = v.loc, frt = v.frt, insPct = v.insPct, bankUsd = v.bankUsd, commPct = v.commPct, duty = v.duty, cutCust = v.cutCust;
     var fac = (qcPriceMode === "unit") ? (rawFac * qty) : rawFac;
+    var unitName = ((document.getElementById("qcUnitName")||{}).value || "units").trim();
+    var unitSingular = unitName === "tons" ? "MT" : (unitName === "units" ? "unit" : (unitName === "sets" ? "set" : (unitName === "pcs" ? "pc" : "meter")));
+    var unitPlural = unitName === "tons" ? "MT" : unitName;
 
     if(facHint){
       facHint.textContent = (qcPriceMode === "unit")
-        ? ("采购含税总价：¥" + fac.toLocaleString("zh-CN", {maximumFractionDigits:0}) + "（单价 ¥" + rawFac + " × " + qty + " 件）")
-        : ("折合含税单价：¥" + (fac/qty).toFixed(2) + " / 件");
+        ? ("采购含税总价：¥" + fac.toLocaleString("zh-CN", {maximumFractionDigits:2}) + "（单价 ¥" + rawFac + " × " + qty + " " + unitPlural + "）")
+        : ("折合含税单价：¥" + (fac/qty).toFixed(2) + " / " + unitSingular);
     }
 
     var netCostRmb = fac - (fac / 1.13) * reb;
     var fixedCostRmb = loc + bankUsd * fx;
     var totalCostRmb = netCostRmb + fixedCostRmb;
     var denom = Math.max(0.05, 1 - mgn - commPct);
-    var fobUsd = (totalCostRmb / fx) / denom;
+    var fobUsdRaw = (totalCostRmb / fx) / denom;
+    var unitFobUsd = Math.round((fobUsdRaw / qty) * 100) / 100;
+    var fobUsd = Math.round(unitFobUsd * qty * 100) / 100;
+
     var commRmb = fobUsd * commPct * fx;
     var cifDenom = Math.max(0.5, 1 - 1.1 * insPct);
-    var cifUsd = (fobUsd + frt) / cifDenom;
-    var insUsd = Math.max(0, cifUsd - fobUsd - frt);
+    var cifUsdRaw = (fobUsd + frt) / cifDenom;
+    var unitCifUsd = Math.round((cifUsdRaw / qty) * 100) / 100;
+    var cifUsd = Math.round(unitCifUsd * qty * 100) / 100;
+    var insUsd = Math.max(0, Math.round((cifUsd - fobUsd - frt) * 100) / 100);
+
     var profitRmb = fobUsd * fx - totalCostRmb - commRmb;
-    var landedUsd = cifUsd * (1 + duty);
-    var unitFobUsd = fobUsd / qty;
-    var unitCifUsd = cifUsd / qty;
+    var landedUsd = Math.round(cifUsd * (1 + duty) * 100) / 100;
     var unitVarCostRmb = netCostRmb / qty;
     var breakEvenUnitUsd = ((totalCostRmb / fx) / Math.max(0.1, 1 - commPct)) / qty;
     var fxDropLoss = Math.round(fobUsd * (fx * 0.03));
+    var destPort = ((document.getElementById("qcDestPort")||{}).value || "").trim();
+    var freightNote = ((document.getElementById("qcFreightNote")||{}).value || "").trim();
 
     _lastQuoteState = {
       ok: true,
       country: qcSel.value,
       prod: document.getElementById("qcProdName").value.trim() || "Industrial Equipment",
       port: document.getElementById("qcPort").value.trim() || "Ningbo / Shanghai",
+      destPort: destPort,
+      freightNote: freightNote,
+      unitSingular: unitSingular,
+      unitPlural: unitPlural,
       qty: qty,
+      fx: fx,
+      marginPct: Math.round(mgn * 1000) / 10,
+      costRmb: Math.round(totalCostRmb + commRmb),
+      freightUsd: frt,
+      insUsd: insUsd,
       lead: v.lead,
       validDays: v.validDays,
       fobUsd: fobUsd,
       unitFobUsd: unitFobUsd,
       cifUsd: cifUsd,
       unitCifUsd: unitCifUsd,
-      fobStr: "$" + fobUsd.toLocaleString("en-US", {maximumFractionDigits:0}),
-      fobUnitEn: "$" + unitFobUsd.toFixed(2) + " / unit",
-      cifStr: "$" + cifUsd.toLocaleString("en-US", {maximumFractionDigits:0}),
-      cifUnitEn: "$" + unitCifUsd.toFixed(2) + " / unit"
+      fobStr: fmtUsd2(fobUsd),
+      fobUnitEn: fmtUsd2(unitFobUsd) + " / " + unitSingular,
+      cifStr: fmtUsd2(cifUsd),
+      cifUnitEn: fmtUsd2(unitCifUsd) + " / " + unitSingular
     };
+    window._lastQuoteState = _lastQuoteState;
 
     document.getElementById("qcFobOut").textContent = _lastQuoteState.fobStr;
-    document.getElementById("qcFobUnit").textContent = "单价约 $" + unitFobUsd.toFixed(2) + " / 件" + (commPct>0 ? ("（含佣金/保费 "+(commPct*100).toFixed(1)+"%）") : "");
+    document.getElementById("qcFobUnit").textContent = "单价 " + fmtUsd2(unitFobUsd) + " / " + unitSingular + " × " + qty + (commPct>0 ? ("（含佣金/保费 "+(commPct*100).toFixed(1)+"%）") : "（精确到分，单价×数量=总价）");
     document.getElementById("qcCifOut").textContent = _lastQuoteState.cifStr;
-    document.getElementById("qcCifUnit").textContent = "单价约 $" + unitCifUsd.toFixed(2) + "（运费 $" + frt + " + 1.1×保险 $" + Math.round(insUsd) + "）";
+    document.getElementById("qcCifUnit").textContent = "单价 " + fmtUsd2(unitCifUsd) + "（运费 $" + frt.toFixed(2) + " + 1.1×保险 $" + insUsd.toFixed(2) + "）";
     document.getElementById("qcProfitOut").textContent = "¥" + profitRmb.toLocaleString("zh-CN", {maximumFractionDigits:0});
     document.getElementById("qcCostOut").textContent = "退税后总成本 ¥" + Math.round(totalCostRmb + commRmb).toLocaleString("zh-CN") + (bankUsd>0 ? ("（含银行费 $" + bankUsd + "）") : "");
-    document.getElementById("qcLandedOut").textContent = "$" + landedUsd.toLocaleString("en-US", {maximumFractionDigits:0});
+    document.getElementById("qcLandedOut").textContent = fmtUsd2(landedUsd);
     var fxRiskEl = document.getElementById("qcFxRiskNote");
     if(fxRiskEl) fxRiskEl.textContent = "汇率若跌 3%（至 " + (fx*0.97).toFixed(2) + "）本单少赚 ¥" + fxDropLoss.toLocaleString("zh-CN");
 
@@ -3927,11 +4258,11 @@ window.getRepSignature = function(){
       var reqQty = Math.ceil((profitRmb + fixedCostRmb) / cmRmb);
       var addPct = Math.round((reqQty / qty - 1) * 100);
       var sameQtyLoss = Math.round((unitFobUsd * d * (1 - commPct) * qty) * fx);
-      return {ok:true, txt:reqQty.toLocaleString()+" 件 (+"+addPct+"%)", sub:"新单价 $"+newUnitUsd.toFixed(2)+" · 不加量少赚 ¥"+sameQtyLoss.toLocaleString(), qty:reqQty, addPct:addPct, newUnit:newUnitUsd};
+      return {ok:true, txt:reqQty.toLocaleString()+" "+unitPlural+" (+"+addPct+"%)", sub:"新单价 $"+newUnitUsd.toFixed(2)+" · 不加量少赚 ¥"+sameQtyLoss.toLocaleString(), qty:reqQty, addPct:addPct, newUnit:newUnitUsd};
     }
     var beEl = document.getElementById("qcBeUnit");
     if(beEl){
-      beEl.textContent = "$" + breakEvenUnitUsd.toFixed(2) + " / 件";
+      beEl.textContent = "$" + breakEvenUnitUsd.toFixed(2) + " / " + unitSingular;
       document.getElementById("qcBeNote").textContent = "变动成本 $" + (unitVarCostRmb/fx).toFixed(2) + " + 摊固定费 $" + ((fixedCostRmb/qty)/fx).toFixed(2);
       document.getElementById("qcCutCustLbl").textContent = cutCust;
       var r3 = evalCut(3), rc = evalCut(cutCust), r10 = evalCut(10);
@@ -3956,6 +4287,8 @@ window.getRepSignature = function(){
       return {ok:false, error:errTxt, sub:"", body:""};
     }
     var c = s.country, prod = s.prod, port = s.port;
+    var pod = s.destPort ? (s.destPort + ", " + c) : (c + " (Destination Port: To be confirmed)");
+    var qDate = localDateStr();
     var incCtn = !!(document.getElementById("qcIncludeCtn") && document.getElementById("qcIncludeCtn").checked);
     var packLine = (incCtn && window._ctnSummaryEn)
       ? window._ctnSummaryEn
@@ -3963,29 +4296,33 @@ window.getRepSignature = function(){
     var payTerms = (document.getElementById("qcPayTerms") && document.getElementById("qcPayTerms").value) || "To be confirmed";
     var inspTerms = (document.getElementById("qcInspTerms") && document.getElementById("qcInspTerms").value) || "To be confirmed upon order";
     var docTerms = (document.getElementById("qcDocTerms") && document.getElementById("qcDocTerms").value) || "To be confirmed according to final technical specification";
+    var frtBasis = s.freightNote
+      ? (s.freightNote + " (quoted date: " + qDate + ", est. freight USD " + s.freightUsd.toFixed(2) + " + 110% insurance USD " + s.insUsd.toFixed(2) + ")")
+      : ("Estimated as of " + qDate + " (est. freight USD " + s.freightUsd.toFixed(2) + " + 110% marine insurance USD " + s.insUsd.toFixed(2) + ", subject to carrier rate at booking)");
     var coLine = hasChinaFta(c) ? ("\n- Origin Certificate: Preferential C/O (Form E / RCEP / FTA) subject to final HS code verification for " + c) : "";
-    var refNo = "RFQ-" + new Date().toISOString().slice(0,10).replace(/-/g,"");
+    var refNo = "RFQ-" + qDate.replace(/-/g,"");
     var sig = window.getRepSignature ? window.getRepSignature() : "FriesGo Global Export Team";
     return {
       ok: true,
       sub: "Formal Quotation for " + prod + " — FriesGo Global | Ref: " + refNo,
-      body: "Dear Procurement Team,\n\nThank you for your inquiry regarding " + prod + ". Please find our quotation details below:\n\n"
-        + "1. PRODUCT & PRICING\n"
+      body: "Dear Procurement Team,\n\nThank you for your inquiry regarding " + prod + ". Please find our formal quotation details below (Date: " + qDate + "):\n\n"
+        + "1. PRODUCT & PRICING (USD, rounded to $0.01/" + s.unitSingular + "; Total = Unit Price x Qty)\n"
         + "- Item Description: " + prod + "\n"
-        + "- Quoted Quantity: " + s.qty + " units/sets\n"
-        + "- FOB " + port + " (China): " + s.fobStr + " (" + s.fobUnitEn + ")\n"
-        + "- Estimated CIF " + c + ": " + s.cifStr + " (" + s.cifUnitEn + ", incl. 110% marine cargo insurance)\n\n"
+        + "- Quoted Quantity: " + s.qty + " " + s.unitPlural + "\n"
+        + "- FOB " + port + " (China): " + s.fobUnitEn + " | Total: " + s.fobStr + "\n"
+        + "- CIF " + pod + ": " + s.cifUnitEn + " | Total: " + s.cifStr + "\n"
+        + "- Freight & Insurance Basis: " + frtBasis + "\n\n"
         + "2. PRODUCTION & PACKING\n"
         + "- Estimated Lead Time: " + s.lead + " days after order & deposit confirmation\n"
         + "- Packing & Container Fit: " + packLine + "\n\n"
         + "3. COMMERCIAL TERMS\n"
-        + "- Incoterms: FOB " + port + " / CIF " + c + "\n"
+        + "- Incoterms (2020): FOB " + port + " / CIF " + pod + "\n"
         + "- Payment Terms: " + payTerms + "\n"
-        + "- Quotation Validity: " + s.validDays + " days" + coLine + "\n\n"
+        + "- Quotation Validity: " + s.validDays + " days from " + qDate + coLine + "\n\n"
         + "4. QUALITY & DOCUMENTATION\n"
         + "- Inspection Standard: " + inspTerms + "\n"
         + "- Technical Docs: " + docTerms + "\n\n"
-        + "Please confirm your destination port, exact technical specification, and preferred terms so we can issue the formal Proforma Invoice (PI).\n\n"
+        + "Please confirm your exact destination port, technical specification, and preferred terms so we can issue the formal Proforma Invoice (PI).\n\n"
         + "Best regards,\n" + sig
     };
   }
@@ -4003,7 +4340,7 @@ window.getRepSignature = function(){
   }
   window.refreshFormalRfq = updateFormalRfq;
   qcSel.addEventListener("change", syncCountryDuty);
-  ["qcProdName","qcFactoryRmb","qcQty","qcRebate","qcFx","qcMargin","qcLocalRmb","qcFreightUsd","qcInsPct","qcBankUsd","qcCommPct","qcDutyPct","qcLeadDays","qcValidDays","qcPort","qcCutPct","qcPayTerms","qcInspTerms","qcDocTerms","qcIncludeCtn"].forEach(function(id){
+  ["qcProdName","qcFactoryRmb","qcQty","qcUnitName","qcRebate","qcFx","qcMargin","qcLocalRmb","qcFreightUsd","qcInsPct","qcBankUsd","qcCommPct","qcDutyPct","qcLeadDays","qcValidDays","qcPort","qcDestPort","qcFreightNote","qcCutPct","qcPayTerms","qcInspTerms","qcDocTerms","qcIncludeCtn"].forEach(function(id){
     var el = document.getElementById(id);
     if(el){ el.addEventListener("input", updateCalc); el.addEventListener("change", updateCalc); }
   });
@@ -4137,142 +4474,142 @@ window.getRepSignature = function(){
   var TEMPLATES = {
     en: {
       first: {
-        sub: "Direct Industrial Supply: {prod} for {comp} | FriesGo Global",
-        body: "Dear {contact},\n\nHope this email finds you well.\n\nWe noticed {comp}'s operations in {country} and would like to introduce FriesGo Global — a full-category industrial equipment supplier from China (valves, pumps, cables, machinery, and steel hardware).\n\nFor your {prod} needs ({edge}):\n{hooks}\n\nMay I share our targeted 1-page catalog and a reference FOB/CIF price list for {prod}? Even a quick 10-minute WhatsApp chat would be appreciated.\n\nBest regards,\n{sender}\n{phone}"
+        sub: "Industrial Supply Inquiry: {prod} for {comp} | FriesGo Global",
+        body: "Dear {contact},\n\nHope this email finds you well.\n\nWe noticed {comp}'s operations in {country} and would like to introduce FriesGo Global — an industrial equipment supplier from China covering valves, pumps, cables, machinery, and steel hardware.\n\nFor your {prod} requirements{edgeParen}:\n{hooks}\n\nMay I share our product catalog and prepare a reference FOB/CIF quotation based on your specifications? Happy to connect by email or WhatsApp.\n\nBest regards,\n{sender}\n{phone}"
       },
       followup: {
-        sub: "Re: CAD/TDS & Duty-Saving C/O for {prod} — {comp}",
-        body: "Dear {contact},\n\nFollowing up briefly on my earlier note regarding {prod}.\n\nTo save your engineering and procurement team review time, we can immediately send:\n• Full CAD/3D drawings, material test reports (MTR) & technical datasheets (TDS)\n• Preferential Certificate of Origin (Form E / RCEP / FTA where applicable) to help lower your import duty into {country}\n\nJust share your BOQ or target specs for {comp}, and we will send a sharp FOB/CIF landed-cost quote within 24 hours.\n\nBest regards,\n{sender}\n{phone}"
+        sub: "Re: Technical Specifications & Quotation for {prod} — {comp}",
+        body: "Dear {contact},\n\nFollowing up briefly on my earlier note regarding {prod}.\n\nIf {comp} has an upcoming requirement or BOQ, we would be glad to prepare a tailored FOB/CIF quotation and confirm applicable technical and export documentation for {country}.{coFollowEn}\n\nJust reply with your target specifications or quantity, and we will respond promptly.\n\nBest regards,\n{sender}\n{phone}"
       },
       wa: {
         sub: "（WhatsApp 无需主题，直接发下方正文）",
-        body: "Hi {contact}, this is {sender}. We supply {prod} directly from China ({edge}) with one-stop container consolidation to {country}. May I send you our catalog & reference price list for {comp}?"
+        body: "Hi {contact}, this is {sender} from FriesGo Global. We supply {prod} from China{edgeParen}. May I send our product catalog for {comp}'s reference?"
       }
     },
     vi: {
       first: {
-        sub: "Cung cấp {prod} trực tiếp từ Trung Quốc — Báo giá cho {comp}",
-        body: "Kính gửi {contact},\n\nChúng tôi là FriesGo Global — nhà cung cấp thiết bị công nghiệp đa ngành từ Trung Quốc (van công nghiệp, máy bơm, cáp điện, máy móc và ngũ kim).\n\nĐối với nhu cầu {prod} của {comp} ({edge}):\n{hooks}\n\nAnh/Chị có tiện nhận catalog và bảng giá FOB/CIF tham khảo không ạ? Rất mong trao đổi nhanh qua Zalo/WhatsApp.\n\nTrân trọng,\n{sender}\n{phone}"
+        sub: "Giới thiệu nguồn cung {prod} từ Trung Quốc cho {comp}",
+        body: "Kính gửi {contact},\n\nChúng tôi là FriesGo Global — đơn vị cung cấp thiết bị công nghiệp từ Trung Quốc (van công nghiệp, máy bơm, cáp điện, máy móc và ngũ kim).\n\nĐối với nhu cầu {prod} của {comp}{edgeParen}:\n{hooks}\n\nAnh/Chị có tiện nhận catalog và báo giá FOB/CIF tham khảo theo thông số yêu cầu không ạ? Rất mong trao đổi nhanh qua Zalo/WhatsApp.\n\nTrân trọng,\n{sender}\n{phone}"
       },
       followup: {
-        sub: "Re: Bản vẽ kỹ thuật TDS/CAD & C/O Form E giảm thuế cho {prod} — {comp}",
-        body: "Kính gửi {contact},\n\nEm xin nhắn lại về email trước liên quan đến {prod}. Để hỗ trợ bộ phận kỹ thuật và thu mua của {comp}, bên em có thể gửi ngay:\n• Bản vẽ kỹ thuật CAD/3D, thông số TDS và chứng chỉ kiểm định vật liệu\n• Hỗ trợ cấp C/O Form E / RCEP hưởng thuế nhập khẩu ưu đãi 0% về Việt Nam\n\nAnh/Chị chỉ cần gửi danh mục (BOQ) hoặc thông số, bên em báo giá FOB/CIF chi tiết trong 24h ạ.\n\nTrân trọng,\n{sender}\n{phone}"
+        sub: "Re: Thông số kỹ thuật & báo giá {prod} — {comp}",
+        body: "Kính gửi {contact},\n\nEm xin nhắn lại về email trước liên quan đến {prod}. Nếu {comp} đang có danh mục (BOQ) hoặc thông số dự kiến, bên em sẵn sàng báo giá FOB/CIF chi tiết và xác nhận hồ sơ xuất khẩu phù hợp về {country}.{coFollowVi}\n\nAnh/Chị chỉ cần gửi thông số hoặc số lượng dự kiến để bên em hỗ trợ sớm nhé ạ.\n\nTrân trọng,\n{sender}\n{phone}"
       },
       wa: {
         sub: "（Zalo / WhatsApp 简短破冰）",
-        body: "Chào Anh/Chị {contact}, em là {sender}. Bên em cung cấp {prod} từ Trung Quốc ({edge}), hỗ trợ C/O Form E giảm thuế & gom hàng nhiều danh mục. Em gửi catalog cho {comp} tham khảo nhé?"
+        body: "Chào Anh/Chị {contact}, em là {sender} từ FriesGo Global. Bên em cung cấp {prod} từ Trung Quốc{edgeParen}. Em gửi catalog cho {comp} tham khảo nhé?"
       }
     },
     id: {
       first: {
-        sub: "Penawaran {prod} langsung dari Tiongkok untuk {comp} | FriesGo Global",
-        body: "Yth. Bapak/Ibu {contact},\n\nKami dari FriesGo Global — pemasok peralatan industri lengkap dari Tiongkok (valve, pompa, kabel, mesin industri, dan perkakas).\n\nUntuk kebutuhan {prod} di {comp} ({edge}):\n{hooks}\n\nBolehkah kami kirimkan katalog dan estimasi harga FOB/CIF untuk {prod}?\n\nHormat kami,\n{sender}\n{phone}"
+        sub: "Penawaran {prod} dari Tiongkok untuk {comp} | FriesGo Global",
+        body: "Yth. Bapak/Ibu {contact},\n\nKami dari FriesGo Global — pemasok peralatan industri dari Tiongkok (valve, pompa, kabel, mesin industri, dan perkakas).\n\nUntuk kebutuhan {prod} di {comp}{edgeParen}:\n{hooks}\n\nBolehkah kami kirimkan katalog dan estimasi harga FOB/CIF sesuai spesifikasi {comp}?\n\nHormat kami,\n{sender}\n{phone}"
       },
       followup: {
-        sub: "Re: Datasheet teknis (TDS/CAD) & Form E bea masuk 0% untuk {prod} — {comp}",
-        body: "Yth. Bapak/Ibu {contact},\n\nMenindaklanjuti email saya sebelumnya soal {prod}. Untuk memudahkan evaluasi teknis tim {comp}, kami siap mengirimkan:\n• Gambar CAD/3D, datasheet teknis (TDS) dan sertifikat uji material\n• Dukungan C/O Form E / RCEP untuk menekan tarif bea masuk ke Indonesia\n\nSilakan kirimkan BOQ atau spesifikasi Anda agar kami siapkan penawaran FOB/CIF dalam 24 jam.\n\nHormat kami,\n{sender}\n{phone}"
+        sub: "Re: Spesifikasi teknis & penawaran {prod} — {comp}",
+        body: "Yth. Bapak/Ibu {contact},\n\nMenindaklanjuti email saya sebelumnya soal {prod}. Apabila tim {comp} memiliki spesifikasi atau BOQ yang sedang dievaluasi, kami siap menyiapkan penawaran FOB/CIF serta konfirmasi dokumen ekspor untuk {country}.{coFollowId}\n\nSilakan bagikan spesifikasi Anda agar kami bantu hitung.\n\nHormat kami,\n{sender}\n{phone}"
       },
       wa: {
         sub: "（WhatsApp 简短破冰）",
-        body: "Halo Bapak/Ibu {contact}, saya {sender}. Kami memasok {prod} langsung dari Tiongkok ({edge}) dengan Form E ke Indonesia. Boleh saya kirim katalog & harga untuk {comp}?"
+        body: "Halo Bapak/Ibu {contact}, saya {sender} dari FriesGo Global. Kami memasok {prod} dari Tiongkok{edgeParen}. Boleh saya kirim katalog untuk {comp}?"
       }
     },
     th: {
       first: {
-        sub: "ข้อเสนอจัดส่ง {prod} โดยตรงจากจีนสำหรับ {comp} | FriesGo Global",
-        body: "เรียนคุณ {contact},\n\nเราคือ FriesGo Global ผู้จัดจำหน่ายอุปกรณ์อุตสาหกรรมครบวงจรจากประเทศจีน (วาล์ว ปั๊มน้ำ สายไฟ เครื่องจักร และฮาร์ดแวร์อุตสาหกรรม)\n\nสำหรับความต้องการ {prod} ของ {comp} ({edge}):\n{hooks}\n\nขออนุญาตส่งแคตตาล็อกและราคาอ้างอิง FOB/CIF ให้พิจารณาได้ไหมครับ สามารถติดต่อผ่าน LINE หรือ WhatsApp ได้เช่นกัน\n\nขอแสดงความนับถือ,\n{sender}\n{phone}"
+        sub: "แนะนำสินค้า {prod} จากประเทศจีนสำหรับ {comp} | FriesGo Global",
+        body: "เรียนคุณ {contact},\n\nเราคือ FriesGo Global ผู้จัดจำหน่ายอุปกรณ์อุตสาหกรรมจากประเทศจีน (วาล์ว ปั๊มน้ำ สายไฟ เครื่องจักร และฮาร์ดแวร์อุตสาหกรรม)\n\nสำหรับความต้องการ {prod} ของ {comp}{edgeParen}:\n{hooks}\n\nขออนุญาตส่งแคตตาล็อกและราคาอ้างอิง FOB/CIF ตามสเปกที่ต้องการให้พิจารณาได้ไหมครับ สามารถติดต่อผ่าน LINE หรือ WhatsApp ได้เช่นกัน\n\nขอแสดงความนับถือ,\n{sender}\n{phone}"
       },
       followup: {
-        sub: "Re: สเปกเทคนิค CAD/TDS และ Form E ลดภาษีนำเข้าสำหรับ {prod} — {comp}",
-        body: "เรียนคุณ {contact},\n\nขอติดตามอีเมลก่อนหน้าเกี่ยวกับ {prod} เพื่อช่วยทีมวิศวกรและจัดซื้อของ {comp} เราพร้อมส่งข้อมูลให้ทันที:\n• แบบเทคนิค CAD/3D สเปกสินค้า (TDS) และรายงานทดสอบคุณภาพ\n• เอกสาร Form E / RCEP เพื่อใช้สิทธิลดภาษีนำเข้า 0% เข้าประเทศไทย\n\nส่งรายการสเปกหรือ BOQ มาให้เราทำราคา FOB/CIF ภายใน 24 ชั่วโมงได้เลยครับ\n\nขอแสดงความนับถือ,\n{sender}\n{phone}"
+        sub: "Re: ข้อมูลสเปกสินค้าและใบเสนอราคา {prod} — {comp}",
+        body: "เรียนคุณ {contact},\n\nขอติดตามอีเมลก่อนหน้าเกี่ยวกับ {prod} หากทีมงาน {comp} มีรายการสเปกหรือ BOQ เรายินดีจัดทำใบเสนอราคา FOB/CIF และยืนยันเอกสารส่งออกที่เกี่ยวข้องสำหรับ {country}.{coFollowTh}\n\nสามารถส่งสเปกหรือปริมาณที่ต้องการให้เราประเมินได้เลยครับ\n\nขอแสดงความนับถือ,\n{sender}\n{phone}"
       },
       wa: {
         sub: "（LINE / WhatsApp 简短破冰）",
-        body: "สวัสดีครับคุณ {contact} ผม {sender} จาก FriesGo Global จำหน่าย {prod} ตรงจากจีน ({edge}) ออก Form E ลดภาษีนำเข้าได้ ขออนุญาตส่งแคตตาล็อกให้ {comp} นะครับ?"
+        body: "สวัสดีครับคุณ {contact} ผม {sender} จาก FriesGo Global จำหน่าย {prod} จากจีน{edgeParen} ขออนุญาตส่งแคตตาล็อกให้ {comp} พิจารณานะครับ?"
       }
     },
     ar: {
       first: {
-        sub: "توريد {prod} مباشرة من الصين — عرض سعر لشركة {comp}",
-        body: "السيد/السيدة {contact} المحترم(ة)،\n\nنحن شركة FriesGo Global، مورد معدات صناعية متكاملة من الصين (الصمامات، المضخات، الكابلات، الآلات والمستلزمات الصناعية).\n\nلتلبية احتياجات شركة {comp} من {prod} ({edge}):\n{hooks}\n\nهل يمكننا إرسال الكتالوج وعرض السعر الاسترشادي (FOB/CIF)؟ يسعدنا التواصل عبر واتساب.\n\nمع خالص التحية،\n{sender}\n{phone}"
+        sub: "توريد {prod} من الصين — عرض استرشادي لشركة {comp}",
+        body: "السيد/السيدة {contact} المحترم(ة)،\n\nنحن شركة FriesGo Global، مورد معدات صناعية من الصين (الصمامات، المضخات، الكابلات، الآلات والمستلزمات الصناعية).\n\nلتلبية احتياجات شركة {comp} من {prod}{edgeParen}:\n{hooks}\n\nهل يمكننا إرسال الكتالوج وعرض السعر الاسترشادي (FOB/CIF) بناءً على مواصفاتكم؟ يسعدنا التواصل عبر واتساب.\n\nمع خالص التحية،\n{sender}\n{phone}"
       },
       followup: {
-        sub: "متابعة: البيانات الفنية (TDS/CAD) وشهادات التخليص لـ {prod} — {comp}",
-        body: "السيد/السيدة {contact} المحترم(ة)،\n\nمتابعة سريعة بخصوص {prod}. لتسهيل المراجعة الفنية في شركة {comp}، يسعدنا إرسال:\n• رسومات CAD/3D والبيانات الفنية الكاملة (TDS) وتقارير الاختبار\n• شهادة المنشأ ودعم متطلبات المطابقة الجمركية (SABER / G-Mark) في {country}\n\nأرسلوا لنا جدول الكميات (BOQ) وسنقدم عرض سعر FOB/CIF خلال 24 ساعة.\n\nمع التحية،\n{sender}\n{phone}"
+        sub: "متابعة: المواصفات الفنية وعرض السعر لـ {prod} — {comp}",
+        body: "السيد/السيدة {contact} المحترم(ة)،\n\nمتابعة سريعة بخصوص {prod}. إذا كان لدى شركة {comp} جدول كميات (BOQ) أو مواصفات مطلوبة، يسعدنا إعداد عرض سعر FOB/CIF وتأكيد مستندات التصدير المطلوبة لوجهة {country}.{coFollowEn}\n\nأرسلوا لنا المواصفات وسنوافيكم بالتفاصيل.\n\nمع التحية،\n{sender}\n{phone}"
       },
       wa: {
         sub: "（WhatsApp 简短破冰）",
-        body: "مرحباً {contact}، معك {sender}. نقوم بتوريد {prod} مباشرة من الصين ({edge}) مع دعم شهادات SABER/G-Mark. هل يمكنني إرسال الكتالوج لشركة {comp}؟"
+        body: "مرحباً {contact}، معك {sender} من FriesGo Global. نقوم بتوريد {prod} من الصين{edgeParen}. هل يمكنني إرسال الكتالوج لشركة {comp}؟"
       }
     },
     es: {
       first: {
-        sub: "Suministro directo de {prod} desde China para {comp} | FriesGo Global",
-        body: "Estimado/a {contact},\n\nSomos FriesGo Global, proveedor integral de equipos industriales en China (válvulas, bombas, cables, maquinaria y ferretería industrial).\n\nPara las necesidades de {prod} de {comp} ({edge}):\n{hooks}\n\n¿Me permitiría enviarle nuestro catálogo y una cotización referencial FOB/CIF? También podemos conversar por WhatsApp.\n\nSaludos cordiales,\n{sender}\n{phone}"
+        sub: "Suministro de {prod} desde China para {comp} | FriesGo Global",
+        body: "Estimado/a {contact},\n\nSomos FriesGo Global, proveedor de equipos industriales en China (válvulas, bombas, cables, maquinaria y ferretería industrial).\n\nPara las necesidades de {prod} de {comp}{edgeParen}:\n{hooks}\n\n¿Me permitiría enviarle nuestro catálogo y una cotización referencial FOB/CIF según sus especificaciones? También podemos conversar por WhatsApp.\n\nSaludos cordiales,\n{sender}\n{phone}"
       },
       followup: {
-        sub: "Re: Fichas técnicas (TDS/CAD) y Certificado de Origen para {prod} — {comp}",
-        body: "Estimado/a {contact},\n\nHago un breve seguimiento sobre {prod}. Para agilizar la revisión técnica en {comp}, podemos enviarle de inmediato:\n• Planos CAD/3D, fichas técnicas (TDS) y certificados de prueba\n• Certificado de Origen (Form F / TLC aplicable) para optimizar costos de importación en {country}\n\nCompártanos su BOQ o especificaciones y cotizamos FOB/CIF en 24 horas.\n\nSaludos,\n{sender}\n{phone}"
+        sub: "Re: Especificaciones técnicas y cotización para {prod} — {comp}",
+        body: "Estimado/a {contact},\n\nHago un breve seguimiento sobre {prod}. Si {comp} cuenta con una lista de cantidades (BOQ) o especificaciones técnicas, con gusto preparamos una cotización FOB/CIF y confirmamos la documentación de exportación aplicable para {country}.{coFollowEs}\n\nQuedo atento a sus requerimientos.\n\nSaludos,\n{sender}\n{phone}"
       },
       wa: {
         sub: "（WhatsApp 简短破冰）",
-        body: "Hola {contact}, soy {sender}. Suministramos {prod} directo de China ({edge}) con consolidación multi-categoría. ¿Le envío nuestro catálogo y precios para {comp}?"
+        body: "Hola {contact}, soy {sender} de FriesGo Global. Suministramos {prod} desde China{edgeParen}. ¿Le envío nuestro catálogo referencial para {comp}?"
       }
     },
     pt: {
       first: {
-        sub: "Fornecimento direto de {prod} da China para {comp} | FriesGo Global",
-        body: "Prezado(a) {contact},\n\nSomos a FriesGo Global, fornecedora completa de equipamentos industriais na China (válvulas, bombas, cabos, máquinas e ferragens).\n\nPara sua demanda de {prod} na {comp} ({edge}):\n{hooks}\n\nPosso enviar nosso catálogo e uma cotação referencial FOB/CIF?\n\nAtenciosamente,\n{sender}\n{phone}"
+        sub: "Fornecimento de {prod} da China para {comp} | FriesGo Global",
+        body: "Prezado(a) {contact},\n\nSomos a FriesGo Global, fornecedora de equipamentos industriais na China (válvulas, bombas, cabos, máquinas e ferragens).\n\nPara sua demanda de {prod} na {comp}{edgeParen}:\n{hooks}\n\nPosso enviar nosso catálogo e uma cotação referencial FOB/CIF conforme suas especificações?\n\nAtenciosamente,\n{sender}\n{phone}"
       },
       followup: {
-        sub: "Re: Fichas técnicas (TDS/CAD) e documentação de exportação para {prod} — {comp}",
-        body: "Prezado(a) {contact},\n\nFaço um breve acompanhamento sobre {prod}. Podemos enviar hoje mesmo para a equipe técnica da {comp}:\n• Desenhos CAD/3D, fichas técnicas (TDS) e relatórios de inspeção\n• Documentação completa de origem e classificação NCM/HS para desembaraço ágil em {country}\n\nEnvie sua lista de especificações para cotação FOB/CIF em 24h.\n\nAtenciosamente,\n{sender}\n{phone}"
+        sub: "Re: Especificações técnicas e documentação de exportação para {prod} — {comp}",
+        body: "Prezado(a) {contact},\n\nFaço um breve acompanhamento sobre {prod}. Caso a {comp} tenha uma lista de especificações ou BOQ, podemos preparar uma cotação FOB/CIF e confirmar a documentação de exportação aplicável para {country}.\n\nFico à disposição.\n\nAtenciosamente,\n{sender}\n{phone}"
       },
       wa: {
         sub: "（WhatsApp 简短破冰）",
-        body: "Olá {contact}, aqui é {sender}. Fornecemos {prod} direto da China ({edge}). Posso enviar nosso catálogo e tabela para a {comp}?"
+        body: "Olá {contact}, aqui é {sender} da FriesGo Global. Fornecemos {prod} da China{edgeParen}. Posso enviar nosso catálogo para a {comp}?"
       }
     },
     fr: {
       first: {
-        sub: "Fourniture directe de {prod} depuis la Chine pour {comp} | FriesGo Global",
-        body: "Bonjour {contact},\n\nNous sommes FriesGo Global, fournisseur chinois multi-catégories d'équipements industriels (vannes, pompes, câbles, machines et quincaillerie).\n\nPour vos besoins en {prod} chez {comp} ({edge}) :\n{hooks}\n\nPuis-je vous transmettre notre catalogue et une offre FOB/CIF ?\n\nCordialement,\n{sender}\n{phone}"
+        sub: "Fourniture de {prod} depuis la Chine pour {comp} | FriesGo Global",
+        body: "Bonjour {contact},\n\nNous sommes FriesGo Global, fournisseur chinois d'équipements industriels (vannes, pompes, câbles, machines et quincaillerie).\n\nPour vos besoins en {prod} chez {comp}{edgeParen} :\n{hooks}\n\nPuis-je vous transmettre notre catalogue et une offre FOB/CIF sur la base de votre cahier des charges ?\n\nCordialement,\n{sender}\n{phone}"
       },
       followup: {
-        sub: "Re : Fiches techniques (TDS/CAD) & Certificat d'Origine — {prod} pour {comp}",
-        body: "Bonjour {contact},\n\nJe reviens vers vous concernant {prod}. Nous pouvons transmettre dès aujourd'hui à {comp} nos plans CAD/3D, fiches techniques (TDS) et certificats d'origine/conformité pour faciliter le dédouanement en {country}. Envoyez-nous votre cahier des charges pour un devis FOB/CIF sous 24h.\n\nCordialement,\n{sender}\n{phone}"
+        sub: "Re : Spécifications techniques & devis — {prod} pour {comp}",
+        body: "Bonjour {contact},\n\nJe reviens vers vous concernant {prod}. Si {comp} dispose d'un cahier des charges ou d'un quantitatif, nous serions ravis de préparer une offre FOB/CIF et de confirmer la documentation export requise pour {country}.\n\nCordialement,\n{sender}\n{phone}"
       },
       wa: {
         sub: "（WhatsApp 简短破冰）",
-        body: "Bonjour {contact}, je suis {sender}. Nous fournissons {prod} directement de Chine ({edge}). Puis-je vous envoyer notre catalogue pour {comp} ?"
+        body: "Bonjour {contact}, je suis {sender} de FriesGo Global. Nous fournissons {prod} depuis la Chine{edgeParen}. Puis-je vous envoyer notre catalogue pour {comp} ?"
       }
     },
     de: {
       first: {
-        sub: "Direktlieferung {prod} aus China für {comp} | FriesGo Global",
-        body: "Sehr geehrte(r) {contact},\n\nwir sind FriesGo Global, Vollsortiment-Lieferant für Industriebedarf aus China (Ventile, Pumpen, Kabel, Maschinen und Werkzeuge).\n\nFür Ihren Bedarf an {prod} bei {comp} ({edge}):\n{hooks}\n\nDarf ich Ihnen unseren Katalog und ein unverbindliches FOB/CIF-Angebot zusenden?\n\nMit freundlichen Grüßen,\n{sender}\n{phone}"
+        sub: "Lieferung von {prod} aus China für {comp} | FriesGo Global",
+        body: "Sehr geehrte(r) {contact},\n\nwir sind FriesGo Global, Anbieter für Industriebedarf aus China (Ventile, Pumpen, Kabel, Maschinen und Werkzeuge).\n\nFür Ihren Bedarf an {prod} bei {comp}{edgeParen}:\n{hooks}\n\nDarf ich Ihnen unseren Katalog und ein unverbindliches FOB/CIF-Angebot auf Basis Ihrer Spezifikation zusenden?\n\nMit freundlichen Grüßen,\n{sender}\n{phone}"
       },
       followup: {
-        sub: "AW: Technische Datenblätter (CAD/TDS) & CE-Doku für {prod} – {comp}",
-        body: "Sehr geehrte(r) {contact},\n\nkurze Nachfrage zu {prod}. Gerne senden wir {comp} vorab CAD/3D-Zeichnungen, technische Datenblätter (TDS) sowie vollständige CE-/Ursprungsdokumentation für die Einfuhr nach {country}. Schicken Sie uns gerne Ihre Spezifikation für ein FOB/CIF-Angebot innerhalb von 24 Stunden.\n\nMit freundlichen Grüßen,\n{sender}\n{phone}"
+        sub: "AW: Technische Spezifikation & Angebot für {prod} – {comp}",
+        body: "Sehr geehrte(r) {contact},\n\nkurze Nachfrage zu {prod}. Senden Sie uns gerne Ihre Spezifikation oder Stückliste für {comp}, damit wir ein passendes FOB/CIF-Angebot erstellen und die erforderlichen Exportdokumente für {country} abstimmen können.\n\nMit freundlichen Grüßen,\n{sender}\n{phone}"
       },
       wa: {
         sub: "（WhatsApp 简短破冰）",
-        body: "Hallo {contact}, hier ist {sender}. Wir liefern {prod} direkt aus China ({edge}). Darf ich unseren Katalog für {comp} zusenden?"
+        body: "Hallo {contact}, hier ist {sender} von FriesGo Global. Wir liefern {prod} aus China{edgeParen}. Darf ich unseren Katalog für {comp} zusenden?"
       }
     },
     ru: {
       first: {
-        sub: "Прямые поставки {prod} из Китая для {comp} | FriesGo Global",
-        body: "Здравствуйте, {contact}!\n\nКомпания FriesGo Global — комплексный поставщик промышленного оборудования из Китая (клапаны, насосы, кабель, станки и метизы).\n\nДля задач {comp} по {prod} ({edge}):\n{hooks}\n\nМогу ли я направить каталог и расчёт FOB/CIF?\n\nС уважением,\n{sender}\n{phone}"
+        sub: "Поставки {prod} из Китая для {comp} | FriesGo Global",
+        body: "Здравствуйте, {contact}!\n\nКомпания FriesGo Global — поставщик промышленного оборудования из Китая (клапаны, насосы, кабель, станки и метизы).\n\nДля задач {comp} по {prod}{edgeParen}:\n{hooks}\n\nМогу ли я направить каталог и подготовить расчёт FOB/CIF по вашей спецификации?\n\nС уважением,\n{sender}\n{phone}"
       },
       followup: {
-        sub: "Re: Чертежи CAD/TDS и сертификаты происхождения на {prod} для {comp}",
-        body: "Здравствуйте, {contact}!\n\nНапоминаю о письме по {prod}. Готовы оперативно направить в {comp} чертежи CAD/3D, техпаспорта (TDS) и сертификаты происхождения для оформления в {country}. Пришлите спецификацию — подготовим расчёт FOB/CIF за 24 часа.\n\nС уважением,\n{sender}\n{phone}"
+        sub: "Re: Спецификация и коммерческое предложение на {prod} для {comp}",
+        body: "Здравствуйте, {contact}!\n\nНапоминаю о письме по {prod}. Пришлите, пожалуйста, спецификацию или перечень позиций для {comp} — подготовим расчёт FOB/CIF и уточним комплект экспортных документов для {country}.\n\nС уважением,\n{sender}\n{phone}"
       },
       wa: {
         sub: "（Telegram / WhatsApp 简短破冰）",
-        body: "Здравствуйте, {contact}! Меня зовут {sender}. Поставляем {prod} напрямую из Китая ({edge}). Направить вам каталог для {comp}?"
+        body: "Здравствуйте, {contact}! Меня зовут {sender}, FriesGo Global. Поставляем {prod} из Китая{edgeParen}. Направить вам каталог для {comp}?"
       }
     }
   };
@@ -4289,62 +4626,62 @@ window.getRepSignature = function(){
   var EXTRA_CADENCE = {
     case: {
       en: {
-        sub: "How buyers in {country} cut sourcing lead time on {prod}",
-        body: "Dear {contact},\n\nHope your week is going well.\n\nIndustrial buyers in {country} often tell us their biggest headache isn't unit price—it's inconsistent quality across multiple small factories and delayed deliveries.\n\nWe recently helped an engineering distributor consolidate {prod} under one AQL 2.5 QC protocol ({edge}), cutting inspection hassle and trimming total delivery time.\n\nWould it help if I sent over a sample inspection checklist and our 1-page reference sheet for {prod}?\n\nBest regards,\n{sender}\n{phone}"
+        sub: "Coordinating multi-SKU industrial sourcing for {prod} in {country}",
+        body: "Dear {contact},\n\nHope your week is going well.\n\nIndustrial buyers in {country} often tell us their biggest challenge is managing consistent quality and shipment schedules across separate small factories.\n\nAt FriesGo Global, we coordinate sourcing and export inspection for {prod}{edgeParen} under one supplier contact so your team spends less time chasing multiple vendors.\n\nWould it be helpful if I shared our product overview and prepared a reference quotation for {comp}?\n\nBest regards,\n{sender}\n{phone}"
       },
       es: {
-        sub: "Cómo compradores en {country} agilizan sus compras de {prod}",
-        body: "Estimado/a {contact},\n\nMuchos compradores industriales en {country} nos comentan que su mayor reto es coordinar calidad y plazos entre varias fábricas.\n\nEn FriesGo Global consolidamos {prod} bajo un solo control de calidad AQL 2.5 ({edge}), reduciendo riesgos y demoras.\n\n¿Le gustaría recibir nuestra ficha técnica de 1 página y lista de precios referencial?\n\nSaludos,\n{sender}\n{phone}"
+        sub: "Coordinación de compras industriales de {prod} para {country}",
+        body: "Estimado/a {contact},\n\nMuchos compradores industriales en {country} nos comentan que su mayor reto es coordinar calidad y entregas entre varias fábricas.\n\nEn FriesGo Global centralizamos el suministro de {prod}{edgeParen} bajo un solo punto de contacto.\n\n¿Le gustaría recibir nuestro catálogo referencial y evaluar una cotización para {comp}?\n\nSaludos,\n{sender}\n{phone}"
       },
       vi: {
-        sub: "Giải pháp tối ưu tiến độ & kiểm soát chất lượng cho {prod}",
-        body: "Kính gửi {contact},\n\nNhiều doanh nghiệp tại Việt Nam gặp khó khi phải làm việc với quá nhiều xưởng nhỏ lẻ. FriesGo Global gom đồng bộ {prod} theo tiêu chuẩn kiểm định AQL 2.5 ({edge}), giúp kiểm soát chất lượng và rút ngắn thời gian giao hàng.\n\nEm gửi Anh/Chị bảng thông số & báo giá tham khảo nhé?\n\nTrân trọng,\n{sender}\n{phone}"
+        sub: "Giải pháp tối ưu tiến độ & đầu mối thu mua {prod}",
+        body: "Kính gửi {contact},\n\nNhiều doanh nghiệp tại {country} gặp khó khi phải làm việc với nhiều xưởng nhỏ lẻ. FriesGo Global hỗ trợ cung ứng đồng bộ {prod}{edgeParen} qua một đầu mối xuất khẩu duy nhất.\n\nEm gửi Anh/Chị catalog và bảng giá tham khảo cho {comp} nhé?\n\nTrân trọng,\n{sender}\n{phone}"
       },
       id: {
-        sub: "Cara distributor di Indonesia menghemat waktu pengadaan {prod}",
-        body: "Yth. Bapak/Ibu {contact},\n\nBanyak pembeli industri menghadapi kendala kualitas tidak stabil saat membeli dari banyak pabrik terpisah. Kami mengonsolidasikan {prod} dengan inspeksi AQL 2.5 ({edge}) agar pengiriman lebih cepat dan aman.\n\nBolehkah saya kirimkan ringkasan spesifikasi dan estimasi harga?\n\nHormat kami,\n{sender}\n{phone}"
+        sub: "Solusi koordinasi pengadaan {prod} untuk {comp}",
+        body: "Yth. Bapak/Ibu {contact},\n\nBanyak pembeli industri menghadapi kendala koordinasi saat membeli dari banyak pabrik terpisah. FriesGo Global membantu pasokan {prod}{edgeParen} melalui satu kontak terpadu.\n\nBolehkah saya kirimkan katalog dan estimasi harga untuk {comp}?\n\nHormat kami,\n{sender}\n{phone}"
       },
       pt: {
-        sub: "Como compradores em {country} reduzem riscos na compra de {prod}",
-        body: "Prezado(a) {contact},\n\nMuitos importadores industriais em {country} enfrentam atrasos ao lidar com várias fábricas separadas. Na FriesGo Global consolidamos {prod} sob inspeção AQL 2.5 ({edge}).\n\nPosso enviar nossa ficha técnica de 1 página e preços referenciais?\n\nAtenciosamente,\n{sender}\n{phone}"
+        sub: "Coordenação de compras industriais de {prod} para {country}",
+        body: "Prezado(a) {contact},\n\nMuitos importadores industriais em {country} enfrentam atrasos ao lidar com várias fábricas separadas. Na FriesGo Global centralizamos o fornecimento de {prod}{edgeParen} com um único ponto de contato.\n\nPosso enviar nosso catálogo e preços referenciais para a {comp}?\n\nAtenciosamente,\n{sender}\n{phone}"
       },
       th: {
-        sub: "วิธีที่ผู้ซื้ออุตสาหกรรมในไทยลดเวลารอและคุมคุณภาพ {prod}",
-        body: "เรียนคุณ {contact},\n\nผู้ซื้อในภาคอุตสาหกรรมมักพบปัญหาคุณภาพไม่สม่ำเสมอและส่งมอบล่าช้าเมื่อต้องสั่งจากหลายโรงงานย่อย FriesGo Global ช่วยรวบรวม {prod} ภายใต้มาตรฐานตรวจรับ AQL 2.5 เดียวกัน ({edge}) ช่วยลดความเสี่ยงและส่งของเร็วขึ้น\n\nสะดวกให้ผมส่งเอกสารสเปก 1 หน้าและใบเสนอราคาอ้างอิงให้ดูไหมครับ?\n\nขอแสดงความนับถือ,\n{sender}\n{phone}"
+        sub: "ลดความยุ่งยากในการจัดซื้อ {prod} จากหลายโรงงาน",
+        body: "เรียนคุณ {contact},\n\nผู้ซื้ออุตสาหกรรมมักพบความยุ่งยากเมื่อต้องประสานงานหลายโรงงานย่อย FriesGo Global ช่วยดูแลการจัดหา {prod}{edgeParen} ผ่านผู้ติดต่อรายเดียว\n\nสะดวกให้ผมส่งแคตตาล็อกและราคาอ้างอิงให้ {comp} พิจารณาไหมครับ?\n\nขอแสดงความนับถือ,\n{sender}\n{phone}"
       },
       ar: {
-        sub: "كيف يقلص المستوردون في {country} مدة توريد {prod} مع ضمان الجودة",
-        body: "السادة {contact} المحترمون،\n\nيواجه كثير من مشتري المعدات الصناعية في {country} صعوبة في ضبط الجودة ومواعيد التسليم عند التعامل مع عدة مصانع متفرقة. في FriesGo Global نجمع لكم توريد {prod} تحت فحص جودة موحد AQL 2.5 ({edge}) لتقليص المخاطر وتسريع الشحن.\n\nهل يناسبكم إرسال ملخص المواصفات والأسعار الاسترشادية في صفحة واحدة؟\n\nمع خالص التحية،\n{sender}\n{phone}"
+        sub: "تبسيط توريد {prod} لشركة {comp} عبر مورد موحد",
+        body: "السادة {contact} المحترمون،\n\nيواجه كثير من مشتري المعدات الصناعية في {country} صعوبة في تنسيق التوريد بين عدة مصانع متفرقة. في FriesGo Global نوفر لكم {prod}{edgeParen} عبر نقطة تواصل واحدة.\n\nهل يناسبكم إرسال الكتالوج وعرض سعر استرشادي؟\n\nمع خالص التحية،\n{sender}\n{phone}"
       }
     },
     logistics: {
       en: {
-        sub: "Mixed-container option for {comp}: cut sea freight on {prod}",
-        body: "Dear {contact},\n\nQuick note from a logistics angle: if {comp} imports multiple industrial SKUs (such as valves, pumps, cables, pipes or fasteners) in smaller batches, shipping LCL from separate factories usually adds 25–35% in freight and port fees.\n\nBecause FriesGo Global supplies full-category industrial goods, we can consolidate your {prod} with related hardware into a single 20'GP or 40'HQ container—with one B/L, one customs clearance, and preferential C/O where applicable.\n\nHappy to calculate a quick FOB/CIF mixed-container estimate if you share a rough item list.\n\nBest regards,\n{sender}\n{phone}"
+        sub: "Mixed-container consolidation option for {comp}: {prod}",
+        body: "Dear {contact},\n\nQuick note from a logistics angle: if {comp} imports multiple industrial SKUs (such as {prod} along with fittings, cables or hardware) in smaller batches, separate LCL shipments can increase freight and port handling costs.\n\nWe can discuss consolidating eligible items into a single 20'GP or 40'HQ shipment under one set of shipping documents.{coFollowEn}\n\nHappy to calculate a reference FOB/CIF estimate if you share a rough item list.\n\nBest regards,\n{sender}\n{phone}"
       },
       es: {
-        sub: "Opción de contenedor consolidado para {comp}: ahorre flete en {prod}",
-        body: "Estimado/a {contact},\n\nSi {comp} importa varios artículos industriales en lotes pequeños, el flete LCL suele encarecer mucho la operación. En FriesGo Global consolidamos {prod} junto con válvulas, bombas, cables o ferretería en un solo contenedor (20'GP/40'HQ) con un único B/L.\n\nSi me comparte una lista tentativa, le preparo un estimado FOB/CIF hoy mismo.\n\nSaludos,\n{sender}\n{phone}"
+        sub: "Opción de contenedor consolidado para {comp}: {prod}",
+        body: "Estimado/a {contact},\n\nSi {comp} importa varios artículos industriales en lotes pequeños, el flete LCL por separado suele elevar los costos de transporte y puerto. Podemos evaluar consolidar {prod} junto con accesorios relacionados en un solo contenedor (20'GP/40'HQ) con un único B/L.{coFollowEs}\n\nSi me comparte una lista tentativa, le preparo un estimado FOB/CIF.\n\nSaludos,\n{sender}\n{phone}"
       },
       vi: {
-        sub: "Giải pháp ghép container nhiều mã hàng cho {comp}: giảm mạnh cước biển {prod}",
-        body: "Kính gửi {contact},\n\nNếu {comp} cần nhập nhiều mã vật tư công nghiệp (như {prod}, van, bơm, cáp điện, phụ kiện) với số lượng vừa phải, đi hàng lẻ LCL từ nhiều xưởng thường đội chi phí cước & phí cảng thêm 25–35%.\n\nFriesGo Global cung cấp đa ngành và hỗ trợ gom hàng đồng bộ vào 1 container 20'GP/40'HQ với duy nhất 1 bộ vận đơn B/L và C/O Form E giảm thuế.\n\nAnh/Chị chỉ cần gửi danh mục dự kiến, em tính nhanh báo giá FOB/CIF ghép container nhé!\n\nTrân trọng,\n{sender}\n{phone}"
+        sub: "Giải pháp ghép container nhiều mã hàng cho {comp}: {prod}",
+        body: "Kính gửi {contact},\n\nNếu {comp} nhập nhiều mã vật tư công nghiệp (như {prod} cùng phụ kiện liên quan) với số lượng vừa phải, đi hàng lẻ LCL riêng lẻ thường tăng chi phí cước & phí cảng.\n\nFriesGo Global có thể trao đổi phương án gom hàng vào 1 container 20'GP/40'HQ với một bộ chứng từ vận đơn B/L.{coFollowVi}\n\nAnh/Chị gửi danh mục dự kiến để em tính nhanh báo giá FOB/CIF nhé!\n\nTrân trọng,\n{sender}\n{phone}"
       },
       id: {
-        sub: "Opsi konsolidasi kontainer untuk {comp}: hemat ongkos kirim {prod}",
-        body: "Yth. Bapak/Ibu {contact},\n\nJika {comp} mengimpor beberapa jenis produk industri ({prod}, katup, pompa, kabel, atau baut) dalam jumlah campuran, pengiriman LCL dari pabrik terpisah biasanya menambah biaya kargo 25–35%.\n\nFriesGo Global dapat menggabungkan seluruh pesanan Anda ke dalam satu kontainer 20'GP/40'HQ dengan satu B/L dan Form E untuk keringanan bea masuk.\n\nKirimkan daftar perkiraan item Anda agar kami hitungkan estimasi FOB/CIF hari ini.\n\nHormat kami,\n{sender}\n{phone}"
+        sub: "Opsi konsolidasi kontainer untuk {comp}: {prod}",
+        body: "Yth. Bapak/Ibu {contact},\n\nJika {comp} mengimpor beberapa jenis produk industri dalam jumlah campuran, pengiriman LCL terpisah biasanya menambah biaya logistik. Kami dapat membantu evaluasi konsolidasi pesanan {prod} ke dalam satu kontainer 20'GP/40'HQ dengan satu B/L.{coFollowId}\n\nKirimkan daftar perkiraan item Anda agar kami hitungkan estimasi FOB/CIF.\n\nHormat kami,\n{sender}\n{phone}"
       },
       pt: {
-        sub: "Opção de contêiner consolidado para {comp}: reduza o frete em {prod}",
-        body: "Prezado(a) {contact},\n\nSe a {comp} importa vários itens industriais ({prod}, válvulas, bombas, cabos ou ferragens) em lotes menores, o frete LCL de fábricas separadas costuma elevar o custo em 25–35%.\n\nNa FriesGo Global consolidamos seu pedido completo em um único contêiner 20'GP ou 40'HQ, com apenas um B/L e um único desembaraço.\n\nPosso preparar uma estimativa rápida FOB/CIF se compartilhar uma lista inicial.\n\nAtenciosamente,\n{sender}\n{phone}"
+        sub: "Opção de contêiner consolidado para {comp}: {prod}",
+        body: "Prezado(a) {contact},\n\nSe a {comp} importa vários itens industriais em lotes menores, o frete LCL de fábricas separadas costuma elevar o custo logístico. Podemos avaliar a consolidação de {prod} e itens complementares em um único contêiner 20'GP ou 40'HQ com apenas um B/L.\n\nPosso preparar uma estimativa rápida FOB/CIF se compartilhar uma lista inicial.\n\nAtenciosamente,\n{sender}\n{phone}"
       },
       th: {
-        sub: "ทางเลือกรวมตู้คอนเทนเนอร์สำหรับ {comp}: ประหยัดค่าขนส่งทางเรือ {prod}",
-        body: "เรียนคุณ {contact},\n\nหาก {comp} นำเข้าสินค้าอุตสาหกรรมหลายรายการ ({prod} วาล์ว ปั๊ม สายไฟ หรืออะไหล่) ในปริมาณไม่เต็มตู้ต่อรายการ การส่งแบบ LCL แยกโรงงานมักทำให้ค่าขนส่งและค่าท่าเรือแพงขึ้น 25–35%\n\nFriesGo Global สามารถรวมสินค้าหลายหมวดให้เต็มตู้ 20'GP หรือ 40'HQ ด้วย B/L ใบเดียว พร้อมออก Form E ลดภาษีนำเข้า\n\nส่งรายการคร่าวๆ มาให้เราประเมินราคา FOB/CIF แบบรวมตู้ได้เลยครับ\n\nขอแสดงความนับถือ,\n{sender}\n{phone}"
+        sub: "ทางเลือกรวมตู้คอนเทนเนอร์สำหรับ {comp}: {prod}",
+        body: "เรียนคุณ {contact},\n\nหาก {comp} นำเข้าสินค้าอุตสาหกรรมหลายรายการในปริมาณไม่เต็มตู้ต่อรายการ การส่งแบบ LCL แยกโรงงานมักเพิ่มค่าขนส่งและค่าท่าเรือ เราสามารถพิจารณารวมสินค้า {prod} และรายการที่เกี่ยวข้องในตู้ 20'GP หรือ 40'HQ ด้วย B/L ใบเดียว.{coFollowTh}\n\nส่งรายการคร่าวๆ มาให้เราประเมินราคา FOB/CIF ได้เลยครับ\n\nขอแสดงความนับถือ,\n{sender}\n{phone}"
       },
       ar: {
-        sub: "خيار دمج الحاويات لشركة {comp}: وفر تكاليف الشحن البحري لـ {prod}",
-        body: "السادة {contact} المحترمون،\n\nإذا كانت {comp} تستورد عدة أصناف صناعية ({prod}، صمامات، مضخات، كابلات أو قطع غيار) بكميات متنوعة، فإن الشحن الجزئي LCL من مصانع متفرقة يرفع التكلفة بنسبة 25–35%.\n\nبصفتنا مورداً شاملاً، يمكننا تجميع طلباتكم في حاوية واحدة 20'GP أو 40'HQ ببوليصة شحن واحدة (B/L) وتخليص جمركي واحد.\n\nيسعدنا إعداد تقدير سريع بأسعار FOB/CIF فور مشاركة قائمة أولية بالكميات.\n\nمع خالص التحية،\n{sender}\n{phone}"
+        sub: "خيار دمج الحاويات لشركة {comp}: {prod}",
+        body: "السادة {contact} المحترمون،\n\nإذا كانت {comp} تستورد عدة أصناف صناعية بكميات متنوعة، فإن الشحن الجزئي LCL من مصانع متفرقة يرفع تكلفة الشحن والتخليص. يمكننا دراسة تجميع طلبات {prod} والأصناف المكملة في حاوية واحدة 20'GP أو 40'HQ ببوليصة شحن واحدة (B/L).\n\nيسعدنا إعداد تقدير سريع بأسعار FOB/CIF فور مشاركة قائمة أولية.\n\nمع خالص التحية،\n{sender}\n{phone}"
       }
     },
     breakup: {
@@ -4400,8 +4737,42 @@ window.getRepSignature = function(){
     if(typeof window.refreshRadarPitches === "function") window.refreshRadarPitches();
   }
 
+  function syncEmailStageLabels(lang){
+    var sel = document.getElementById("emType");
+    if(!sel) return;
+    Array.prototype.forEach.call(sel.options, function(opt){
+      var base = opt.getAttribute("data-base") || opt.textContent.replace(/（暂用英文版）$/, "");
+      var k = opt.value;
+      var willFallback = false;
+      if(lang !== "en"){
+        if(EXTRA_CADENCE[k]) willFallback = !EXTRA_CADENCE[k][lang];
+        else willFallback = !(TEMPLATES[lang] && TEMPLATES[lang][k]);
+      }
+      opt.textContent = base + (willFallback ? "（暂用英文版）" : "");
+    });
+  }
+
   function updateEmail(){
     var c = emSel.value, lang = document.getElementById("emLang").value, type = document.getElementById("emType").value;
+    syncEmailStageLabels(lang);
+    var ftaOk = hasChinaFta(c);
+    var coCb = document.getElementById("emCoHookCb");
+    var coLbl = document.getElementById("emCoHookLabel");
+    var coHint = document.getElementById("emCoFtaHint");
+    if(coCb){
+      if(!ftaOk){
+        coCb.checked = false;
+        coCb.disabled = true;
+        if(coLbl) coLbl.style.opacity = "0.52";
+        if(coHint) coHint.textContent = "原产地证提示：" + (CN[c]||c) + " 暂未查到对华优惠自贸协定，已自动禁用优惠原产地证勾选，避免误承诺降税。";
+      } else {
+        coCb.disabled = false;
+        if(coLbl) coLbl.style.opacity = "";
+        var ftaTxt = (DETAILS[c] && DETAILS[c].fta) ? ("（" + DETAILS[c].fta + "）") : "";
+        if(coHint) coHint.textContent = "原产地证提示：" + (CN[c]||c) + " 享对华自贸协定" + ftaTxt + "，请核实具体商品 HS 编码满足原产地规则后再勾选。";
+      }
+    }
+
     var usedFallback = false, tpl = null;
     if(EXTRA_CADENCE[type]){
       if(EXTRA_CADENCE[type][lang]) tpl = EXTRA_CADENCE[type][lang];
@@ -4414,16 +4785,38 @@ window.getRepSignature = function(){
     if(fbEl) fbEl.textContent = usedFallback ? "ℹ️ 该语种此阶段暂用国际商务英语通用版" : "";
     var hMap = HOOK_TEXT[lang] || HOOK_TEXT.en;
     var checkedHooks = [];
+    var coChecked = false;
     document.querySelectorAll("#trustHooks input:checked").forEach(function(cb){
+      if(cb.value === "co" && !ftaOk) return;
+      if(cb.value === "co") coChecked = true;
       if(hMap[cb.value]) checkedHooks.push("• " + hMap[cb.value]);
     });
+    var rawEdge = document.getElementById("emEdge").value.trim();
+    var defaultNeutralHook = {
+      en: "• Product catalog, specifications & quotation tailored to your inquiry",
+      vi: "• Cung cấp catalog, thông số kỹ thuật và báo giá theo yêu cầu cụ thể của Quý công ty",
+      id: "• Katalog produk, spesifikasi teknis, dan penawaran sesuai kebutuhan Anda",
+      th: "• แคตตาล็อก ข้อมูลสินค้า และใบเสนอราคาตามสเปกที่ท่านต้องการ",
+      ar: "• إرسال الكتالوج والمواصفات وعرض السعر وفق متطلباتكم الفعلية",
+      es: "• Catálogo de productos, especificaciones y cotización según sus requerimientos",
+      pt: "• Catálogo, especificações técnicas e cotação conforme a sua demanda",
+      fr: "• Catalogue produit, spécifications et devis adaptés à votre demande",
+      de: "• Produktkatalog, Spezifikationen und Angebot passend zu Ihrer Anfrage",
+      ru: "• Каталог продукции, спецификации и расчёт цены по вашему запросу"
+    };
     var vars = {
       country: c,
       comp: document.getElementById("emCompany").value.trim() || "your company",
       contact: document.getElementById("emContact").value.trim() || "Procurement Team",
       prod: document.getElementById("emProduct").value.trim() || "industrial equipment",
-      edge: document.getElementById("emEdge").value.trim() || "ISO/CE certified, factory-direct pricing",
-      hooks: checkedHooks.length ? checkedHooks.join("\n") : "• Factory-direct pricing & reliable lead time",
+      edge: rawEdge,
+      edgeParen: rawEdge ? (" (" + rawEdge + ")") : "",
+      hooks: checkedHooks.length ? checkedHooks.join("\n") : (defaultNeutralHook[lang] || defaultNeutralHook.en),
+      coFollowEn: (ftaOk && coChecked) ? ("\n• Preferential Certificate of Origin (Form E / RCEP / FTA) subject to final HS code verification for " + c) : "",
+      coFollowEs: (ftaOk && coChecked) ? ("\n• Certificado de Origen preferencial (según verificación del código HS para " + c + ")") : "",
+      coFollowVi: (ftaOk && coChecked) ? ("\n• Hỗ trợ C/O ưu đãi (Form E / RCEP) theo mã HS thực tế về " + c) : "",
+      coFollowId: (ftaOk && coChecked) ? ("\n• Dukungan C/O preferensial (Form E / RCEP) sesuai verifikasi kode HS untuk " + c) : "",
+      coFollowTh: (ftaOk && coChecked) ? ("\n• เอกสารสิทธิพิเศษทางภาษี (Form E / RCEP) ขึ้นอยู่กับการตรวจสอบพิกัด HS สำหรับ " + c) : "",
       sender: document.getElementById("emSender").value.trim() || "FriesGo Global Export Team",
       phone: document.getElementById("emPhone").value.trim() ? ("WhatsApp / Tel: " + document.getElementById("emPhone").value.trim()) : ""
     };
@@ -4563,19 +4956,42 @@ window.getRepSignature = function(){
     if(Array.isArray(savedCtn) && savedCtn.length) ctnRows = savedCtn;
   } catch(e){}
   function saveCtn(){ try { localStorage.setItem("friesgo_ctn", JSON.stringify(ctnRows)); } catch(e){} }
+  function validateCtnRow(r, idx){
+    var errs = [];
+    var l = Number(r.l), w = Number(r.w), h = Number(r.h), kg = Number(r.kg), qty = Number(r.qty);
+    if(!isFinite(l) || l <= 0) errs.push("长须>0");
+    if(!isFinite(w) || w <= 0) errs.push("宽须>0");
+    if(!isFinite(h) || h <= 0) errs.push("高须>0");
+    if(!isFinite(kg) || kg <= 0) errs.push("单重须>0");
+    if(!isFinite(qty) || qty <= 0 || Math.floor(qty) !== qty) errs.push("箱数须为正整数");
+    return {
+      ok: errs.length === 0,
+      errs: errs,
+      badFields: {
+        l: !isFinite(l) || l <= 0,
+        w: !isFinite(w) || w <= 0,
+        h: !isFinite(h) || h <= 0,
+        kg: !isFinite(kg) || kg <= 0,
+        qty: !isFinite(qty) || qty <= 0 || Math.floor(qty) !== qty
+      },
+      msg: errs.length ? ("第 " + (idx+1) + " 行「" + (r.name || "未命名") + "」：" + errs.join("、")) : ""
+    };
+  }
   function drawCtn(){
     var tb = document.getElementById("ctnTbody");
     tb.innerHTML = ctnRows.map(function(r, i){
-      var cbm = (r.l*r.w*r.h/1000000)*r.qty;
-      var ton = (r.kg*r.qty)/1000;
+      var vr = validateCtnRow(r, i);
+      var cbm = vr.ok ? (r.l*r.w*r.h/1000000)*r.qty : 0;
+      var ton = vr.ok ? (r.kg*r.qty)/1000 : 0;
+      var subTxt = vr.ok ? (cbm.toFixed(2)+' CBM / '+ton.toFixed(2)+' t') : '<span style="color:var(--danger);font-weight:700">输入无效</span>';
       return '<tr>'
         + '<td><input type="text" data-ci="'+i+'" data-ck="name" value="'+esc(r.name)+'" style="width:130px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
-        + '<td><input type="number" data-ci="'+i+'" data-ck="l" value="'+r.l+'" min="1" style="width:66px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
-        + '<td><input type="number" data-ci="'+i+'" data-ck="w" value="'+r.w+'" min="1" style="width:66px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
-        + '<td><input type="number" data-ci="'+i+'" data-ck="h" value="'+r.h+'" min="1" style="width:66px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
-        + '<td><input type="number" data-ci="'+i+'" data-ck="kg" value="'+r.kg+'" min="1" style="width:74px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
-        + '<td><input type="number" data-ci="'+i+'" data-ck="qty" value="'+r.qty+'" min="1" style="width:64px;min-height:32px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
-        + '<td class="num">'+cbm.toFixed(2)+' CBM / '+ton.toFixed(2)+' t</td>'
+        + '<td><input type="number" data-ci="'+i+'" data-ck="l" value="'+r.l+'" min="1" style="width:66px;min-height:32px;padding:3px 6px;border:1px solid '+(vr.badFields.l?'var(--danger)':'var(--line)')+';border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
+        + '<td><input type="number" data-ci="'+i+'" data-ck="w" value="'+r.w+'" min="1" style="width:66px;min-height:32px;padding:3px 6px;border:1px solid '+(vr.badFields.w?'var(--danger)':'var(--line)')+';border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
+        + '<td><input type="number" data-ci="'+i+'" data-ck="h" value="'+r.h+'" min="1" style="width:66px;min-height:32px;padding:3px 6px;border:1px solid '+(vr.badFields.h?'var(--danger)':'var(--line)')+';border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
+        + '<td><input type="number" data-ci="'+i+'" data-ck="kg" value="'+r.kg+'" min="1" style="width:74px;min-height:32px;padding:3px 6px;border:1px solid '+(vr.badFields.kg?'var(--danger)':'var(--line)')+';border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
+        + '<td><input type="number" data-ci="'+i+'" data-ck="qty" value="'+r.qty+'" min="1" step="1" style="width:64px;min-height:32px;padding:3px 6px;border:1px solid '+(vr.badFields.qty?'var(--danger)':'var(--line)')+';border-radius:6px;background:var(--surface);color:var(--ink)"></td>'
+        + '<td class="num">'+subTxt+'</td>'
         + '<td><button type="button" class="pill" data-cdel="'+i+'" style="min-height:30px;padding:2px 8px;font-size:12px">删</button></td></tr>';
     }).join("");
     calcCtnTotals();
@@ -4588,6 +5004,28 @@ window.getRepSignature = function(){
     var cap40HqVol = packMode === "crate" ? 60 : 67;
     var maxWt20 = routeMode === "useu" ? 19 : 26;
     var maxWt40 = routeMode === "useu" ? 22 : 26;
+
+    var valErrs = [];
+    ctnRows.forEach(function(r, idx){
+      var vr = validateCtnRow(r, idx);
+      if(!vr.ok) valErrs.push(vr.msg);
+    });
+    var valBox = document.getElementById("ctnValWarn");
+    var oogBox = document.getElementById("ctnOogWarn");
+    if(valErrs.length){
+      if(valBox){ valBox.hidden = false; valBox.textContent = "参数校验未通过，已停止装柜核算且不会带入正式报价：" + valErrs.join("；") + "。"; }
+      if(oogBox) oogBox.hidden = true;
+      document.getElementById("ctnCbmOut").textContent = "—";
+      document.getElementById("ctnWtOut").textContent = "—";
+      document.getElementById("ctnRecOut").textContent = "输入无效，已停止推荐";
+      document.getElementById("ctnDensityOut").textContent = "请修正标红字段（箱数须为正整数，尺寸与单重须 > 0）";
+      document.getElementById("ctnTypeOut").textContent = "参数异常";
+      document.getElementById("ctnWarnOut").textContent = "修正后自动恢复核算";
+      window._ctnSummaryEn = "";
+      if(typeof window.refreshFormalRfq === "function") window.refreshFormalRfq();
+      return;
+    }
+    if(valBox) valBox.hidden = true;
 
     var totCbm = 0, totKg = 0, totQty = 0;
     var oogMsgs = [], need40HqByDim = false, isSpecialOog = false;
@@ -4605,7 +5043,6 @@ window.getRepSignature = function(){
         oogMsgs.push("「"+(r.name||"货物")+"」("+r.l+"×"+r.w+"×"+r.h+"cm) 超出 20'GP 门高(228cm)或内长(589cm)，不可装 20'GP，须改 40'HQ 高柜！");
       }
     });
-    var oogBox = document.getElementById("ctnOogWarn");
     if(oogBox){
       if(oogMsgs.length){ oogBox.hidden = false; oogBox.innerHTML = "🚨 <b>单箱超尺寸（OOG）校核预警：</b>" + oogMsgs.map(esc).join(" ｜ "); }
       else oogBox.hidden = true;
@@ -4660,11 +5097,21 @@ window.getRepSignature = function(){
   document.getElementById("ctnTbody").addEventListener("input", function(e){
     var i = e.target.getAttribute("data-ci"), k = e.target.getAttribute("data-ck");
     if(i==null || !k) return;
-    ctnRows[+i][k] = k==="name" ? e.target.value : (parseFloat(e.target.value)||0);
-    var r = ctnRows[+i], cbm=(r.l*r.w*r.h/1000000)*r.qty, ton=(r.kg*r.qty)/1000;
+    var numVal = parseFloat(e.target.value);
+    ctnRows[+i][k] = k==="name" ? e.target.value : (isNaN(numVal) ? NaN : numVal);
+    var r = ctnRows[+i], vr = validateCtnRow(r, +i);
+    if(k !== "name") e.target.style.borderColor = vr.badFields[k] ? "var(--danger)" : "var(--line)";
     var tr = e.target.closest("tr");
-    if(tr && tr.children[6]) tr.children[6].textContent = cbm.toFixed(2)+" CBM / "+ton.toFixed(2)+" t";
-    saveCtn(); calcCtnTotals();
+    if(tr && tr.children[6]){
+      if(vr.ok){
+        var cbm=(r.l*r.w*r.h/1000000)*r.qty, ton=(r.kg*r.qty)/1000;
+        tr.children[6].textContent = cbm.toFixed(2)+" CBM / "+ton.toFixed(2)+" t";
+      } else {
+        tr.children[6].innerHTML = '<span style="color:var(--danger);font-weight:700">输入无效</span>';
+      }
+    }
+    if(vr.ok) saveCtn();
+    calcCtnTotals();
   });
   document.getElementById("ctnTbody").addEventListener("click", function(e){
     var d = e.target.closest("[data-cdel]"); if(!d) return;
@@ -5095,11 +5542,29 @@ window.getRepSignature = function(){
     }).join("");
   }
 
-  function fetchTimeout(url, ms){
+  var ddReqSeq = 0;
+  var ddAbortCtrl = null;
+  function cancelPendingDd(){
+    ddReqSeq++;
+    if(ddAbortCtrl){
+      try { ddAbortCtrl.abort(); } catch(e){}
+      ddAbortCtrl = null;
+    }
+  }
+
+  function fetchTimeout(url, ms, extSignal){
+    if(extSignal && extSignal.aborted){
+      var ae = new Error("Aborted"); ae.name = "AbortError"; return Promise.reject(ae);
+    }
     if(typeof AbortController !== "undefined"){
       var ctrl = new AbortController();
       var timer = setTimeout(function(){ ctrl.abort(); }, ms || 6500);
-      return fetch(url, {signal: ctrl.signal}).finally(function(){ clearTimeout(timer); });
+      function onExt(){ try { ctrl.abort(); } catch(e){} }
+      if(extSignal) extSignal.addEventListener("abort", onExt, {once:true});
+      return fetch(url, {signal: ctrl.signal}).finally(function(){
+        clearTimeout(timer);
+        if(extSignal) extSignal.removeEventListener("abort", onExt);
+      });
     }
     return fetch(url);
   }
@@ -5110,6 +5575,14 @@ window.getRepSignature = function(){
     var email = document.getElementById("ddEmail").value.trim().toLowerCase();
     var country = ddSel.value;
     if(!comp && !dom && !email){ showToast("请至少填写公司名、官网域名或邮箱"); return; }
+
+    cancelPendingDd();
+    var mySeq = ++ddReqSeq;
+    var myCtrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    ddAbortCtrl = myCtrl;
+    var mySig = myCtrl ? myCtrl.signal : null;
+    var myTargetKey = getDdTargetKey();
+    function isStale(){ return mySeq !== ddReqSeq || getDdTargetKey() !== myTargetKey; }
 
     var emailDom = email.indexOf("@")>0 ? email.split("@")[1] : "";
     if(!dom && emailDom && !FREE_MAIL[emailDom]) dom = emailDom;
@@ -5141,11 +5614,12 @@ window.getRepSignature = function(){
 
     var staleBox = document.getElementById("ddStaleNote");
     if(staleBox) staleBox.hidden = true;
-    ddLastTargetKey = getDdTargetKey();
+    ddLastTargetKey = myTargetKey;
     ddHasRunAuto = true;
 
     var resBox = document.getElementById("ddAutoResult");
     function paint(extra){
+      if(isStale()) return;
       resBox.innerHTML = lines.concat(extra).map(function(x){ return '<div style="margin:5px 0">'+x+'</div>'; }).join("");
     }
     var live = [
@@ -5157,9 +5631,10 @@ window.getRepSignature = function(){
 
     /* 2. Live RDAP Domain Age Check */
     if(dom && typeof fetch === "function"){
-      fetchTimeout("https://rdap.org/domain/"+encodeURIComponent(dom), 6500)
+      fetchTimeout("https://rdap.org/domain/"+encodeURIComponent(dom), 6500, mySig)
         .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
         .then(function(j){
+          if(isStale()) return;
           var regEvt = (j.events||[]).filter(function(ev){ return ev.eventAction==="registration"; })[0];
           if(regEvt && regEvt.eventDate){
             var d0 = new Date(regEvt.eventDate);
@@ -5171,13 +5646,15 @@ window.getRepSignature = function(){
           }
           paint(live);
         }).catch(function(){
+          if(isStale()) return;
           live[0] = '⚪ <b>RDAP 域名自动查询未连通</b>（部分国家后缀或网络限制），请直接点下方 ICANN WHOIS 和 Wayback 时光机手动查看。';
           paint(live);
         });
 
       /* 3. Live DNS MX Record Check (strict type===15 & non-Null MX) */
-      window.queryDoh(dom, "MX", 5000)
+      window.queryDoh(dom, "MX", 5000, null, mySig)
         .then(function(j){
+          if(isStale()) return;
           var validMx = window.extractValidMxRecords ? window.extractValidMxRecords(j) : [];
           if(validMx.length){
             live[1] = '🟢 <b>域名可收信（MX 记录正常 · '+esc(j._provider||"DoH")+'）：</b>已解析到 '+validMx.length+' 条有效邮件服务器记录（如 <code>'+esc(validMx[0].data)+'</code>）。';
@@ -5186,6 +5663,7 @@ window.getRepSignature = function(){
           }
           paint(live);
         }).catch(function(){
+          if(isStale()) return;
           live[1] = '⚪ <b>DNS MX 实时查询暂时失败</b>（3 条线路均超时，可稍后重试，不影响下方背调入口使用）。';
           paint(live);
         });
@@ -5194,9 +5672,10 @@ window.getRepSignature = function(){
     /* 4. Live GLEIF Global Legal Entity Identifier API */
     if(comp && typeof fetch === "function"){
       var idxG = live.length - 1;
-      fetchTimeout("https://api.gleif.org/api/v1/lei-records?filter[fulltext]="+encodeURIComponent(comp)+"&page[size]=3", 6500)
+      fetchTimeout("https://api.gleif.org/api/v1/lei-records?filter[fulltext]="+encodeURIComponent(comp)+"&page[size]=3", 6500, mySig)
         .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
         .then(function(j){
+          if(isStale()) return;
           var items = j.data || [];
           if(items.length){
             var summary = items.map(function(it){
@@ -5212,6 +5691,7 @@ window.getRepSignature = function(){
           }
           paint(live);
         }).catch(function(){
+          if(isStale()) return;
           live[idxG] = '⚪ <b>GLEIF 自动查询超时或受限</b>，请直接点下方 GLEIF 或 OpenCorporates 按钮查询。';
           paint(live);
         });
@@ -5268,6 +5748,7 @@ window.getRepSignature = function(){
   }
 
   function resetDdState(showNotice){
+    cancelPendingDd();
     var hadChecked = document.querySelectorAll("#ddVerdictChecks input:checked").length > 0;
     document.querySelectorAll("#ddVerdictChecks input").forEach(function(cb){ cb.checked = false; });
     if(ddHasRunAuto || hadChecked){
@@ -5356,6 +5837,7 @@ window.getRepSignature = function(){
     renderPortals(); runAutoDd();
   });
   document.getElementById("btnDdClear").addEventListener("click", function(){
+    cancelPendingDd();
     document.getElementById("ddCompany").value = "";
     document.getElementById("ddDomain").value = "";
     document.getElementById("ddEmail").value = "";
@@ -5373,15 +5855,17 @@ window.getRepSignature = function(){
   function buildDdRecord(){
     var comp = document.getElementById("ddCompany").value.trim() || "未命名客户";
     var dom = cleanDomain(document.getElementById("ddDomain").value) || "未填官网";
+    var em = (document.getElementById("ddEmail").value || "").trim().toLowerCase();
     var c = ddSel.value || "待确认";
     var v = evaluateDdVerdict();
-    var ts = new Date().toISOString().slice(0,16).replace("T"," ");
+    var ts = localDateTimeStr();
     var summary = "[背调 " + ts + "] " + comp + " (" + dom + ")｜" + (CN[c]||c) + "｜" + v.label;
     return {
       checkedAt: ts,
       company: comp,
       country: c,
       domain: dom === "未填官网" ? "" : dom,
+      email: em,
       score: v.n,
       total: 6,
       regChecked: v.regOk,
@@ -5554,7 +6038,7 @@ window.getRepSignature = function(){
     document.getElementById("rjBtns").innerHTML = btns.map(function(b){
       return '<a class="pill '+(b.p?'primary':'')+'" target="_blank" rel="noopener" href="'+b.u+'">'+b.l+'</a>';
     }).join("");
-    document.getElementById("rjHint").textContent = "💡 信号解读：" + sig.note + "。查到正在招人的公司名后，直接复制去「🕵️ 背调与合规」查官网和采购负责人！";
+    document.getElementById("rjHint").textContent = "💡 信号解读：" + sig.note + "。查到正在招人的公司名后，直接复制去「客户跟进 → 客户背调」查官网和采购负责人！";
   }
   rjSel.addEventListener("change", updateJobRadar);
   document.getElementById("rjSignal").addEventListener("change", updateJobRadar);
@@ -5798,7 +6282,7 @@ window.addCustomerToCrm = function(p){
   var prod = String(p.product || "").trim();
   var note = String(p.note || "").trim();
   var lType = (p.leadType === "渠道代理") ? "渠道代理" : "客户";
-  var today = new Date().toISOString().slice(0,10);
+  var today = localDateStr();
 
   // Deduplicate by exact (company, country) or non-empty email
   var existing = null;
@@ -5818,7 +6302,8 @@ window.addCustomerToCrm = function(p){
     if(p.ddRecord) existing.ddRecord = p.ddRecord;
     if(note && (existing.note||"").indexOf(note) < 0) existing.note = existing.note ? (existing.note + "； " + note) : note;
     existing.updated = today;
-    saveLocal(); renderTools(); render();
+    existing.updatedAt = Date.now();
+    saveLeadsLocal(); renderTools(); render();
     showToast("已更新客户档案：「" + existing.company + "」");
     return existing;
   }
@@ -5839,10 +6324,11 @@ window.addCustomerToCrm = function(p){
     source: p.source || "手动建档",
     note: note,
     ddRecord: p.ddRecord || null,
-    updated: today
+    updated: today,
+    updatedAt: Date.now()
   };
   crmLeads.unshift(lead);
-  saveLocal(); renderTools(); render();
+  saveLeadsLocal(); renderTools(); render();
   showToast("已建档：「" + lead.company + "」（" + (CN[cEn]||cEn) + "）");
   return lead;
 };
@@ -5850,6 +6336,35 @@ window.addCustomerToCrm = function(p){
 var activeCrmTypeFilter = "all";
 var selectedClientId = null;
 var selectedClientTab = "info";
+
+function normHost(raw){
+  var s = String(raw || "").trim().toLowerCase();
+  if(!s) return "";
+  if(s.indexOf("@") > 0) s = s.split("@")[1];
+  return s.replace(/^https?:\/\//, "").replace(/^www\./, "").split(/[\/?#]/)[0];
+}
+function isDdRecordStale(l){
+  if(!l || !l.ddRecord) return null;
+  var dd = l.ddRecord;
+  var reasons = [];
+  var curComp = String(l.company || "").trim().toLowerCase();
+  var ddComp = String(dd.company || "").trim().toLowerCase();
+  if(ddComp && curComp && curComp !== ddComp) reasons.push("公司名称");
+  var curDom = normHost(l.website) || normHost(l.email);
+  var ddDom = normHost(dd.domain);
+  if(ddDom && curDom && curDom !== ddDom) reasons.push("官网/邮箱域名");
+  var curC = resolveCountryEn(l.country || "");
+  var ddC = resolveCountryEn(dd.country || "");
+  if(ddC && ddC !== "待确认" && curC && curC !== ddC) reasons.push("国家/地区");
+  return {
+    stale: reasons.length > 0,
+    reasons: reasons,
+    origCompany: dd.company || "",
+    origDomain: dd.domain || "",
+    origCountry: dd.country || ""
+  };
+}
+window.isDdRecordStale = isDdRecordStale;
 
 function renderClientDetailPanel(){
   var panel = document.getElementById("crmDetailPanel");
@@ -5860,13 +6375,16 @@ function renderClientDetailPanel(){
   var due = followDueInfo(l.nextDate);
   var dueHtml = due.label ? (' <span class="'+due.cls+'">'+esc(due.label)+'</span>') : '';
   var typeTag = (l.leadType === "渠道代理") ? '<span class="action-tag" style="margin-left:0">渠道代理</span>' : '<span class="meta-pill" style="padding:1px 8px">海外客户</span>';
-  var waDigits = cleanPhoneDigits(l.phone, l.country);
+  var phInfo = analyzePhone(l.phone, l.country);
+  var waDigits = phInfo.digits;
   var waUrl = waDigits.length >= 7 ? ("https://wa.me/" + waDigits) : "";
+  var ddStale = isDdRecordStale(l);
+  var ddStaleTag = (ddStale && ddStale.stale) ? ' <span class="comp-tag comp-red" style="margin:0">背调失效 · 主体已变更</span>' : '';
 
   var tabBtns = [
     ["info", "基本资料"],
     ["follow", "跟进记录"],
-    ["dd", "背调记录"],
+    ["dd", "背调记录" + (ddStale && ddStale.stale ? " ⚠️" : "")],
     ["email", "邮件 / WhatsApp"],
     ["quote", "快捷报价"]
   ].map(function(t){
@@ -5896,21 +6414,37 @@ function renderClientDetailPanel(){
   } else if(selectedClientTab === "dd"){
     var dd = l.ddRecord;
     if(dd){
-      bodyHtml = '<div class="detail-box" style="margin-top:0">'
-        + '<div style="font-size:13px;margin-bottom:6px"><b>最近核查时间：</b>'+esc(dd.checkedAt||"—")+' ｜ <b>核查结果：</b>'+esc(dd.label||"—")+'</div>'
-        + '<div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">必查项状态：工商注册 '+(dd.regChecked?'✅ 已核查':'❌ 未核查')+' ｜ OFAC/制裁名单 '+(dd.sancChecked?'✅ 已核查':'❌ 未核查')+'</div>'
-        + '<div class="email-box" style="margin-top:0">'+esc(dd.summary||"")+'</div>'
-        + '</div>';
+      if(ddStale && ddStale.stale){
+        bodyHtml = '<div class="storage-warn-banner" style="margin:0 0 10px">'
+          + '⚠️ <b>主体已变更，需重新核查：</b>当前档案的「' + esc(ddStale.reasons.join("、")) + '」与历史背调主体「' + esc(dd.company||"—") + '」不一致，原核查结论已失效，请勿直接沿用于当前主体报价或签约！'
+          + '</div>'
+          + '<div class="detail-box" style="margin-top:0;opacity:.85">'
+          + '<div style="font-size:12.5px;color:var(--muted);margin-bottom:6px"><b>历史背调快照（已失效，仅供追溯）</b> · 核查时间：'+esc(dd.checkedAt||"—")+' ｜ 原主体：'+esc(dd.company||"—")+(dd.domain?(' ('+esc(dd.domain)+')'):'')+'</div>'
+          + '<div class="email-box" style="margin-top:0">'+esc(dd.summary||"")+'</div>'
+          + '</div>';
+      } else {
+        bodyHtml = '<div class="detail-box" style="margin-top:0">'
+          + '<div style="font-size:13px;margin-bottom:6px"><b>最近核查时间：</b>'+esc(dd.checkedAt||"—")+' ｜ <b>核查结果：</b>'+esc(dd.label||"—")+'</div>'
+          + '<div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">核查主体快照：'+esc(dd.company||"—")+(dd.domain?(' ('+esc(dd.domain)+')'):'')+' ｜ 工商注册 '+(dd.regChecked?'✅ 已核查':'❌ 未核查')+' ｜ OFAC/制裁名单 '+(dd.sancChecked?'✅ 已核查':'❌ 未核查')+'</div>'
+          + '<div class="email-box" style="margin-top:0">'+esc(dd.summary||"")+'</div>'
+          + '</div>';
+      }
     } else {
       bodyHtml = '<p style="color:var(--muted);font-size:13px;margin:4px 0 8px">该客户尚未保存结构化背调记录。点击下方按钮自动带入公司名、官网与邮箱进入客户背调。</p>';
     }
-    bodyHtml += '<div class="pills" style="margin-top:8px"><button type="button" class="pill primary" data-cd-action="dd">进入客户背调核查</button></div>';
+    bodyHtml += '<div class="pills" style="margin-top:8px"><button type="button" class="pill primary" data-cd-action="dd">'+(ddStale && ddStale.stale ? '重新进入客户背调核查' : '进入客户背调核查')+'</button></div>';
   } else if(selectedClientTab === "email"){
+    var phPreview = "";
+    if(waUrl){
+      phPreview = phInfo.autoAddedCc
+        ? ('<div class="flag-note" style="margin:6px 0 0">号码识别：<code>'+esc(phInfo.raw)+'</code> → <b>'+esc(phInfo.formatted)+'</b>（已按 '+esc(CN[l.country]||l.country)+' 补国际区号'+(phInfo.needsConfirm?'，请人工确认':'')+'）</div>')
+        : (phInfo.needsConfirm ? ('<div class="flag-note" style="margin:6px 0 0;color:var(--high)">⚠️ 国际号码 <code>'+esc(phInfo.formatted)+'</code> 位数与常规格式不符，打开前请核对区号</div>') : '');
+    }
     bodyHtml = '<p style="color:var(--muted);font-size:13px;margin:4px 0 8px">一键将「'+esc(l.company)+'」的国家、产品与收件邮箱带入开发信生成器，或直接打开 WhatsApp 对话。</p>'
       + '<div class="pills" style="margin-top:4px">'
       + '<button type="button" class="pill primary" data-cd-action="email">带入写开发信</button>'
-      + (waUrl ? ('<a class="pill good-btn" target="_blank" rel="noopener" href="'+waUrl+'">打开 WhatsApp (+'+waDigits+')</a>') : '<span class="src-ok">填写电话后可一键打开 WhatsApp</span>')
-      + '</div>';
+      + (waUrl ? ('<a class="pill good-btn" target="_blank" rel="noopener" href="'+waUrl+'">打开 WhatsApp ('+esc(phInfo.formatted)+')</a>') : '<span class="src-ok">填写电话后可一键打开 WhatsApp</span>')
+      + '</div>' + phPreview;
   } else if(selectedClientTab === "quote"){
     bodyHtml = '<p style="color:var(--muted);font-size:13px;margin:4px 0 8px">一键将「'+esc(l.company)+'」的目的国（'+esc(CN[l.country]||l.country)+'）与意向产品带入成本与报价计算器。</p>'
       + '<div class="pills" style="margin-top:4px">'
@@ -5925,6 +6459,7 @@ function renderClientDetailPanel(){
     + typeTag
     + '<span class="meta-pill" style="padding:1px 8px">'+esc(CN[l.country]||l.country)+'</span>'
     + dueHtml
+    + ddStaleTag
     + '<span class="src-ok">更新：'+esc(l.updated||"—")+'</span>'
     + '</div>'
     + '<div style="display:flex;gap:6px">'
@@ -6115,7 +6650,7 @@ document.getElementById("compareBody").addEventListener("click", function(e){
   var b = e.target.closest("button[data-act='uncmp']"); if(!b) return;
   var c = b.getAttribute("data-c");
   compareList = compareList.filter(function(x){ return x!==c; });
-  saveLocal(); renderTools(); showToast("已从对比中移除「"+(CN[c]||c)+"」");
+  saveCompareOnly(); renderTools(); showToast("已从对比中移除「"+(CN[c]||c)+"」");
 });
 document.getElementById("followBody").addEventListener("click", function(e){
   var emB = e.target.closest("button[data-crm-em]");
@@ -6159,9 +6694,10 @@ if(cdPanel){
     if(a === "market"){ jumpToCountry(l.country); return; }
     if(a === "delete"){
       if(confirm("确定删除档案「" + l.company + "」吗？")){
+        _deletedLeadIds[l.id] = 1;
         crmLeads = crmLeads.filter(function(x){ return x.id !== l.id; });
         selectedClientId = null;
-        saveLocal(); renderTools(); render();
+        saveLeadsLocal(); renderTools(); render();
         showToast("已删除「" + l.company + "」");
       }
     }
@@ -6172,9 +6708,16 @@ if(cdPanel){
     var l = findLeadById(selectedClientId);
     if(!l) return;
     l[field] = e.target.value;
-    l.updated = new Date().toISOString().slice(0,10);
-    saveLocal();
-    if(e.type === "change"){ renderTools(); render(); }
+    l.updated = localDateStr();
+    l.updatedAt = Date.now();
+    saveLeadsLocal();
+    if(e.type === "change"){
+      var stInfo = isDdRecordStale(l);
+      if(stInfo && stInfo.stale && /^(company|website|email|country)$/.test(field)){
+        showToast("主体信息已变更，原背调结论已标记失效，请重新核查");
+      }
+      renderTools(); render();
+    }
   }
   cdPanel.addEventListener("input", onCdFieldChange);
   cdPanel.addEventListener("change", onCdFieldChange);
@@ -6222,19 +6765,19 @@ function exportFollow(){
       qCsv(l.source||""), qCsv(l.note||""), qCsv(l.updated||"")
     ].join(","));
   });
-  downloadFile("friesgo-客户跟进-"+new Date().toISOString().slice(0,10)+".csv", "\ufeff"+lines.join("\n"), "text/csv;charset=utf-8");
+  downloadFile("friesgo-客户跟进-"+localDateStr()+".csv", "\ufeff"+lines.join("\n"), "text/csv;charset=utf-8");
   showToast("已导出 "+crmLeads.length+" 条客户跟进记录（CSV）");
 }
 document.getElementById("btnExport").addEventListener("click", exportFiltered);
 document.getElementById("btnExportTop").addEventListener("click", exportFiltered);
 document.getElementById("btnFollowExport").addEventListener("click", exportFollow);
-document.getElementById("btnClearCmp").addEventListener("click", function(){ compareList=[]; saveLocal(); renderTools(); showToast("已清空对比"); });
+document.getElementById("btnClearCmp").addEventListener("click", function(){ compareList=[]; saveCompareOnly(); renderTools(); showToast("已清空对比"); });
 document.getElementById("btnClearFollow").addEventListener("click", function(){
   if(!crmLeads.length) return;
-  if(confirm("确定要清空本地所有客户跟进记录与备注吗？建议先点「备份数据（JSON）」。")){ crmLeads=[]; followMap={}; selectedClientId=null; saveLocal(); renderTools(); render(); showToast("已清空客户列表"); }
+  if(confirm("确定要清空本地所有客户跟进记录与备注吗？建议先点「备份数据（JSON）」。")){ crmLeads=[]; followMap={}; selectedClientId=null; saveLeadsLocal({replaceAll:true}); renderTools(); render(); showToast("已清空客户列表"); }
 });
 document.getElementById("btnBackupJson").addEventListener("click", function(){
-  downloadFile("friesgo-crm-backup-"+new Date().toISOString().slice(0,10)+".json", JSON.stringify({version:2, exportedAt:new Date().toISOString(), compareList:compareList, crmLeads:crmLeads, defaultOwner:defaultOwner}, null, 2), "application/json");
+  downloadFile("friesgo-crm-backup-"+localDateStr()+".json", JSON.stringify({version:2, exportedAt:localDateTimeStr(), compareList:compareList, crmLeads:crmLeads, defaultOwner:defaultOwner}, null, 2), "application/json");
   showToast("已下载 JSON 备份（含 " + crmLeads.length + " 条客户档案）");
 });
 document.getElementById("btnRestoreJson").addEventListener("click", function(){ document.getElementById("restoreFile").click(); });
@@ -6264,7 +6807,8 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
             source: String(x.source || "备份恢复"),
             note: String(x.note || ""),
             ddRecord: (x.ddRecord && typeof x.ddRecord === "object") ? x.ddRecord : null,
-            updated: String(x.updated || new Date().toISOString().slice(0,10))
+            updated: String(x.updated || localDateStr()),
+            updatedAt: x.updatedAt || Date.now()
           };
         });
       } else if(obj.followMap && typeof obj.followMap === "object"){
@@ -6274,7 +6818,7 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
             id: makeLeadId(), company: (CN[c]||c)+" 市场跟进（备份恢复）", country: c, leadType: "客户",
             contact:"", email:"", phone:"", website:"", product:"",
             stage: f.status || "重点跟进", nextDate: f.nextDate || "",
-            owner: f.owner || defaultOwner, source: "备份恢复", note: f.note || "", ddRecord: null, updated: f.updated || new Date().toISOString().slice(0,10)
+            owner: f.owner || defaultOwner, source: "备份恢复", note: f.note || "", ddRecord: null, updated: f.updated || localDateStr(), updatedAt: Date.now()
           };
         });
       } else {
@@ -6297,9 +6841,9 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
         selectedClientId = null;
         showToast("已覆盖恢复 " + crmLeads.length + " 条客户档案");
       }
-      if(Array.isArray(obj.compareList)) compareList = obj.compareList.slice(0,4);
-      if(typeof obj.defaultOwner==="string"){ defaultOwner=obj.defaultOwner; if(defOwnerEl) defOwnerEl.value=defaultOwner; }
-      saveLocal(); renderTools(); render();
+      if(Array.isArray(obj.compareList)){ compareList = obj.compareList.slice(0,4); saveCompareOnly(); }
+      if(typeof obj.defaultOwner==="string"){ defaultOwner=obj.defaultOwner; if(defOwnerEl) defOwnerEl.value=defaultOwner; saveOwnerOnly(); }
+      saveLeadsLocal({replaceAll: !doMerge}); renderTools(); render();
     } catch(err){ showToast("备份文件校验失败：" + (err && err.message ? err.message : "格式不正确")); }
   };
   rd.readAsText(file);
@@ -6553,7 +7097,7 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
   }
   gCfgIds.forEach(function(id){ document.getElementById(id).addEventListener("input", saveGmapsCfg); });
 
-  function getQuotaKey(){ return "friesgo_gmaps_cnt_" + new Date().toISOString().slice(0,7); }
+  function getQuotaKey(){ return "friesgo_gmaps_cnt_" + localDateStr().slice(0,7); }
   function getQuotaCount(){ try { return parseInt(localStorage.getItem(getQuotaKey())||"0", 10) || 0; } catch(e){ return 0; } }
   function incQuotaCount(serverUsed){
     var n = (typeof serverUsed === "number" && serverUsed >= 0) ? serverUsed : (getQuotaCount() + 1);
@@ -6941,7 +7485,7 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
     mapLeads.forEach(function(r){
       lines.push([qCsv(r.company),qCsv(r.country),qCsv(r.city),qCsv(r.category),qCsv(r.phone),qCsv(r.email),qCsv(r.website),qCsv(r.address),qCsv(r.mapsUrl)].join(","));
     });
-    downloadFile("friesgo-map-leads-"+new Date().toISOString().slice(0,10)+".csv", "\ufeff"+lines.join("\n"), "text/csv;charset=utf-8");
+    downloadFile("friesgo-map-leads-"+localDateStr()+".csv", "\ufeff"+lines.join("\n"), "text/csv;charset=utf-8");
     showToast("已导出 " + mapLeads.length + " 家地图采客名单（CSV）");
   });
 
@@ -7104,11 +7648,12 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
       else if(r.mxStatus === "pending") badge = '<span class="src-ok">⚪ 未验证 ('+esc(r.domain)+')</span>';
       else badge = '<span class="src-ok">— 无邮箱/域名</span>';
 
-      var rawDigits = String(r.phone||"").replace(/[^\d]/g,"");
-      var digits = cleanPhone(r.phone, r.country);
-      var autoFixed = digits && rawDigits && digits !== rawDigits;
+      var phInfo = analyzePhone(r.phone, r.country);
+      var digits = phInfo.digits;
       var waHtml = digits.length >= 7
-        ? ('<a class="pill good-btn" style="min-height:26px;padding:2px 8px;font-size:11.5px" target="_blank" rel="noopener" title="WhatsApp 链接：+'+digits+(autoFixed?'（已自动补国际区号）':'')+'" href="https://wa.me/'+digits+'?text='+encodeURIComponent(buildWaMsg(r))+'">💬 '+(autoFixed ? ('+'+digits) : esc(r.phone))+'</a>')
+        ? ('<a class="pill good-btn" style="min-height:26px;padding:2px 8px;font-size:11.5px" target="_blank" rel="noopener" title="WhatsApp 链接：'+esc(phInfo.formatted)+(phInfo.autoAddedCc?'（已按目的国补国际区号，请确认后发送）':'')+'" href="https://wa.me/'+digits+'?text='+encodeURIComponent(buildWaMsg(r))+'">💬 '+esc(phInfo.formatted)+'</a>'
+          + (phInfo.autoAddedCc ? ('<div class="src-ok" style="margin-top:2px">'+esc(phInfo.raw)+' → '+esc(phInfo.formatted)+'</div>') : '')
+          + (phInfo.needsConfirm ? ('<div style="font-size:11px;color:var(--high);font-weight:700;margin-top:2px">⚠️ 请核对区号</div>') : ''))
         : '<span class="src-ok">—</span>';
       var webHtml = r.website
         ? ('<a target="_blank" rel="noopener" href="'+esc(r.website.indexOf("http")===0?r.website:"https://"+r.website)+'">'+esc(extractDom(r.website))+'</a>')
@@ -7218,7 +7763,7 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
       var wa = d.length >= 7 ? ("https://wa.me/" + d) : "";
       lines.push([qCsv(r.company),qCsv(r.country),qCsv(r.email),qCsv(r.domain),qCsv(r.mxStatus),qCsv(r.phone),qCsv(wa),qCsv(r.website)].join(","));
     });
-    downloadFile("friesgo-cleaned-leads-"+new Date().toISOString().slice(0,10)+".csv", "\ufeff"+lines.join("\n"), "text/csv;charset=utf-8");
+    downloadFile("friesgo-cleaned-leads-"+localDateStr()+".csv", "\ufeff"+lines.join("\n"), "text/csv;charset=utf-8");
     showToast("已导出清洗后名单（" + csvLeads.length + " 条 CSV）");
   });
 
