@@ -4245,22 +4245,54 @@ document.getElementById("restoreFile").addEventListener("change", function(e){
     if(!el) return;
     el.textContent = n >= 900
       ? ("🔴 提醒：本月已达 " + n + " / 900 次免费安全线，已自动暂停以防超额扣费！下月 1 号自动重置。")
-      : ("🛡️ 安全护栏：Google Places API (New) 每月免费 1,000 次（每次最多 20 家）。本月已记录调用 " + n + " / 900 次。");
+      : ("🛡️ 安全护栏：Google Places API (New) 每月免费 1,000 次（每次最多 20 家）。本机本月已记录调用 " + n + " / 900 次。");
   }
   updateQuotaUI();
 
   /* Switch OSM vs Google Maps engine */
-  document.getElementById("msEnginePills").addEventListener("click", function(e){
-    var b = e.target.closest("button[data-ms-eng]"); if(!b) return;
-    msEngine = b.getAttribute("data-ms-eng");
-    this.querySelectorAll("button").forEach(function(x){
-      var on = x === b;
-      x.setAttribute("aria-pressed", on ? "true" : "false");
-      x.classList.toggle("primary", on);
-    });
+  function setMsEngine(eng){
+    msEngine = eng === "gmaps" ? "gmaps" : "osm";
+    var pills = document.getElementById("msEnginePills");
+    if(pills){
+      pills.querySelectorAll("button[data-ms-eng]").forEach(function(x){
+        var on = x.getAttribute("data-ms-eng") === msEngine;
+        x.setAttribute("aria-pressed", on ? "true" : "false");
+        x.classList.toggle("primary", on);
+      });
+    }
     document.getElementById("gmapsCfgBox").hidden = (msEngine !== "gmaps");
     document.getElementById("btnMapNextPage").hidden = true;
+  }
+  document.getElementById("msEnginePills").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-ms-eng]"); if(!b) return;
+    setMsEngine(b.getAttribute("data-ms-eng"));
   });
+
+  /* One-tap private team activation via ?gkey=... (saves to localStorage & immediately cleans URL bar) */
+  (function(){
+    var activated = false;
+    try {
+      var qs = (location.search || "").replace(/^\?/, "");
+      var m = qs.match(/(?:^|&)gkey=([^&]+)/);
+      if(m && m[1]){
+        var k = decodeURIComponent(m[1]).trim();
+        if(k){
+          document.getElementById("msGmapsKey").value = k;
+          saveGmapsCfg();
+          activated = true;
+          if(history && history.replaceState){
+            history.replaceState(null, "", location.pathname + (location.hash || "#tab=outreach"));
+          }
+        }
+      }
+    } catch(e){}
+    if(activated || document.getElementById("msGmapsKey").value.trim() || document.getElementById("msProxyUrl").value.trim()){
+      setMsEngine("gmaps");
+      if(activated){
+        showToast("✅ 已永久激活 Google Maps 满血采客引擎！以后直接点按钮即可抓客");
+      }
+    }
+  })();
 
   function renderMapResults(){
     var wrap = document.getElementById("msResultWrap");
