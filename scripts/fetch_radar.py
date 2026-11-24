@@ -713,7 +713,69 @@ def push_notifications(feed):
     title = f"🌍 全球工业商机早报 ({feed['updatedDate']})"
     md = build_brief_markdown(feed)
 
-    # 1. WxPusher (Personal WeChat Service Notification — Best for 5-6 person personal WeChat team)
+    # 0. Native Tencent WeChat Official Test Account (Zero App download! Auto-sends to all followers!)
+    wx_appid = os.environ.get("WX_APP_ID", "").strip()
+    wx_secret = os.environ.get("WX_APP_SECRET", "").strip()
+    wx_tpl = os.environ.get("WX_TEMPLATE_ID", "").strip()
+    if wx_appid and wx_secret and wx_tpl:
+        try:
+            tok_url = (
+                "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential"
+                + "&appid=" + urllib.parse.quote(wx_appid)
+                + "&secret=" + urllib.parse.quote(wx_secret)
+            )
+            tok_data = json.loads(http_get(tok_url, timeout=15))
+            access_token = tok_data.get("access_token", "")
+            if not access_token:
+                raise RuntimeError(f"Failed to get WeChat access_token: {tok_data}")
+
+            # Use explicit WX_OPENIDS if provided, otherwise auto-fetch ALL followers who scanned QR!
+            raw_openids = os.environ.get("WX_OPENIDS", "").strip()
+            if raw_openids:
+                openids = [o.strip() for o in raw_openids.split(",") if o.strip()]
+            else:
+                usr_url = f"https://api.weixin.qq.com/cgi-bin/user/get?access_token={urllib.parse.quote(access_token)}"
+                usr_data = json.loads(http_get(usr_url, timeout=15))
+                openids = (usr_data.get("data") or {}).get("openid") or []
+
+            if not openids:
+                print("[WARN] WeChat Test Account has 0 followers yet — scan QR first!")
+            else:
+                stats = feed["stats"]
+                weathers = [x for x in feed["items"] if x["cat"] == "weather"][:2]
+                loans = [x for x in feed["items"] if x["cat"] == "loan"][:2]
+                news = [x for x in feed["items"] if x["cat"] == "news"][:2]
+                w_txt = "；".join(x["titleCn"] for x in weathers) if weathers else "全球主要航线今日无红橙台风预警"
+                l_parts = []
+                for x in loans + news:
+                    amt = f"({x['amount']})" if x.get("amount") else ""
+                    l_parts.append(f"• {x['titleCn']}{amt}")
+                l_txt = "\n".join(l_parts) if l_parts else "点击下方详情查看今日 60 条全球商机"
+
+                send_url = f"https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={urllib.parse.quote(access_token)}"
+                sent_ok = 0
+                for oid in openids:
+                    payload = {
+                        "touser": oid,
+                        "template_id": wx_tpl,
+                        "url": SITE_URL,
+                        "data": {
+                            "date": {"value": feed["updatedCn"]},
+                            "stats": {"value": f"共 {stats['total']} 条（灾害 {stats['weather']}｜世行放款 {stats['loan']}｜扩产EPC {stats['news']}）"},
+                            "weather": {"value": w_txt[:180]},
+                            "leads": {"value": l_txt[:180] + "\n👉 点击本卡片直达作战地图！"},
+                        },
+                    }
+                    res_j = json.loads(http_post_json(send_url, payload, timeout=15))
+                    if res_j.get("errcode") == 0:
+                        sent_ok += 1
+                    else:
+                        print(f"[WARN] WeChat send to {oid[:8]}... failed: {res_j}")
+                print(f"[INFO] Pushed native WeChat morning brief to {sent_ok}/{len(openids)} colleague(s).")
+        except Exception as e:
+            print(f"[WARN] WeChat Official Test Account push failed: {e}")
+
+    # 1. WxPusher (Optional legacy channel)
     wx_token = os.environ.get("WXPUSHER_APP_TOKEN", "").strip()
     wx_topic = os.environ.get("WXPUSHER_TOPIC_ID", "").strip()
     if wx_token and wx_topic:

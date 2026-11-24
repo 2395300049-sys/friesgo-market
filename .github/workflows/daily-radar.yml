@@ -24,6 +24,10 @@ jobs:
       - name: Fetch live global typhoons, World Bank projects & EPC/financing leads
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WX_APP_ID: ${{ secrets.WX_APP_ID }}
+          WX_APP_SECRET: ${{ secrets.WX_APP_SECRET }}
+          WX_TEMPLATE_ID: ${{ secrets.WX_TEMPLATE_ID }}
+          WX_OPENIDS: ${{ secrets.WX_OPENIDS }}
           WXPUSHER_APP_TOKEN: ${{ secrets.WXPUSHER_APP_TOKEN }}
           WXPUSHER_TOPIC_ID: ${{ secrets.WXPUSHER_TOPIC_ID }}
           PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
