@@ -1,19 +1,12 @@
 /**
- * FriesGo Global - Free Cloudflare Worker Proxy for Google Maps Places API (New)
+ * FriesGo Global - Cloudflare Worker Proxy for Google Maps Places API (New)
  *
- * Why use this proxy?
- *   1. Keeps your Google Maps API Key safely in Cloudflare Secrets (invisible in browser).
- *   2. Lets all 5-6 colleagues click "Google Maps 批量采客" directly on your webpage (mobile & PC).
- *   3. Optional KV monthly hard cap (<= 900 calls/month) guarantees $0 billing within Google's
- *      1,000 free Enterprise Text Search calls/month (= up to 18,000 real businesses/month!).
- *
- * Setup (2 minutes on https://dash.cloudflare.com -> Workers & Pages -> Create Worker):
- *   1. Paste this file into your Worker and Deploy.
- *   2. Go to Worker Settings -> Variables and Secrets:
- *      - Add Secret: GOOGLE_MAPS_API_KEY = <your Google Maps Places API New key>
- *      - Optional Secret: TEAM_PASS = <simple passcode for your team, e.g. friesgo2026>
- *   3. (Optional) Bind a KV namespace named QUOTA_KV to enforce hard 900 calls/month limit.
- *   4. Paste your Worker URL (e.g. https://friesgo-gmaps.xxx.workers.dev) into the webpage!
+ * Security & Billing Best Practices:
+ *   1. Keeps GOOGLE_MAPS_API_KEY in Cloudflare Secrets (never exposed in browser or URLs).
+ *   2. Enforces mandatory TEAM_PASS secret (returns 503 if unset so proxy is never publicly open).
+ *   3. Optional QUOTA_KV tracks approximate monthly calls (note: KV is eventually consistent, NOT
+ *      atomic — always configure hard monthly quotas/budget alerts in Google Cloud Console too!).
+ *   4. Optional ALLOWED_ORIGIN restricts browser CORS to your exact GitHub Pages origin.
  */
 
 function buildCorsHeaders(request, env) {
@@ -32,7 +25,7 @@ function buildCorsHeaders(request, env) {
   };
 }
 
-const MONTHLY_CAP = 900; // Hard safety cap below Google's 1,000 free Enterprise calls/month
+const MONTHLY_CAP = 900; // Soft app-level guardrail below Google's 1,000 free Enterprise calls/month
 
 const FIELD_MASK = [
   "places.displayName",
@@ -56,18 +49,24 @@ export default {
       return jsonResp({ error: "POST only" }, 405, cors);
     }
 
-    if (env.TEAM_PASS) {
-      const pass = request.headers.get("X-Team-Pass") || "";
-      if (pass !== env.TEAM_PASS) {
-        return jsonResp({ error: "团队访问口令不正确（请在网页填写口令）" }, 401, cors);
-      }
+    // Mandatory team auth to prevent unauthorized public abuse
+    if (!env.TEAM_PASS) {
+      return jsonResp(
+        { error: "服务端安全拦截：请先在 Cloudflare Worker Secrets 配置 TEAM_PASS 团队口令后再启用。" },
+        503,
+        cors
+      );
+    }
+    const pass = request.headers.get("X-Team-Pass") || "";
+    if (pass !== env.TEAM_PASS) {
+      return jsonResp({ error: "团队访问口令不正确（请在网页填写口令）" }, 401, cors);
     }
 
     if (!env.GOOGLE_MAPS_API_KEY) {
       return jsonResp({ error: "Worker 尚未配置 GOOGLE_MAPS_API_KEY 密钥" }, 500, cors);
     }
 
-    // Optional hard monthly quota cap using Cloudflare KV
+    // Best-effort monthly usage tracking via Cloudflare KV (reserve slot before calling upstream)
     let usedThisMonth = 0;
     const ym = new Date().toISOString().slice(0, 7);
     const kvKey = `gmaps_calls_${ym}`;
@@ -75,11 +74,12 @@ export default {
       usedThisMonth = parseInt((await env.QUOTA_KV.get(kvKey)) || "0", 10);
       if (usedThisMonth >= MONTHLY_CAP) {
         return jsonResp(
-          { error: `本月已达安全免费上限（${MONTHLY_CAP} 次），已自动暂停以防产生费用。` },
+          { error: `本应用本月已记录达 ${MONTHLY_CAP} 次上限，已自动暂停请求（请以 Google Cloud 账单配额为准）。` },
           429,
           cors
         );
       }
+      await env.QUOTA_KV.put(kvKey, String(usedThisMonth + 1), { expirationTtl: 60 * 60 * 24 * 35 });
     }
 
     let body = {};
@@ -126,10 +126,6 @@ export default {
         502,
         cors
       );
-    }
-
-    if (gRes.ok && env.QUOTA_KV) {
-      await env.QUOTA_KV.put(kvKey, String(usedThisMonth + 1), { expirationTtl: 60 * 60 * 24 * 35 });
     }
 
     return jsonResp(

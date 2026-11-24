@@ -124,8 +124,15 @@ COUNTRY_INFO = {
     "Côte d'Ivoire": ("科特迪瓦", "非洲", "fr"),
     "Ivory Coast": ("科特迪瓦", "非洲", "fr"),
     "Democratic Republic of the Congo": ("刚果（金）", "非洲", "fr"),
+    "Democratic Republic of Congo": ("刚果（金）", "非洲", "fr"),
+    "Congo, Democratic Republic of": ("刚果（金）", "非洲", "fr"),
+    "Congo, Dem. Rep.": ("刚果（金）", "非洲", "fr"),
+    "Dem. Rep. Congo": ("刚果（金）", "非洲", "fr"),
+    "DR Congo": ("刚果（金）", "非洲", "fr"),
+    "DRC": ("刚果（金）", "非洲", "fr"),
     "Congo Republic": ("刚果（布）", "非洲", "fr"),
     "Republic of Congo": ("刚果（布）", "非洲", "fr"),
+    "Republic of the Congo": ("刚果（布）", "非洲", "fr"),
     "Uganda": ("乌干达", "非洲", "en"),
     "Cameroon": ("喀麦隆", "非洲", "fr"),
     "Madagascar": ("马达加斯加", "非洲", "fr"),
@@ -221,7 +228,14 @@ CANONICAL_COUNTRY = {
     "Lao PDR": "Laos",
     "Kyrgyzstan": "Kyrgyz Republic",
     "Czech Republic": "Czechia",
+    "Democratic Republic of Congo": "Democratic Republic of the Congo",
+    "Congo, Democratic Republic of": "Democratic Republic of the Congo",
+    "Congo, Dem. Rep.": "Democratic Republic of the Congo",
+    "Dem. Rep. Congo": "Democratic Republic of the Congo",
+    "DR Congo": "Democratic Republic of the Congo",
+    "DRC": "Democratic Republic of the Congo",
     "Republic of Congo": "Congo Republic",
+    "Republic of the Congo": "Congo Republic",
     "Congo, Republic of": "Congo Republic",
     "Gambia, The": "Gambia",
     "The Gambia": "Gambia",
@@ -470,7 +484,8 @@ def fetch_gdacs():
                 angle = "灾后重建刚需：对接当地基建承包商与 NGO/政府应急采购"
 
             safe_link = (link or "https://www.gdacs.org/").replace("http://", "https://")
-            items.append({
+            today_str = now_utc.strftime("%Y-%m-%d")
+            item_obj = {
                 "id": f"gdacs_{len(items)}_{ev_type}",
                 "cat": "weather",
                 "hazardType": ev_type,
@@ -483,6 +498,9 @@ def fetch_gdacs():
                 "region": reg,
                 "lang": lang,
                 "date": date_str,
+                "startDate": date_str,
+                "lastSeenDate": today_str if ev_type == "DR" else date_str,
+                "ongoing": bool(ev_type == "DR" and age_days > 14),
                 "title": title,
                 "titleCn": f"{level_cn.get(alert, '')} {type_cn.get(ev_type, '')}：{c_cn or country_raw or title}",
                 "summary": desc[:220],
@@ -493,15 +511,16 @@ def fetch_gdacs():
                 "angleCn": angle,
                 "source": "GDACS 国际灾害预警",
                 "url": safe_link,
-            })
+            }
+            items.append(item_obj)
 
         items.sort(key=lambda x: (x["_rank"][0], x["_rank"][1], -(int(x["date"].replace("-", "")[:8]) if re.match(r"^\d{4}-\d{2}-\d{2}$", x["date"]) else 0)))
         for x in items:
             x.pop("_rank", None)
-        return items[:12]
+        return items[:12], True, ""
     except Exception as e:
         print(f"[WARN] GDACS fetch failed: {e}")
-        return []
+        return [], False, str(e)[:180]
 
 
 def _parse_wb_date(s):
@@ -523,6 +542,7 @@ def fetch_worldbank():
     items = []
     seen = set()
     agency_counts = {}
+    last_err = ""
 
     include_kw = re.compile(
         r"pump|valve|pipe|pipeline|water\s*supply|wastewater|sewage|drainage|irrigat|borehole|reservoir|"
@@ -664,10 +684,11 @@ def fetch_worldbank():
                     break
         except Exception as e:
             print(f"[WARN] World Bank procnotices fetch failed: {e}")
+            last_err = str(e)[:180]
         if len(items) >= 22:
             break
 
-    return items
+    return items, (len(items) > 0 or not last_err), last_err
 
 
 
@@ -675,7 +696,7 @@ def fetch_news_rss():
     """Fetch fresh project financing, factory expansion & Chinese EPC wins via Google News RSS."""
     queries = [
         (
-            "🏦 银行放款/融资",
+            "国际开发项目立项",
             "https://news.google.com/rss/search?q="
             + urllib.parse.quote(
                 '("IFC" OR "ADB" OR "AfDB" OR "IDB" OR "EBRD") ("loan" OR "financing") ("factory" OR "power" OR "water" OR "steel" OR "industrial" OR "mining") when:14d'
@@ -683,7 +704,7 @@ def fetch_news_rss():
             + "&hl=en-US&gl=US&ceid=US:en",
         ),
         (
-            "🏗️ 新建厂房/扩产",
+            "新建厂房/扩产",
             "https://news.google.com/rss/search?q="
             + urllib.parse.quote(
                 '("breaks ground" OR "new factory" OR "industrial park" OR "plant expansion") (Vietnam OR Indonesia OR Mexico OR "Saudi Arabia" OR Brazil OR Thailand OR India OR Chile OR Egypt OR Nigeria OR "South Africa") when:14d'
@@ -691,7 +712,7 @@ def fetch_news_rss():
             + "&hl=en-US&gl=US&ceid=US:en",
         ),
         (
-            "🇨🇳 中资EPC顺风车",
+            "中资总包项目",
             "https://news.google.com/rss/search?q="
             + urllib.parse.quote(
                 '("中标" OR "签约" OR "开工") ("钢结构" OR "电站" OR "工业园" OR "矿山" OR "水务" OR "厂房") ("越南" OR "印尼" OR "沙特" OR "阿联酋" OR "墨西哥" OR "巴西" OR "尼日利亚" OR "智利" OR "埃及" OR "泰国") when:21d'
@@ -702,11 +723,14 @@ def fetch_news_rss():
 
     items = []
     seen = set()
+    ok_queries = 0
+    last_err = ""
     now_utc = datetime.datetime.now(datetime.timezone.utc)
     for label, url in queries:
         try:
             xml_text = http_get(url, timeout=16)
             root = ET.fromstring(xml_text)
+            ok_queries += 1
             count = 0
             for it in root.findall("./channel/item"):
                 raw_title = clean_text(it.findtext("title"))
@@ -771,7 +795,7 @@ def fetch_news_rss():
                     "entity": ent,
                     "productsCn": prod_cn,
                     "productsEn": prod_en,
-                    "angleCn": f"近期高意向动态！立刻在「背调与合规」查业主/总包商官网，切入 {prod_cn}",
+                    "angleCn": f"近期项目动态：可在「客户背调」核查业主或总包官网，重点切入 {prod_cn}",
                     "source": src,
                     "url": link,
                 })
@@ -780,7 +804,8 @@ def fetch_news_rss():
                     break
         except Exception as e:
             print(f"[WARN] News RSS ({label}) failed: {e}")
-    return items
+            last_err = str(e)[:180]
+    return items, (ok_queries > 0), last_err
 
 
 def enrich_with_gemini(items):
@@ -959,7 +984,7 @@ def push_notifications(feed):
                         t_clean = f"{t_clean}({amt})"
                     if t_clean:
                         lead_items.append(t_clean[:20])
-                l_txt = "；".join(lead_items) if lead_items else "点下方「详情」查看全部60条全球放款与EPC商机"
+                l_txt = "；".join(lead_items) if lead_items else "点下方「详情」查看全部全球招标与新建项目商机"
 
                 send_url = f"https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={urllib.parse.quote(access_token)}"
                 sent_ok = 0
@@ -970,7 +995,7 @@ def push_notifications(feed):
                         "url": SITE_URL,
                         "data": {
                             "date": {"value": feed["updatedCn"]},
-                            "stats": {"value": f"共{stats['total']}条（灾害{stats['weather']}｜世行放款{stats['loan']}｜扩产EPC{stats['news']}）"},
+                            "stats": {"value": f"共{stats['total']}条（灾害{stats['weather']}｜世行招标{stats['loan']}｜扩产总包{stats['news']}）"},
                             "weather": {"value": w_txt},
                             "leads": {"value": l_txt},
                         },
@@ -1048,31 +1073,83 @@ def push_notifications(feed):
             print(f"[WARN] DingTalk push failed: {e}")
 
 
+def _load_previous_feed():
+    try:
+        if os.path.exists(JSON_OUT):
+            with open(JSON_OUT, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if isinstance(data, dict) and isinstance(data.get("items"), list):
+                    return data
+    except Exception as e:
+        print(f"[WARN] Could not load previous feed: {e}")
+    return {}
+
+
 def main():
     os.makedirs(DATA_DIR, exist_ok=True)
     now_utc = datetime.datetime.now(datetime.timezone.utc)
     now_cn = now_utc + datetime.timedelta(hours=8)
+    now_cn_str = now_cn.strftime("%Y-%m-%d %H:%M 北京时间")
+    prev_feed = _load_previous_feed()
+    prev_items = prev_feed.get("items") or []
+    prev_status = prev_feed.get("sourcesStatus") or {}
 
     print("[INFO] Fetching GDACS global weather/disaster alerts...")
-    weather_items = fetch_gdacs()
-    print(f"       -> {len(weather_items)} weather/disaster items")
+    weather_items, gdacs_ok, gdacs_err = fetch_gdacs()
+    print(f"       -> {len(weather_items)} weather/disaster items (ok={gdacs_ok})")
 
     print("[INFO] Fetching World Bank newly approved industrial/infra projects...")
-    wb_items = fetch_worldbank()
-    print(f"       -> {len(wb_items)} World Bank project items")
+    wb_items, wb_ok, wb_err = fetch_worldbank()
+    print(f"       -> {len(wb_items)} World Bank project items (ok={wb_ok})")
 
     print("[INFO] Fetching global financing / new factory / EPC news RSS...")
-    news_items = fetch_news_rss()
-    print(f"       -> {len(news_items)} news items")
+    news_items, news_ok, news_err = fetch_news_rss()
+    print(f"       -> {len(news_items)} news items (ok={news_ok})")
+
+    def _resolve_source(key, cat, fresh_items, ok, err):
+        if ok and fresh_items:
+            return fresh_items, {
+                "ok": True,
+                "count": len(fresh_items),
+                "lastOk": now_cn_str,
+                "staleFallback": False,
+                "error": "",
+            }
+        prior_cat = [x for x in prev_items if isinstance(x, dict) and x.get("cat") == cat]
+        if (not ok) and prior_cat:
+            print(f"[WARN] Preserving {len(prior_cat)} prior '{cat}' items due to {key} fetch error: {err}")
+            return prior_cat, {
+                "ok": False,
+                "count": len(prior_cat),
+                "lastOk": (prev_status.get(key) or {}).get("lastOk") or prev_feed.get("updatedCn") or "",
+                "staleFallback": True,
+                "error": err or "fetch failed",
+            }
+        return fresh_items, {
+            "ok": bool(ok),
+            "count": len(fresh_items),
+            "lastOk": now_cn_str if ok else ((prev_status.get(key) or {}).get("lastOk") or ""),
+            "staleFallback": False,
+            "error": err,
+        }
+
+    weather_items, st_gdacs = _resolve_source("gdacs", "weather", weather_items, gdacs_ok, gdacs_err)
+    wb_items, st_wb = _resolve_source("worldbank", "loan", wb_items, wb_ok, wb_err)
+    news_items, st_news = _resolve_source("gnews", "news", news_items, news_ok, news_err)
 
     all_items = weather_items + wb_items + news_items
     ai_used = enrich_with_gemini(all_items)
 
     feed = {
         "updatedIso": now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "updatedCn": now_cn.strftime("%Y-%m-%d %H:%M 北京时间"),
+        "updatedCn": now_cn_str,
         "updatedDate": now_cn.strftime("%Y-%m-%d"),
         "aiEnriched": ai_used,
+        "sourcesStatus": {
+            "gdacs": st_gdacs,
+            "worldbank": st_wb,
+            "gnews": st_news,
+        },
         "stats": {
             "total": len(all_items),
             "weather": len(weather_items),
