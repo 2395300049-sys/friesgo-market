@@ -16,11 +16,21 @@
  *   4. Paste your Worker URL (e.g. https://friesgo-gmaps.xxx.workers.dev) into the webpage!
  */
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, X-Team-Pass",
-};
+function buildCorsHeaders(request, env) {
+  const reqOrigin = request.headers.get("Origin") || "";
+  const allowedRaw = (env.ALLOWED_ORIGIN || "").trim();
+  let allowOrigin = "*";
+  if (allowedRaw) {
+    const allowedList = allowedRaw.split(",").map((s) => s.trim()).filter(Boolean);
+    allowOrigin = allowedList.includes(reqOrigin) ? reqOrigin : allowedList[0];
+  }
+  return {
+    "Access-Control-Allow-Origin": allowOrigin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, X-Team-Pass",
+    "Vary": "Origin",
+  };
+}
 
 const MONTHLY_CAP = 900; // Hard safety cap below Google's 1,000 free Enterprise calls/month
 
@@ -38,22 +48,23 @@ const FIELD_MASK = [
 
 export default {
   async fetch(request, env) {
+    const cors = buildCorsHeaders(request, env);
     if (request.method === "OPTIONS") {
-      return new Response(null, { status: 204, headers: CORS_HEADERS });
+      return new Response(null, { status: 204, headers: cors });
     }
     if (request.method !== "POST") {
-      return jsonResp({ error: "POST only" }, 405);
+      return jsonResp({ error: "POST only" }, 405, cors);
     }
 
     if (env.TEAM_PASS) {
       const pass = request.headers.get("X-Team-Pass") || "";
       if (pass !== env.TEAM_PASS) {
-        return jsonResp({ error: "团队访问口令不正确（请在网页填写口令）" }, 401);
+        return jsonResp({ error: "团队访问口令不正确（请在网页填写口令）" }, 401, cors);
       }
     }
 
     if (!env.GOOGLE_MAPS_API_KEY) {
-      return jsonResp({ error: "Worker 尚未配置 GOOGLE_MAPS_API_KEY 密钥" }, 500);
+      return jsonResp({ error: "Worker 尚未配置 GOOGLE_MAPS_API_KEY 密钥" }, 500, cors);
     }
 
     // Optional hard monthly quota cap using Cloudflare KV
@@ -65,7 +76,8 @@ export default {
       if (usedThisMonth >= MONTHLY_CAP) {
         return jsonResp(
           { error: `本月已达安全免费上限（${MONTHLY_CAP} 次），已自动暂停以防产生费用。` },
-          429
+          429,
+          cors
         );
       }
     }
@@ -74,12 +86,12 @@ export default {
     try {
       body = await request.json();
     } catch {
-      return jsonResp({ error: "Invalid JSON body" }, 400);
+      return jsonResp({ error: "Invalid JSON body" }, 400, cors);
     }
 
     const textQuery = String(body.textQuery || "").trim();
     if (!textQuery) {
-      return jsonResp({ error: "请提供搜索关键词 textQuery" }, 400);
+      return jsonResp({ error: "请提供搜索关键词 textQuery" }, 400, cors);
     }
 
     const payload = {
@@ -89,17 +101,33 @@ export default {
     if (body.pageToken) payload.pageToken = String(body.pageToken);
     if (body.languageCode) payload.languageCode = String(body.languageCode);
 
-    const gRes = await fetch("https://places.googleapis.com/v1/places:searchText", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Goog-Api-Key": env.GOOGLE_MAPS_API_KEY,
-        "X-Goog-FieldMask": FIELD_MASK,
-      },
-      body: JSON.stringify(payload),
-    });
+    let gRes;
+    try {
+      gRes = await fetch("https://places.googleapis.com/v1/places:searchText", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": env.GOOGLE_MAPS_API_KEY,
+          "X-Goog-FieldMask": FIELD_MASK,
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      return jsonResp({ error: "连接 Google Maps 上游失败：" + String(err) }, 502, cors);
+    }
 
-    const data = await gRes.json();
+    let data = {};
+    const rawText = await gRes.text();
+    try {
+      data = rawText ? JSON.parse(rawText) : {};
+    } catch {
+      return jsonResp(
+        { error: `Google Maps 上游返回非 JSON 响应 (HTTP ${gRes.status})` },
+        502,
+        cors
+      );
+    }
+
     if (gRes.ok && env.QUOTA_KV) {
       await env.QUOTA_KV.put(kvKey, String(usedThisMonth + 1), { expirationTtl: 60 * 60 * 24 * 35 });
     }
@@ -112,14 +140,15 @@ export default {
         quotaUsed: env.QUOTA_KV ? usedThisMonth + 1 : null,
         quotaCap: MONTHLY_CAP,
       },
-      gRes.ok ? 200 : gRes.status
+      gRes.ok ? 200 : gRes.status,
+      cors
     );
   },
 };
 
-function jsonResp(obj, status = 200) {
+function jsonResp(obj, status = 200, corsHeaders = {}) {
   return new Response(JSON.stringify(obj), {
     status,
-    headers: { ...CORS_HEADERS, "Content-Type": "application/json; charset=utf-8" },
+    headers: { ...corsHeaders, "Content-Type": "application/json; charset=utf-8" },
   });
 }

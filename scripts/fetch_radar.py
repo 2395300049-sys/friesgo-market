@@ -38,23 +38,28 @@ SITE_URL = "https://jasunmr389-ship-it.github.io/friesgo-market/#tab=radar"
 
 USER_AGENT = "Mozilla/5.0 (compatible; FriesGoRadarBot/2.0; +https://jasunmr389-ship-it.github.io/friesgo-market/)"
 
-# Country Chinese names & region mapping for global high-potential & emerging markets
+## Country Chinese names & region mapping for global high-potential & emerging markets
 COUNTRY_INFO = {
     "Vietnam": ("越南", "东南亚", "vi"),
     "Viet Nam": ("越南", "东南亚", "vi"),
-    "Indonesia": ("印尼", "东南亚", "id"),
+    "Indonesia": ("印度尼西亚", "东南亚", "id"),
     "Thailand": ("泰国", "东南亚", "th"),
     "Philippines": ("菲律宾", "东南亚", "en"),
     "Malaysia": ("马来西亚", "东南亚", "en"),
     "Cambodia": ("柬埔寨", "东南亚", "en"),
     "Myanmar": ("缅甸", "东南亚", "en"),
-    "Lao": ("老挝", "东南亚", "en"),
+    "Laos": ("老挝", "东南亚", "en"),
+    "Lao PDR": ("老挝", "东南亚", "en"),
     "Singapore": ("新加坡", "东南亚", "en"),
+    "Brunei": ("文莱", "东南亚", "en"),
+    "Timor-Leste": ("东帝汶", "东南亚", "en"),
     "India": ("印度", "南亚", "en"),
     "Bangladesh": ("孟加拉国", "南亚", "en"),
     "Pakistan": ("巴基斯坦", "南亚", "en"),
     "Sri Lanka": ("斯里兰卡", "南亚", "en"),
     "Nepal": ("尼泊尔", "南亚", "en"),
+    "Bhutan": ("不丹", "南亚", "en"),
+    "Maldives": ("马尔代夫", "南亚", "en"),
     "Saudi Arabia": ("沙特阿拉伯", "中东", "ar"),
     "United Arab Emirates": ("阿联酋", "中东", "en"),
     "UAE": ("阿联酋", "中东", "en"),
@@ -63,15 +68,24 @@ COUNTRY_INFO = {
     "Oman": ("阿曼", "中东", "ar"),
     "Qatar": ("卡塔尔", "中东", "ar"),
     "Kuwait": ("科威特", "中东", "ar"),
+    "Bahrain": ("巴林", "中东", "ar"),
     "Jordan": ("约旦", "中东", "ar"),
+    "Lebanon": ("黎巴嫩", "中东", "ar"),
+    "Israel": ("以色列", "中东", "en"),
+    "Yemen": ("也门", "中东", "ar"),
     "Morocco": ("摩洛哥", "中东/北非", "fr"),
     "Algeria": ("阿尔及利亚", "中东/北非", "fr"),
     "Tunisia": ("突尼斯", "中东/北非", "fr"),
     "Turkey": ("土耳其", "欧亚", "en"),
     "Türkiye": ("土耳其", "欧亚", "en"),
     "Turkiye": ("土耳其", "欧亚", "en"),
+    "Turkish": ("土耳其", "欧亚", "en"),
     "Kazakhstan": ("哈萨克斯坦", "中亚", "ru"),
     "Uzbekistan": ("乌兹别克斯坦", "中亚", "ru"),
+    "Kyrgyz Republic": ("吉尔吉斯斯坦", "中亚", "ru"),
+    "Kyrgyzstan": ("吉尔吉斯斯坦", "中亚", "ru"),
+    "Tajikistan": ("塔吉克斯坦", "中亚", "ru"),
+    "Turkmenistan": ("土库曼斯坦", "中亚", "ru"),
     "Mexico": ("墨西哥", "拉美", "es"),
     "Brazil": ("巴西", "拉美", "pt"),
     "Chile": ("智利", "拉美", "es"),
@@ -85,6 +99,17 @@ COUNTRY_INFO = {
     "Honduras": ("洪都拉斯", "拉美", "es"),
     "Paraguay": ("巴拉圭", "拉美", "es"),
     "Bolivia": ("玻利维亚", "拉美", "es"),
+    "Venezuela": ("委内瑞拉", "拉美", "es"),
+    "Uruguay": ("乌拉圭", "拉美", "es"),
+    "Costa Rica": ("哥斯达黎加", "拉美", "es"),
+    "El Salvador": ("萨尔瓦多", "拉美", "es"),
+    "Nicaragua": ("尼加拉瓜", "拉美", "es"),
+    "Guyana": ("圭亚那", "拉美", "en"),
+    "Suriname": ("苏里南", "拉美", "en"),
+    "Jamaica": ("牙买加", "拉美", "en"),
+    "Trinidad and Tobago": ("特立尼达和多巴哥", "拉美", "en"),
+    "Belize": ("伯利兹", "拉美", "en"),
+    "Haiti": ("海地", "拉美", "fr"),
     "Nigeria": ("尼日利亚", "非洲", "en"),
     "South Africa": ("南非", "非洲", "en"),
     "Kenya": ("肯尼亚", "非洲", "en"),
@@ -97,50 +122,92 @@ COUNTRY_INFO = {
     "Senegal": ("塞内加尔", "非洲", "fr"),
     "Cote d'Ivoire": ("科特迪瓦", "非洲", "fr"),
     "Côte d'Ivoire": ("科特迪瓦", "非洲", "fr"),
-    "Congo": ("刚果", "非洲", "fr"),
+    "Ivory Coast": ("科特迪瓦", "非洲", "fr"),
+    "Democratic Republic of the Congo": ("刚果（金）", "非洲", "fr"),
+    "Congo Republic": ("刚果（布）", "非洲", "fr"),
+    "Republic of Congo": ("刚果（布）", "非洲", "fr"),
     "Uganda": ("乌干达", "非洲", "en"),
     "Cameroon": ("喀麦隆", "非洲", "fr"),
     "Madagascar": ("马达加斯加", "非洲", "fr"),
-    "Poland": ("波兰", "欧洲", "en"),
-    "Romania": ("罗马尼亚", "欧洲", "en"),
-    "Hungary": ("匈牙利", "欧洲", "en"),
-    "Serbia": ("塞尔维亚", "欧洲", "en"),
-    "Germany": ("德国", "欧洲", "de"),
-    "Spain": ("西班牙", "欧洲", "es"),
-    "Italy": ("意大利", "欧洲", "en"),
-    "France": ("法国", "欧洲", "fr"),
-    "United Kingdom": ("英国", "欧洲", "en"),
-    "United States": ("美国", "北美", "en"),
-    "Canada": ("加拿大", "北美", "en"),
-    "Australia": ("澳大利亚", "大洋洲", "en"),
-    "Papua New Guinea": ("巴布亚新几内亚", "大洋洲", "en"),
-    "Fiji": ("斐济", "大洋洲", "en"),
-    "Japan": ("日本", "东亚", "en"),
-    "South Korea": ("韩国", "东亚", "en"),
-    "Kyrgyz": ("吉尔吉斯斯坦", "中亚", "ru"),
-    "Tajikistan": ("塔吉克斯坦", "中亚", "ru"),
-    "Mongolia": ("蒙古", "东亚", "en"),
-    "Azerbaijan": ("阿塞拜疆", "中亚", "ru"),
-    "Georgia": ("格鲁吉亚", "欧亚", "en"),
-    "Armenia": ("亚美尼亚", "欧亚", "ru"),
     "Rwanda": ("卢旺达", "非洲", "en"),
+    "Burundi": ("布隆迪", "非洲", "fr"),
     "Malawi": ("马拉维", "非洲", "en"),
     "Benin": ("贝宁", "非洲", "fr"),
     "Togo": ("多哥", "非洲", "fr"),
     "Mali": ("马里", "非洲", "fr"),
     "Niger": ("尼日尔", "非洲", "fr"),
     "Burkina Faso": ("布基纳法索", "非洲", "fr"),
-    "DRC": ("刚果(金)", "非洲", "fr"),
     "Sierra Leone": ("塞拉利昂", "非洲", "en"),
     "Liberia": ("利比里亚", "非洲", "en"),
     "Mauritania": ("毛里塔尼亚", "非洲", "fr"),
     "Namibia": ("纳米比亚", "非洲", "en"),
     "Botswana": ("博茨瓦纳", "非洲", "en"),
     "Zimbabwe": ("津巴布韦", "非洲", "en"),
-    "Uruguay": ("乌拉圭", "拉美", "es"),
-    "Costa Rica": ("哥斯达黎加", "拉美", "es"),
-    "El Salvador": ("萨尔瓦多", "拉美", "es"),
-    "Jamaica": ("牙买加", "拉美", "en"),
+    "Gambia": ("冈比亚", "非洲", "en"),
+    "Guinea-Bissau": ("几内亚比绍", "非洲", "pt"),
+    "Guinea": ("几内亚", "非洲", "fr"),
+    "Gabon": ("加蓬", "非洲", "fr"),
+    "Chad": ("乍得", "非洲", "fr"),
+    "South Sudan": ("南苏丹", "非洲", "en"),
+    "Sudan": ("苏丹", "非洲", "ar"),
+    "Somalia": ("索马里", "非洲", "en"),
+    "Djibouti": ("吉布提", "非洲", "fr"),
+    "Mauritius": ("毛里求斯", "非洲", "en"),
+    "Lesotho": ("莱索托", "非洲", "en"),
+    "Eswatini": ("斯威士兰", "非洲", "en"),
+    "Cabo Verde": ("佛得角", "非洲", "pt"),
+    "Poland": ("波兰", "欧洲", "en"),
+    "Romania": ("罗马尼亚", "欧洲", "en"),
+    "Hungary": ("匈牙利", "欧洲", "en"),
+    "Serbia": ("塞尔维亚", "欧洲", "en"),
+    "Montenegro": ("黑山", "欧洲", "en"),
+    "Bosnia and Herzegovina": ("波黑", "欧洲", "en"),
+    "North Macedonia": ("北马其顿", "欧洲", "en"),
+    "Albania": ("阿尔巴尼亚", "欧洲", "en"),
+    "Croatia": ("克罗地亚", "欧洲", "en"),
+    "Slovenia": ("斯洛文尼亚", "欧洲", "en"),
+    "Bulgaria": ("保加利亚", "欧洲", "en"),
+    "Czechia": ("捷克", "欧洲", "en"),
+    "Czech Republic": ("捷克", "欧洲", "en"),
+    "Slovakia": ("斯洛伐克", "欧洲", "en"),
+    "Moldova": ("摩尔多瓦", "欧洲", "en"),
+    "Ukraine": ("乌克兰", "欧洲", "en"),
+    "Germany": ("德国", "欧洲", "de"),
+    "Spain": ("西班牙", "欧洲", "es"),
+    "Italy": ("意大利", "欧洲", "en"),
+    "France": ("法国", "欧洲", "fr"),
+    "Netherlands": ("荷兰", "欧洲", "en"),
+    "Belgium": ("比利时", "欧洲", "fr"),
+    "Portugal": ("葡萄牙", "欧洲", "pt"),
+    "Greece": ("希腊", "欧洲", "en"),
+    "Ireland": ("爱尔兰", "欧洲", "en"),
+    "Austria": ("奥地利", "欧洲", "de"),
+    "Switzerland": ("瑞士", "欧洲", "de"),
+    "Sweden": ("瑞典", "欧洲", "en"),
+    "Norway": ("挪威", "欧洲", "en"),
+    "Denmark": ("丹麦", "欧洲", "en"),
+    "Finland": ("芬兰", "欧洲", "en"),
+    "Lithuania": ("立陶宛", "欧洲", "en"),
+    "Latvia": ("拉脱维亚", "欧洲", "en"),
+    "Estonia": ("爱沙尼亚", "欧洲", "en"),
+    "Cyprus": ("塞浦路斯", "欧洲", "en"),
+    "United Kingdom": ("英国", "欧洲", "en"),
+    "United States": ("美国", "北美", "en"),
+    "Canada": ("加拿大", "北美", "en"),
+    "Australia": ("澳大利亚", "大洋洲", "en"),
+    "New Zealand": ("新西兰", "大洋洲", "en"),
+    "Papua New Guinea": ("巴布亚新几内亚", "大洋洲", "en"),
+    "Fiji": ("斐济", "大洋洲", "en"),
+    "Solomon Islands": ("所罗门群岛", "大洋洲", "en"),
+    "Vanuatu": ("瓦努阿图", "大洋洲", "en"),
+    "Samoa": ("萨摩亚", "大洋洲", "en"),
+    "Kiribati": ("基里巴斯", "大洋洲", "en"),
+    "Japan": ("日本", "东亚", "en"),
+    "South Korea": ("韩国", "东亚", "en"),
+    "Mongolia": ("蒙古", "东亚", "en"),
+    "Azerbaijan": ("阿塞拜疆", "中亚", "ru"),
+    "Georgia": ("格鲁吉亚", "欧亚", "en"),
+    "Armenia": ("亚美尼亚", "欧亚", "ru"),
 }
 
 # Canonical country names matching index.html DATA.country
@@ -150,10 +217,16 @@ CANONICAL_COUNTRY = {
     "Turkey": "Turkey (Türkiye)",
     "Türkiye": "Turkey (Türkiye)",
     "Turkiye": "Turkey (Türkiye)",
-    "Lao": "Lao PDR",
-    "Kyrgyz": "Kyrgyz Republic",
-    "DRC": "Congo, Dem. Rep.",
+    "Turkish": "Turkey (Türkiye)",
+    "Lao PDR": "Laos",
+    "Kyrgyzstan": "Kyrgyz Republic",
+    "Czech Republic": "Czechia",
+    "Republic of Congo": "Congo Republic",
+    "Congo, Republic of": "Congo Republic",
+    "Gambia, The": "Gambia",
+    "The Gambia": "Gambia",
     "Côte d'Ivoire": "Cote d'Ivoire",
+    "Ivory Coast": "Cote d'Ivoire",
     "Egypt, Arab Republic of": "Egypt",
     "Arab Republic of Egypt": "Egypt",
     "Republic of Indonesia": "Indonesia",
@@ -167,11 +240,18 @@ CANONICAL_COUNTRY = {
     "Republic of Kenya": "Kenya",
     "United Republic of Tanzania": "Tanzania",
     "Republic of Zambia": "Zambia",
-    "Democratic Republic of the Congo": "Congo, Dem. Rep.",
     "Republic of India": "India",
     "People's Republic of Bangladesh": "Bangladesh",
     "Islamic Republic of Pakistan": "Pakistan",
+    "Republic of Korea": "South Korea",
+    "Slovak Republic": "Slovakia",
 }
+
+# Precompile word-boundary patterns sorted longest-first to avoid substring collisions (e.g. Romania vs Oman, Nigeria vs Niger)
+_COUNTRY_PATTERNS = [
+    (key, re.compile(r"(?<![A-Za-z])" + re.escape(key) + r"(?![A-Za-z])", re.I), info)
+    for key, info in sorted(COUNTRY_INFO.items(), key=lambda kv: -len(kv[0]))
+]
 
 # Industrial sector keywords -> FriesGo recommended bundle (specific verticals BEFORE generic factory/infra)
 PRODUCT_RULES = [
@@ -181,27 +261,27 @@ PRODUCT_RULES = [
         "mining slurry pumps, high-pressure valves, wear-resistant pipes & mining cables",
     ),
     (
-        r"power|energy|solar|photovoltaic|wind|grid|substation|electric|transmission|battery|generator|electricity|电力|电站|光伏|电网|储能",
+        r"power|energy|solar|photovoltaic|wind|grid|substation|electric|transmission|battery|generator|electricity|transformer|switchgear|electrification|solaire|电力|电站|光伏|电网|储能",
         "电力电缆、配电变压器、开关柜 & 柴油发电机组",
         "power cables, distribution transformers, switchgear & backup diesel generators",
     ),
     (
-        r"water|sanitation|sewage|desalination|pipeline|flood|drainage|dam|irrigation|hydropower|供水|水务|排水|灌溉",
+        r"water|sanitation|sewage|desalination|pipeline|pipe|flood|drainage|dam|irrigation|hydropower|borehole|reservoir|pump|valve|eau|pompe|agua|bomba|供水|水务|排水|灌溉",
         "工业阀门、离心/排涝水泵、管道法兰 & 控制柜",
         "industrial waterworks valves, heavy-duty pumps, pipe fittings & control panels",
     ),
     (
-        r"agricult|farm|food|grain|livestock|cold storage|fisheries|rural|drought|农业|农机|冷链|粮仓",
+        r"agricult|farm|food|grain|livestock|cold storage|fisheries|rural|drought|tractor|农业|农机|冷链|粮仓",
         "农业机械、光伏/柴油灌溉泵、钢构粮仓/冷库 & 维修工具",
         "agricultural machinery, irrigation pumps, cold-storage steel structures & tools",
     ),
     (
-        r"steel|warehouse|factory|industrial park|manufacturing|roof|structural|cyclone|typhoon|hurricane|earthquake|reconstruction|shelter|钢结构|厂房|工业园|建材",
-        "钢结构厂房、彩钢板、高强紧固件 & 厂房机电",
+        r"steel|warehouse|factory|industrial park|manufacturing|roof|structural|cyclone|typhoon|hurricane|earthquake|reconstruction|shelter|acero|钢结构|厂房|工业园|建材",
+        "钢结构厂房、彩钢瓦、高强紧固件 & 厂房机电",
         "prefabricated steel structures, structural fasteners & factory MEP equipment",
     ),
     (
-        r"port|transport|road|rail|bridge|airport|logistics|highway|infrastructure|corridor|urban|港口|铁路|基建|物流",
+        r"port|transport|road|rail|bridge|airport|logistics|highway|infrastructure|corridor|urban|civil works|travaux|港口|铁路|基建|物流",
         "基建钢结构、施工机电、工业泵阀、照明电缆 & 五金工具",
         "steel structures, construction hardware, industrial pumps/valves & power cables",
     ),
@@ -267,11 +347,34 @@ def normalize_country(raw):
         if c in COUNTRY_INFO:
             cn, reg, lang = COUNTRY_INFO[c]
             return c, cn, reg, lang
-    for key, (cn, reg, lang) in COUNTRY_INFO.items():
-        if key.lower() == raw_clean.lower() or key.lower() in raw_clean.lower():
+    # Multi-country comma lists (e.g. GDACS regional droughts): prefer major export markets over alphabetical micro-countries
+    if "," in raw_clean:
+        parts = [p.strip() for p in raw_clean.split(",") if p.strip()]
+        if len(parts) >= 5:
+            priority_markets = (
+                "Vietnam", "Indonesia", "Thailand", "Philippines", "India", "Saudi Arabia",
+                "United Arab Emirates", "Egypt", "Mexico", "Brazil", "Chile", "Peru", "Colombia",
+                "Argentina", "Nigeria", "South Africa", "Kenya", "Tanzania", "Ethiopia", "Morocco",
+                "Algeria", "Turkey (Türkiye)", "Poland", "Romania", "Spain", "Germany", "United States",
+            )
+            parsed_parts = []
+            for p in parts:
+                c_p = CANONICAL_COUNTRY.get(p, p)
+                if c_p in COUNTRY_INFO:
+                    parsed_parts.append((c_p, COUNTRY_INFO[c_p]))
+            for pm in priority_markets:
+                for c_p, (cn, reg, lang) in parsed_parts:
+                    if c_p == pm:
+                        return c_p, f"{cn}等{len(parts)}国", reg, lang
+            if parsed_parts:
+                c_p, (cn, reg, lang) = parsed_parts[0]
+                return c_p, f"{cn}等{len(parts)}国", reg, lang
+    # Strict word-boundary English match (longest key first)
+    for key, pat, (cn, reg, lang) in _COUNTRY_PATTERNS:
+        if pat.search(raw_clean):
             canon = CANONICAL_COUNTRY.get(key, key)
             return canon, cn, reg, lang
-    # Also check Chinese country mentions
+    # Check Chinese country mentions
     for key, (cn, reg, lang) in COUNTRY_INFO.items():
         if cn and cn in raw_clean:
             canon = CANONICAL_COUNTRY.get(key, key)
@@ -291,8 +394,9 @@ def match_products(text):
 
 
 def fetch_gdacs():
-    """Fetch live global disaster/typhoon/flood alerts from GDACS RSS."""
+    """Fetch live global disaster/typhoon/flood/drought alerts from GDACS RSS."""
     items = []
+    now_utc = datetime.datetime.now(datetime.timezone.utc)
     try:
         xml_text = http_get("https://www.gdacs.org/xml/rss.xml", timeout=20)
         root = ET.fromstring(xml_text)
@@ -310,6 +414,7 @@ def fetch_gdacs():
         }
         level_rank = {"Red": 0, "Orange": 1, "Green": 2}
         level_cn = {"Red": "🔴 红色高危", "Orange": "🟠 橙色预警", "Green": "🟢 常规关注"}
+        skip_green_micro = {"Cook Islands", "Kiribati", "Tonga", "Niue", "Tuvalu", "Nauru"}
 
         for it in root.findall("./channel/item"):
             title = clean_text(it.findtext("title"))
@@ -319,12 +424,34 @@ def fetch_gdacs():
             ev_type = clean_text(it.findtext("gdacs:eventtype", "", ns)) or "TC"
             alert = clean_text(it.findtext("gdacs:alertlevel", "", ns)) or "Green"
             country_raw = clean_text(it.findtext("gdacs:country", "", ns))
+            pop_raw = clean_text(it.findtext("gdacs:population", "", ns))
 
-            # Prioritize typhoons, floods, earthquakes, droughts; skip minor green EQ/WF to keep signal sharp
+            # Prioritize typhoons, floods, earthquakes, droughts; skip minor green EQ/WF
             if alert == "Green" and ev_type not in ("TC", "FL", "DR"):
                 continue
 
+            # Parse date cleanly and skip stale alerts (>180d for droughts, >35d for green alerts)
+            date_str = ""
+            age_days = 0
+            try:
+                dt = datetime.datetime.strptime(pub[:25].strip(), "%a, %d %b %Y %H:%M:%S").replace(tzinfo=datetime.timezone.utc)
+                date_str = dt.strftime("%Y-%m-%d")
+                age_days = (now_utc - dt).days
+            except Exception:
+                date_str = pub[:16]
+            if ev_type == "DR" and age_days > 180:
+                continue
+            if alert == "Green" and age_days > 35:
+                continue
+
             c_en, c_cn, reg, lang = normalize_country(country_raw or title)
+            # Filter out zero-impact green micro-island / low-relevance alerts
+            if alert == "Green":
+                if c_en in skip_green_micro or reg == "其他":
+                    continue
+                if re.search(r"\b0\s+people\b|\baffected\s+population\s+is\s+0\b", desc + " " + pop_raw, re.I):
+                    continue
+
             if ev_type == "TC":
                 rec_cn = "抗风钢结构厂房、彩钢瓦、排水泵、应急柴油发电机"
                 rec_en = "wind-resistant steel structures, metal roofing, dewatering pumps & emergency generators"
@@ -334,26 +461,19 @@ def fetch_gdacs():
                 rec_en = "high-flow dewatering pumps, industrial valves, waterproof cables & diesel generators"
                 angle = "洪涝受损区：重点跟进当地市政排涝、工业园恢复供电与水泵管件急单"
             elif ev_type == "DR":
-                rec_cn = "光伏/柴油灌溉水泵、喷灌阀门管件、农机设备"
-                rec_en = "solar/diesel irrigation pumps, agricultural valves & farm equipment"
-                angle = "干旱农区：重点切入农场抗旱打井、光伏灌溉水泵与水管配件"
+                rec_cn = "深井/光伏灌溉水泵、喷灌阀门管件、储水钢罐 & 农机设备"
+                rec_en = "deep-well solar/diesel irrigation pumps, agricultural valves, water storage tanks & farm equipment"
+                angle = "干旱农区：切入农场打井提水、光伏灌溉水泵、输水管件与抗旱农机刚需"
             else:
                 rec_cn = "快装预制钢结构、应急发电机、水泵阀门与建筑五金"
                 rec_en = "prefabricated steel structures, emergency generators, water pumps & construction hardware"
                 angle = "灾后重建刚需：对接当地基建承包商与 NGO/政府应急采购"
 
-            # Parse date cleanly
-            date_str = ""
-            try:
-                dt = datetime.datetime.strptime(pub[:25].strip(), "%a, %d %b %Y %H:%M:%S")
-                date_str = dt.strftime("%Y-%m-%d")
-            except Exception:
-                date_str = pub[:16]
-
             safe_link = (link or "https://www.gdacs.org/").replace("http://", "https://")
             items.append({
                 "id": f"gdacs_{len(items)}_{ev_type}",
                 "cat": "weather",
+                "hazardType": ev_type,
                 "catLabel": type_cn.get(ev_type, "⚠️ 灾害预警"),
                 "severity": alert,
                 "severityLabel": level_cn.get(alert, alert),
@@ -375,129 +495,180 @@ def fetch_gdacs():
                 "url": safe_link,
             })
 
-        # Sort by alert severity + TC/FL priority, then newest date descending
         items.sort(key=lambda x: (x["_rank"][0], x["_rank"][1], -(int(x["date"].replace("-", "")[:8]) if re.match(r"^\d{4}-\d{2}-\d{2}$", x["date"]) else 0)))
         for x in items:
             x.pop("_rank", None)
-        return items[:14]
+        return items[:12]
     except Exception as e:
         print(f"[WARN] GDACS fetch failed: {e}")
         return []
 
 
+def _parse_wb_date(s):
+    s = clean_text(s)
+    if not s:
+        return ""
+    if re.match(r"^\d{4}-\d{2}-\d{2}", s):
+        return s[:10]
+    for fmt in ("%d-%b-%Y", "%b %d, %Y", "%Y/%m/%d"):
+        try:
+            return datetime.datetime.strptime(s[:20].strip(), fmt).strftime("%Y-%m-%d")
+        except Exception:
+            pass
+    return s[:10]
+
+
 def fetch_worldbank():
-    """Fetch newest global active infrastructure/energy/water/mining/agri/industrial projects from World Bank official API."""
+    """Fetch LIVE World Bank equipment/infrastructure procurement notices (IFB/GPN/Contract Awards) from v2/procnotices API."""
     items = []
-    # Official World Bank Projects API v2: active projects sorted by newest board approval date
-    url = (
-        "https://search.worldbank.org/api/v2/projects?"
-        "format=json&rows=70&os=0&status_exact=Active&srt=boardapprovaldate&order=desc"
-        "&fl=id,project_name,countryname,countryshortname,regionname,boardapprovaldate,"
-        "totalamt,status,url,impagency,borrower,sector1,mjsector,lendinginstr"
-    )
-    industrial_kw = re.compile(
-        r"energy|power|water|sanitation|transport|road|rail|port|agricult|irrigat|"
-        r"mining|extract|industry|manufactur|trade|urban|housing|construct|infra|"
-        r"telecom|digital|climate|resilience|grid|solar|hydro|factory|industrial",
+    seen = set()
+    agency_counts = {}
+
+    include_kw = re.compile(
+        r"pump|valve|pipe|pipeline|water\s*supply|wastewater|sewage|drainage|irrigat|borehole|reservoir|"
+        r"solar|photovoltaic|power|substation|transformer|switchgear|cable|grid|transmission|generator|electrific|"
+        r"steel|bridge|port|warehouse|factory|machinery|tractor|agricult|cold\s*storage|hydropower|"
+        r"industrial|mining|plant|equipment|civil\s*works|distribution\s*network|water\s*treatment|"
+        r"fourniture|solaire|pompe|eau|réseau|équipement|électri|acero|agua|bomba|energía",
         re.I,
     )
-    try:
-        raw = http_get(url, timeout=22)
-        data = json.loads(raw)
-        projs = data.get("projects", {})
-        if not isinstance(projs, dict):
-            return []
+    exclude_kw = re.compile(
+        r"consultan|advisory|audit|training|workshop|software|computer|laptop|printer|server|it\s+equipment|"
+        r"furniture|stationery|sedan|suv|passenger\s+vehicle|ambulance|medical|hospital|pharmaceut|vaccine|"
+        r"clinical|laboratory\s+reagent|school\s+book|literacy|higher\s+education|nutrition|film|animation|"
+        r"muck|silt|debris|janitor|cleaning|catering|security\s+guard|legal\s+service|accounting|printing|"
+        r"public\s+relations|communication|supports?\s+de\s+communication|recruitment|study\s+tour|curriculum|"
+        r"periodic(?:al)?\s+(?:renewal|maintenance)|pothole|resurfacing|pav[ée]",
+        re.I,
+    )
 
-        for pid, p in projs.items():
-            if not isinstance(p, dict):
-                continue
-            pname = clean_text(p.get("project_name"))
-            if not pname:
-                continue
+    notice_badges = {
+        "Invitation for Bids": ("📢 世行公开招标中", "High"),
+        "Invitation for Prequalification": ("📢 世行资格预审", "High"),
+        "General Procurement Notice": ("📋 世行采购总公告", "High"),
+        "Contract Award": ("🏆 世行刚中标·追总包", "Normal"),
+    }
 
-            # Extract sector string
-            sec1 = p.get("sector1")
-            sec_name = ""
-            if isinstance(sec1, dict):
-                sec_name = clean_text(sec1.get("Name", ""))
-            elif isinstance(sec1, str):
-                sec_name = clean_text(sec1)
-            mj = p.get("mjsector")
-            mj_txt = ""
-            if isinstance(mj, list):
-                mj_txt = " ".join(clean_text(x.get("Name", "") if isinstance(x, dict) else str(x)) for x in mj)
+    urls = [
+        "https://search.worldbank.org/api/v2/procnotices?format=json&rows=160&notice_type=Invitation%20for%20Bids&srt=noticedate&order=desc",
+        "https://search.worldbank.org/api/v2/procnotices?format=json&rows=160&srt=noticedate&order=desc",
+    ]
+    for url in urls:
+        try:
+            raw = http_get(url, timeout=25)
+            data = json.loads(raw)
+            notices = data.get("procnotices") or []
+            if isinstance(notices, dict):
+                notices = list(notices.values())
+            for n in notices:
+                if not isinstance(n, dict):
+                    continue
+                nid = clean_text(n.get("id"))
+                if not nid or nid in seen:
+                    continue
+                ntype = clean_text(n.get("notice_type"))
+                if ntype not in notice_badges:
+                    continue
+                desc = clean_text(n.get("bid_description"))
+                pname = clean_text(n.get("project_name"))
+                combined = f"{desc} {pname}".strip()
+                if not combined:
+                    continue
+                # Match industrial keywords primarily in bid_description (or pname if desc is short)
+                match_text = desc if len(desc) >= 24 else combined
+                if exclude_kw.search(combined):
+                    continue
+                if not include_kw.search(match_text):
+                    continue
 
-            combined_sec = f"{pname} {sec_name} {mj_txt}"
-            if not industrial_kw.search(combined_sec):
-                continue
+                c_raw = clean_text(n.get("project_ctry_name") or n.get("contact_ctry_name") or "")
+                c_en, c_cn, reg, lang = normalize_country(c_raw or pname)
+                if not c_en or c_en.lower() in ("world", "africa", "western and central africa", "eastern and southern africa"):
+                    c_en = c_raw or "Global"
+                    c_cn = c_cn or c_en
 
-            # Country normalization
-            c_raw = p.get("countryshortname") or p.get("countryname") or ""
-            if isinstance(c_raw, list):
-                c_raw = c_raw[0] if c_raw else ""
-            c_en, c_cn, reg, lang = normalize_country(c_raw)
-            if not c_en or c_en.lower() in ("world", "africa"):
-                c_en = clean_text(c_raw) or "Regional"
-                c_cn = c_cn or c_en
+                org = clean_text(n.get("contact_organization") or "")
+                # Cap max 2 notices per (country, agency) so one road dept doesn't flood the board
+                ag_key = (c_en.lower(), (org or pname[:30]).lower())
+                if agency_counts.get(ag_key, 0) >= 2:
+                    continue
+                agency_counts[ag_key] = agency_counts.get(ag_key, 0) + 1
+                seen.add(nid)
 
-            # Amount formatting
-            amt_raw = str(p.get("totalamt", "") or "").replace(",", "").strip()
-            amt_disp = ""
-            try:
-                amt_num = float(amt_raw)
-                if amt_num >= 1_000_000_000:
-                    amt_disp = f"${amt_num/1e9:.2f}bn"
-                elif amt_num >= 1_000_000:
-                    amt_disp = f"${amt_num/1e6:.1f}M"
-                elif amt_num > 0:
-                    amt_disp = f"${amt_num:,.0f}"
-            except Exception:
-                amt_disp = amt_raw
+                date_str = _parse_wb_date(n.get("noticedate") or n.get("submission_date"))
+                deadline = _parse_wb_date(n.get("submission_deadline_date"))
+                email = clean_text(n.get("contact_email") or "")
+                phone = clean_text(n.get("contact_phone_no") or "")
+                pid = clean_text(n.get("project_id") or "")
 
-            # Date
-            dt_raw = clean_text(p.get("boardapprovaldate", ""))
-            date_str = dt_raw[:10] if len(dt_raw) >= 10 else dt_raw
+                if len(org) > 85:
+                    org = org[:82] + "..."
 
-            # Implementing agency / borrower (WHO actually buys!)
-            imp = clean_text(p.get("impagency", ""))
-            bor = clean_text(p.get("borrower", ""))
-            entity = imp or bor or ""
-            if len(entity) > 90:
-                entity = entity[:87] + "..."
+                title_show = desc if len(desc) >= 18 else (pname or desc)
+                if len(title_show) > 135:
+                    title_show = title_show[:132] + "..."
 
-            prod_cn, prod_en = match_products(combined_sec)
-            proj_url = clean_text(p.get("url", "")) or f"https://projects.worldbank.org/en/projects-operations/project-detail/{pid}"
+                prod_cn, prod_en = match_products(combined)
+                badge_lbl, sev = notice_badges[ntype]
+                if deadline:
+                    sev_lbl = f"{badge_lbl} · 截标 {deadline}"
+                else:
+                    sev_lbl = badge_lbl
 
-            items.append({
-                "id": f"wb_{pid}",
-                "cat": "loan",
-                "catLabel": "🏦 世行批准项目",
-                "severity": "High" if amt_disp else "Normal",
-                "severityLabel": f"💰 {amt_disp}" if amt_disp else "🏦 多边放款",
-                "country": c_en,
-                "countryCn": c_cn,
-                "region": reg,
-                "lang": lang,
-                "date": date_str,
-                "title": pname,
-                "titleCn": f"【{c_cn}】{pname}",
-                "summary": f"行业：{sec_name or '基建/工业'} ｜ 执行/借款方：{entity or '当地项目部'} ｜ 状态：{clean_text(p.get('status','Active'))}",
-                "amount": amt_disp,
-                "entity": entity,
-                "productsCn": prod_cn,
-                "productsEn": prod_en,
-                "angleCn": f"大银行已批资金项目！优先查执行机构「{entity or c_cn+'项目办'}」及中标 EPC 总包商，切入 {prod_cn}",
-                "source": "世界银行 World Bank API",
-                "url": proj_url,
-            })
+                angle_target = org or (c_cn + "项目采购办")
+                if ntype == "Contract Award":
+                    angle = f"刚授标工程/采购！立刻查「{angle_target}」或中标总包商，切入二级供货：{prod_cn}"
+                else:
+                    email_tip = f"（带官方采购邮箱 {email}）" if email else ""
+                    angle = f"世界银行实盘招标中{email_tip}！对接「{angle_target}」或当地投标代理，主推 {prod_cn}"
 
-            if len(items) >= 22:
-                break
+                sum_parts = [f"类型：{ntype}"]
+                if pname and pname != title_show:
+                    sum_parts.append(f"所属项目：{pname[:70]}")
+                if email:
+                    sum_parts.append(f"官方邮箱：{email}")
+                if deadline:
+                    sum_parts.append(f"截标日期：{deadline}")
 
-        return items
-    except Exception as e:
-        print(f"[WARN] World Bank API fetch failed: {e}")
-        return []
+                notice_url = f"https://projects.worldbank.org/en/projects-operations/procurement-detail/{nid}"
+                if not nid.startswith("OP") and pid:
+                    notice_url = f"https://projects.worldbank.org/en/projects-operations/project-detail/{pid}"
+
+                items.append({
+                    "id": f"wb_{nid}",
+                    "cat": "loan",
+                    "catLabel": badge_lbl,
+                    "noticeType": ntype,
+                    "severity": sev,
+                    "severityLabel": sev_lbl,
+                    "country": c_en,
+                    "countryCn": c_cn,
+                    "region": reg,
+                    "lang": lang,
+                    "date": date_str,
+                    "deadline": deadline,
+                    "title": title_show,
+                    "titleCn": f"【{c_cn}】{title_show}",
+                    "summary": " ｜ ".join(sum_parts),
+                    "amount": "",
+                    "entity": org,
+                    "contactEmail": email,
+                    "contactPhone": phone,
+                    "productsCn": prod_cn,
+                    "productsEn": prod_en,
+                    "angleCn": angle,
+                    "source": "世界银行实时招标 API",
+                    "url": notice_url,
+                })
+                if len(items) >= 22:
+                    break
+        except Exception as e:
+            print(f"[WARN] World Bank procnotices fetch failed: {e}")
+        if len(items) >= 22:
+            break
+
+    return items
+
 
 
 def fetch_news_rss():
@@ -531,35 +702,56 @@ def fetch_news_rss():
 
     items = []
     seen = set()
+    now_utc = datetime.datetime.now(datetime.timezone.utc)
     for label, url in queries:
         try:
             xml_text = http_get(url, timeout=16)
             root = ET.fromstring(xml_text)
             count = 0
             for it in root.findall("./channel/item"):
-                title = clean_text(it.findtext("title"))
+                raw_title = clean_text(it.findtext("title"))
                 link = clean_text(it.findtext("link"))
                 pub = clean_text(it.findtext("pubDate"))
                 src = clean_text(it.findtext("source")) or "财经/工程快讯"
-                if not title or title.lower() in seen:
+                if not raw_title:
                     continue
-                seen.add(title.lower())
+                # Strip trailing " - SourceName" added by Google News RSS
+                title = re.sub(r"\s+-\s+[^-]{2,45}$", "", raw_title).strip() or raw_title
+                if title.lower() in seen:
+                    continue
 
+                date_str = ""
+                age_days = 0
+                try:
+                    dt = datetime.datetime.strptime(pub[:25].strip(), "%a, %d %b %Y %H:%M:%S").replace(tzinfo=datetime.timezone.utc)
+                    date_str = dt.strftime("%Y-%m-%d")
+                    age_days = (now_utc - dt).days
+                except Exception:
+                    date_str = pub[:16]
+                # Enforce strict freshness: drop stale RSS items older than 45 days
+                if age_days > 45:
+                    continue
+
+                seen.add(title.lower())
                 c_en, c_cn, reg, lang = normalize_country(title)
                 if reg == "其他":
                     c_en, c_cn, reg, lang = "Global", "全球新兴市场", "全球", "en"
 
-                date_str = ""
-                try:
-                    dt = datetime.datetime.strptime(pub[:25].strip(), "%a, %d %b %Y %H:%M:%S")
-                    date_str = dt.strftime("%Y-%m-%d")
-                except Exception:
-                    date_str = pub[:16]
-
                 prod_cn, prod_en = match_products(title)
-                # Extract dollar amount if mentioned in title
                 m_amt = re.search(r"(\$\s?\d+(?:\.\d+)?\s?(?:billion|million|bn|m|B|M)|\d+(?:\.\d+)?\s?(?:亿美元|亿元))", title, re.I)
                 amt = m_amt.group(1) if m_amt else ""
+
+                # Heuristic buyer/EPC entity extraction (concise subject before action verb)
+                ent = ""
+                m_en = re.match(r"^([A-Z][A-Za-z0-9&.\-']+(?:\s+[A-Z][A-Za-z0-9&.\-']+){0,3})\s+(?:secures|signs|wins|breaks|opens|expands|launches|invests|to\s+build|plans|announces|receives|gets)", title)
+                if m_en:
+                    cand = m_en.group(1).strip()
+                    if cand.lower() not in ("ifc", "adb", "afdb", "idb", "ebrd", "world bank", "china", "india", "vietnam", "mexico", "brazil", "indonesia", "saudi arabia"):
+                        ent = cand
+                else:
+                    m_zh = re.match(r"^([\u4e00-\u9fffA-Za-z0-9]{2,14}?)(?:中标|签约|承建|开工|落地|投资)", title)
+                    if m_zh:
+                        ent = m_zh.group(1).strip()
 
                 items.append({
                     "id": f"news_{len(items)}",
@@ -576,10 +768,10 @@ def fetch_news_rss():
                     "titleCn": title,
                     "summary": f"来源：{src}",
                     "amount": amt,
-                    "entity": "",
+                    "entity": ent,
                     "productsCn": prod_cn,
                     "productsEn": prod_en,
-                    "angleCn": f"近期高意向动态！立刻在「背调与合规」查新闻里的业主/总包商官网，切入 {prod_cn}",
+                    "angleCn": f"近期高意向动态！立刻在「背调与合规」查业主/总包商官网，切入 {prod_cn}",
                     "source": src,
                     "url": link,
                 })
@@ -619,9 +811,9 @@ def enrich_with_gemini(items):
     import time
     endpoints = [
         ("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent", {"x-goog-api-key": api_key}),
-        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent", {"x-goog-api-key": api_key}),
+        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent", {"x-goog-api-key": api_key}),
         ("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent", {"x-goog-api-key": api_key}),
-        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent", {"x-goog-api-key": api_key}),
+        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {"x-goog-api-key": api_key}),
     ]
 
     enriched_total = 0
@@ -633,8 +825,8 @@ def enrich_with_gemini(items):
         batch = targets[start : start + 16]
         prompt = (
             "你是中国全品类工业品外贸总监（主营钢结构、阀门、水泵、电缆、机械、农机、五金）。\n"
-            "请把下面每条海外商机翻译成精炼易懂的中文标题（带国别，28字以内），并给一句实战外贸切入建议（30字以内）。\n"
-            "严格返回纯 JSON 数组，每个对象只含字段：i（原整数索引）、titleCn（中文标题）、angleCn（外贸切入建议）。不要输出任何多余文字。\n"
+            "请把下面每条海外商机翻译成精炼易懂的中文标题（带国别，28字以内），给一句实战外贸切入建议（30字以内），并尽可能提取具体业主/采购方英文公司名（若无法确定返回空串）。\n"
+            "严格返回纯 JSON 数组，每个对象只含字段：i（原整数索引）、titleCn（中文标题）、angleCn（外贸切入建议）、entity（业主/采购方名）。不要输出任何多余文字。\n"
             + json.dumps(batch, ensure_ascii=False)
         )
         body = {
@@ -666,6 +858,8 @@ def enrich_with_gemini(items):
                             items[i]["titleCn"] = clean_text(obj["titleCn"])
                         if obj.get("angleCn"):
                             items[i]["angleCn"] = clean_text(obj["angleCn"])
+                        if obj.get("entity") and not items[i].get("entity"):
+                            items[i]["entity"] = clean_text(obj["entity"])
                         enriched_total += 1
         except Exception as e_parse:
             print(f"[WARN] Gemini batch parse failed: {e_parse}")
