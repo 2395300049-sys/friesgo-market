@@ -741,16 +741,31 @@ def push_notifications(feed):
             if not openids:
                 print("[WARN] WeChat Test Account has 0 followers yet — scan QR first!")
             else:
+                def strip_emoji(s):
+                    return re.sub(r"[^\u4e00-\u9fffA-Za-z0-9\s\-\.\$\(\)（）：:、/|，,]", "", str(s or "")).strip()
+
                 stats = feed["stats"]
-                weathers = [x for x in feed["items"] if x["cat"] == "weather"][:2]
-                loans = [x for x in feed["items"] if x["cat"] == "loan"][:2]
-                news = [x for x in feed["items"] if x["cat"] == "news"][:2]
-                w_txt = "；".join(x["titleCn"] for x in weathers) if weathers else "全球主要航线今日无红橙台风预警"
-                l_parts = []
-                for x in loans + news:
-                    amt = f"({x['amount']})" if x.get("amount") else ""
-                    l_parts.append(f"• {x['titleCn']}{amt}")
-                l_txt = "\n".join(l_parts) if l_parts else "点击下方详情查看今日 60 条全球商机"
+                weathers = [x for x in feed["items"] if x["cat"] == "weather"]
+                loans = [x for x in feed["items"] if x["cat"] == "loan"]
+                w_countries = []
+                for x in weathers[:4]:
+                    cn = x.get("countryCn") or x.get("country") or ""
+                    if cn and cn not in w_countries:
+                        w_countries.append(cn)
+                if w_countries:
+                    w_txt = f"{'/'.join(w_countries[:3])}等{len(weathers)}条预警（点详情查钢构/泵阀商机）"
+                else:
+                    w_txt = "今日全球主要市场无红橙级别灾害预警"
+
+                lead_items = []
+                for x in loans[:2]:
+                    t_clean = re.sub(r"\s+", "", strip_emoji(x.get("titleCn", "")))
+                    amt = x.get("amount") or ""
+                    if amt and amt not in t_clean:
+                        t_clean = f"{t_clean}({amt})"
+                    if t_clean:
+                        lead_items.append(t_clean[:20])
+                l_txt = "；".join(lead_items) if lead_items else "点下方「详情」查看全部60条全球放款与EPC商机"
 
                 send_url = f"https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={urllib.parse.quote(access_token)}"
                 sent_ok = 0
@@ -761,9 +776,9 @@ def push_notifications(feed):
                         "url": SITE_URL,
                         "data": {
                             "date": {"value": feed["updatedCn"]},
-                            "stats": {"value": f"共 {stats['total']} 条（灾害 {stats['weather']}｜世行放款 {stats['loan']}｜扩产EPC {stats['news']}）"},
-                            "weather": {"value": w_txt[:180]},
-                            "leads": {"value": l_txt[:180] + "\n👉 点击本卡片直达作战地图！"},
+                            "stats": {"value": f"共{stats['total']}条（灾害{stats['weather']}｜世行放款{stats['loan']}｜扩产EPC{stats['news']}）"},
+                            "weather": {"value": w_txt},
+                            "leads": {"value": l_txt},
                         },
                     }
                     res_j = json.loads(http_post_json(send_url, payload, timeout=15))
