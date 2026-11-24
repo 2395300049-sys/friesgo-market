@@ -599,11 +599,11 @@ def enrich_with_gemini(items):
 
     # Prioritize English loan & news items (weather alerts already have crisp Chinese titles)
     targets = []
-    for cat_prio in ("loan", "news", "weather"):
+    for cat_prio in ("loan", "news"):
         for idx, it in enumerate(items):
             if it["cat"] != cat_prio:
                 continue
-            zh_chars = len(re.findall(r"[\u4e00-\u9fff]", it["titleCn"]))
+            zh_chars = len(re.findall(r"[\u4e00-\u9fff]", it["title"]))
             if zh_chars < 6 and len(targets) < 40:
                 targets.append({
                     "i": idx,
@@ -617,9 +617,10 @@ def enrich_with_gemini(items):
         return True
 
     endpoints = [
-        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {"x-goog-api-key": api_key}),
-        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent", {"x-goog-api-key": api_key}),
-        ("https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-2.5-flash:generateContent?key=" + urllib.parse.quote(api_key), {}),
+        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent", {"x-goog-api-key": api_key}),
+        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent", {"x-goog-api-key": api_key}),
+        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent", {"x-goog-api-key": api_key}),
+        ("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent", {"x-goog-api-key": api_key}),
     ]
 
     enriched_total = 0
